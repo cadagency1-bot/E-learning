@@ -1,0 +1,681 @@
+
+<!DOCTYPE html>
+<html lang="fr" dir="ltr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modifier un cours | ÉtudeEnLigne</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <style>
+        body { font-family: Arial, sans-serif; }
+
+        input, textarea, select {
+            outline: none;
+            transition: border-color .2s, box-shadow .2s;
+        }
+
+        input:focus, textarea:focus, select:focus {
+            border-color: #10b981;
+            box-shadow: 0 0 0 3px rgba(16, 185, 129, .12);
+        }
+
+        [dir="rtl"] input,
+        [dir="rtl"] textarea,
+        [dir="rtl"] select {
+            text-align: right;
+        }
+
+        .upload-box {
+            border: 2px dashed #a7f3d0;
+            background: #f0fdf4;
+            border-radius: 16px;
+            padding: 20px;
+        }
+
+        .field-label {
+            display: block;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 8px;
+        }
+
+        .action-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 12px 18px;
+            border-radius: 12px;
+            font-weight: 700;
+            transition: .2s;
+            cursor: pointer;
+        }
+
+        .delete-file-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            padding: 6px 10px;
+            border: 1px solid #fecaca;
+            border-radius: 8px;
+            background: #fff1f2;
+            color: #be123c;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+
+        .delete-file-btn:hover {
+            background: #ffe4e6;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-100 min-h-screen p-4 md:p-8">
+
+<div class="max-w-3xl mx-auto">
+
+    <!-- NAVIGATION -->
+    <div class="flex flex-wrap items-center justify-between gap-3 mb-5">
+
+        <a href="{{ route('admin.dashboard') }}"
+           class="inline-flex items-center gap-2 bg-white hover:bg-emerald-50
+                  text-emerald-800 font-semibold px-4 py-3 rounded-xl
+                  shadow-sm border border-emerald-100 transition">
+            ← <span data-i18n="dashboard">Retour au tableau de bord</span>
+        </a>
+
+        <button type="button"
+                onclick="toggleLanguage()"
+                class="inline-flex items-center gap-2 bg-emerald-600
+                       hover:bg-emerald-700 text-white font-semibold
+                       px-4 py-3 rounded-xl transition">
+            🌐 <span id="language-button">العربية</span>
+        </button>
+
+    </div>
+
+    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 md:p-8">
+
+        <!-- TITRE -->
+        <div class="mb-6">
+            <div class="w-12 h-12 flex items-center justify-center
+                        rounded-xl bg-emerald-100 text-emerald-700 text-2xl mb-4">
+                ✏️
+            </div>
+
+            <h1 class="text-2xl font-bold text-emerald-800 mb-2"
+                data-i18n="title">
+                Modifier un cours
+            </h1>
+
+            <p class="text-gray-500" data-i18n="subtitle">
+                Modifiez le contenu, le PDF ou les vidéos de ce cours.
+            </p>
+        </div>
+
+        <!-- MESSAGES -->
+        @if(session('success'))
+            <div class="bg-emerald-50 border border-emerald-200
+                        text-emerald-800 p-4 rounded-xl mb-6">
+                {{ session('success') }}
+            </div>
+        @endif
+
+        @if(session('error'))
+            <div class="bg-red-50 border border-red-200
+                        text-red-700 p-4 rounded-xl mb-6">
+                {{ session('error') }}
+            </div>
+        @endif
+
+        @if($errors->any())
+            <div class="bg-red-50 border border-red-200 text-red-700
+                        p-4 rounded-xl mb-6">
+                <p class="font-bold mb-2" data-i18n="errorTitle">
+                    Veuillez corriger les erreurs suivantes :
+                </p>
+                <ul class="list-disc pl-5">
+                    @foreach($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
+        <!-- FORMULAIRE DE MODIFICATION -->
+        <form id="edit-course-form"
+              action="{{ route('admin.cours.update', $cours->id) }}"
+              method="POST"
+              enctype="multipart/form-data"
+              class="space-y-6">
+
+            @csrf
+            @method('PUT')
+
+            <!-- FORMATION -->
+            <div>
+                <label class="field-label" for="formation_id" data-i18n="formation">
+                    Formation
+                </label>
+
+                <select id="formation_id" name="formation_id"
+                        class="w-full border border-gray-300 rounded-xl p-3 bg-white"
+                        required>
+                    @foreach($formations as $formation)
+                        <option value="{{ $formation->id }}"
+                            {{ old('formation_id', $cours->formation_id) == $formation->id ? 'selected' : '' }}>
+                            {{ $formation->name }}
+                        </option>
+                    @endforeach
+                </select>
+
+                @error('formation_id')
+                    <p class="text-red-600 text-sm mt-2">{{ $message }}</p>
+                @enderror
+            </div>
+
+            <!-- TITRE -->
+            <div>
+                <label class="field-label" for="title" data-i18n="courseTitle">
+                    Titre du cours
+                </label>
+
+                <input id="title" type="text" name="title"
+                       value="{{ old('title', $cours->title) }}"
+                       class="w-full border border-gray-300 rounded-xl p-3"
+                       required>
+
+                @error('title')
+                    <p class="text-red-600 text-sm mt-2">{{ $message }}</p>
+                @enderror
+            </div>
+
+            <!-- DESCRIPTION -->
+            <div>
+                <label class="field-label" for="description" data-i18n="description">
+                    Description
+                </label>
+
+                <textarea id="description" name="description" rows="3"
+                          class="w-full border border-gray-300 rounded-xl p-3">{{ old('description', $cours->description) }}</textarea>
+
+                @error('description')
+                    <p class="text-red-600 text-sm mt-2">{{ $message }}</p>
+                @enderror
+            </div>
+
+            <!-- CONTENU -->
+            <div>
+                <label class="field-label" for="content" data-i18n="content">
+                    Contenu du cours
+                </label>
+
+                <textarea id="content" name="content" rows="6"
+                          class="w-full border border-gray-300 rounded-xl p-3">{{ old('content', $cours->content) }}</textarea>
+
+                @error('content')
+                    <p class="text-red-600 text-sm mt-2">{{ $message }}</p>
+                @enderror
+            </div>
+
+            <!-- PDF -->
+            <div>
+                <label class="field-label" for="file" data-i18n="pdf">
+                    Document PDF
+                </label>
+
+                @if($cours->file_path)
+                    <div class="bg-emerald-50 border border-emerald-200 rounded-xl p-4 mb-3"
+                         id="current-pdf">
+
+                        <div class="flex flex-wrap items-center justify-between gap-3">
+                            <p class="font-semibold text-emerald-800" data-i18n="currentPdf">
+                                PDF actuel
+                            </p>
+
+                            <button type="button"
+                                    class="delete-file-btn"
+                                    data-delete-url="{{ route('admin.cours.media.destroy', [$cours->id, 'pdf']) }}"
+                                    onclick="deleteMedia(this)">
+                                🗑️ <span data-i18n="deleteFile">Supprimer</span>
+                            </button>
+                        </div>
+
+                        <a href="{{ asset('storage/' . $cours->file_path) }}"
+                           target="_blank" rel="noopener noreferrer"
+                           class="inline-block mt-3 text-emerald-700 underline"
+                           data-i18n="openPdf">
+                            Ouvrir le PDF
+                        </a>
+                    </div>
+                @else
+                    <p class="text-sm text-gray-500 mb-3" data-i18n="noPdf">
+                        Aucun PDF enregistré.
+                    </p>
+                @endif
+
+                <input id="file" type="file" name="file"
+                       accept=".pdf,application/pdf"
+                       class="w-full border border-gray-300 rounded-xl p-3">
+
+                <p class="text-sm text-gray-500 mt-2" data-i18n="keepPdf">
+                    Laissez vide pour conserver le PDF actuel.
+                </p>
+
+                @error('file')
+                    <p class="text-red-600 text-sm mt-2">{{ $message }}</p>
+                @enderror
+            </div>
+
+            <!-- VIDEO 1 -->
+            <div>
+                <label class="field-label" for="video" data-i18n="video1">
+                    Première vidéo du cours
+                </label>
+
+                @if($cours->video_path)
+                    <div id="current-video1"
+                         class="bg-emerald-50 border border-emerald-200 rounded-xl p-4 mb-3">
+
+                        <div class="flex flex-wrap items-center justify-between gap-3 mb-3">
+                            <p class="font-semibold text-emerald-800" data-i18n="currentVideo1">
+                                Première vidéo actuelle
+                            </p>
+
+                            <button type="button"
+                                    class="delete-file-btn"
+                                    data-delete-url="{{ route('admin.cours.media.destroy', [$cours->id, 'video1']) }}"
+                                    onclick="deleteMedia(this)">
+                                🗑️ <span data-i18n="deleteFile">Supprimer</span>
+                            </button>
+                        </div>
+
+                        <video controls playsinline preload="metadata"
+                               class="w-full max-h-80 rounded-xl bg-black">
+                            <source src="{{ asset('storage/' . $cours->video_path) }}">
+                            Votre navigateur ne prend pas en charge la vidéo.
+                        </video>
+                    </div>
+                @else
+                    <p class="text-sm text-gray-500 mb-3" data-i18n="noVideo1">
+                        Aucune première vidéo enregistrée.
+                    </p>
+                @endif
+
+                <input id="video" type="file" name="video"
+                       accept=".mp4,.webm,.mov,.m4v,video/mp4,video/webm,video/quicktime"
+                       class="w-full border border-gray-300 rounded-xl p-3">
+
+                <p class="text-sm text-gray-500 mt-2" data-i18n="keepVideo1">
+                    Laissez vide pour conserver la première vidéo actuelle.
+                </p>
+
+                @error('video')
+                    <p class="text-red-600 text-sm mt-2">{{ $message }}</p>
+                @enderror
+
+                <p id="video1-name" class="text-sm text-emerald-700 mt-2"></p>
+
+                <div id="video1-preview-container" class="hidden mt-4">
+                    <p class="font-semibold text-sm mb-2" data-i18n="preview1">
+                        Aperçu de la nouvelle vidéo
+                    </p>
+                    <video id="video1-preview" controls playsinline
+                           class="w-full max-h-80 rounded-xl bg-black"></video>
+                </div>
+            </div>
+
+            <!-- VIDEO 2 -->
+            <div>
+                <label class="field-label" for="video2" data-i18n="video2">
+                    Deuxième vidéo du cours
+                </label>
+
+                <div class="upload-box">
+
+                    <div class="text-center mb-4">
+                        <div class="text-4xl mb-3">🎬</div>
+
+                        <p class="font-bold text-gray-800" data-i18n="uploadTitle">
+                            Ajouter une deuxième vidéo
+                        </p>
+
+                        <p class="text-sm text-gray-500 mt-2" data-i18n="formats">
+                            Formats acceptés : MP4, WebM, MOV, M4V
+                        </p>
+
+                        <p class="text-sm text-gray-500 mt-1" data-i18n="maxSize">
+                            Taille maximale : 100 MB
+                        </p>
+                    </div>
+
+                    @if($cours->video2_path)
+                        <div id="current-video2"
+                             class="bg-white border border-emerald-200 rounded-xl p-4 mb-4">
+
+                            <div class="flex flex-wrap items-center justify-between gap-3 mb-3">
+                                <p class="font-semibold text-emerald-800" data-i18n="currentVideo2">
+                                    Deuxième vidéo actuelle
+                                </p>
+
+                                <button type="button"
+                                        class="delete-file-btn"
+                                        data-delete-url="{{ route('admin.cours.media.destroy', [$cours->id, 'video2']) }}"
+                                        onclick="deleteMedia(this)">
+                                    🗑️ <span data-i18n="deleteFile">Supprimer</span>
+                                </button>
+                            </div>
+
+                            <video controls playsinline preload="metadata"
+                                   class="w-full max-h-80 rounded-xl bg-black">
+                                <source src="{{ asset('storage/' . $cours->video2_path) }}">
+                                Votre navigateur ne prend pas en charge la vidéo.
+                            </video>
+                        </div>
+                    @else
+                        <p class="text-sm text-gray-500 text-center mb-4" data-i18n="noVideo2">
+                            Aucune deuxième vidéo enregistrée.
+                        </p>
+                    @endif
+
+                    <div class="text-center">
+                        <label for="video2"
+                               class="inline-block cursor-pointer bg-emerald-600 hover:bg-emerald-700
+                                      text-white font-semibold px-5 py-3 rounded-xl transition">
+                            <span data-i18n="chooseVideo">Choisir une deuxième vidéo</span>
+                        </label>
+                    </div>
+
+                    <input id="video2" type="file" name="video2"
+                           accept=".mp4,.webm,.mov,.m4v,video/mp4,video/webm,video/quicktime"
+                           class="hidden">
+
+                    <p id="video2-name"
+                       class="text-sm text-gray-600 text-center mt-3"
+                       data-i18n="noNewVideo">
+                        Aucune nouvelle vidéo sélectionnée
+                    </p>
+                </div>
+
+                <p class="text-sm text-gray-500 mt-2" data-i18n="keepVideo2">
+                    Laissez vide pour conserver la deuxième vidéo actuelle.
+                </p>
+
+                @error('video2')
+                    <p class="text-red-600 text-sm mt-2">{{ $message }}</p>
+                @enderror
+
+                <div id="video2-preview-container" class="hidden mt-4">
+                    <p class="font-semibold text-sm mb-2" data-i18n="preview2">
+                        Aperçu de la nouvelle deuxième vidéo
+                    </p>
+                    <video id="video2-preview" controls playsinline
+                           class="w-full max-h-80 rounded-xl bg-black"></video>
+                </div>
+            </div>
+
+            <!-- LIEN VIDEO EXTERNE -->
+            <div>
+                <label class="field-label" for="video_url" data-i18n="videoUrl">
+                    Lien vidéo externe (facultatif)
+                </label>
+
+                <input id="video_url" type="url" name="video_url"
+                       value="{{ old('video_url', $cours->video_url) }}"
+                       placeholder="https://..."
+                       class="w-full border border-gray-300 rounded-xl p-3">
+
+                @error('video_url')
+                    <p class="text-red-600 text-sm mt-2">{{ $message }}</p>
+                @enderror
+            </div>
+
+            <!-- ORDRE -->
+            <div>
+                <label class="field-label" for="order" data-i18n="order">
+                    Ordre du cours
+                </label>
+
+                <input id="order" type="number" name="order" min="0"
+                       value="{{ old('order', $cours->order ?? 0) }}"
+                       class="w-full border border-gray-300 rounded-xl p-3">
+
+                @error('order')
+                    <p class="text-red-600 text-sm mt-2">{{ $message }}</p>
+                @enderror
+            </div>
+
+            <!-- ACTIONS : PAS DE BOUTON SUPPRIMER LE COURS -->
+            <div class="flex flex-wrap gap-3 pt-4 border-t border-gray-100">
+
+                <button type="submit"
+                        class="action-btn bg-emerald-600 hover:bg-emerald-700 text-white">
+                    <span data-i18n="save">Enregistrer les modifications</span>
+                </button>
+
+                <a href="{{ route('admin.cours.index') }}"
+                   class="action-btn bg-gray-100 hover:bg-gray-200 text-gray-700">
+                    <span data-i18n="cancel">Annuler</span>
+                </a>
+
+            </div>
+
+        </form>
+
+        <!-- FORMULAIRE SEPARE POUR SUPPRIMER UN FICHIER -->
+        <form id="delete-media-form" method="POST" class="hidden">
+            @csrf
+            @method('DELETE')
+        </form>
+
+    </div>
+
+    <p class="text-center text-sm text-gray-400 mt-5">
+        ÉtudeEnLigne © {{ date('Y') }}
+    </p>
+
+</div>
+
+<script>
+    const translations = {
+        fr: {
+            dashboard: 'Retour au tableau de bord',
+            title: 'Modifier un cours',
+            subtitle: 'Modifiez le contenu, le PDF ou les vidéos de ce cours.',
+            errorTitle: 'Veuillez corriger les erreurs suivantes :',
+            formation: 'Formation',
+            courseTitle: 'Titre du cours',
+            description: 'Description',
+            content: 'Contenu du cours',
+            pdf: 'Document PDF',
+            currentPdf: 'PDF actuel',
+            openPdf: 'Ouvrir le PDF',
+            noPdf: 'Aucun PDF enregistré.',
+            keepPdf: 'Laissez vide pour conserver le PDF actuel.',
+            video1: 'Première vidéo du cours',
+            currentVideo1: 'Première vidéo actuelle',
+            noVideo1: 'Aucune première vidéo enregistrée.',
+            keepVideo1: 'Laissez vide pour conserver la première vidéo actuelle.',
+            preview1: 'Aperçu de la nouvelle vidéo',
+            video2: 'Deuxième vidéo du cours',
+            uploadTitle: 'Ajouter une deuxième vidéo',
+            formats: 'Formats acceptés : MP4, WebM, MOV, M4V',
+            maxSize: 'Taille maximale : 100 MB',
+            currentVideo2: 'Deuxième vidéo actuelle',
+            noVideo2: 'Aucune deuxième vidéo enregistrée.',
+            chooseVideo: 'Choisir une deuxième vidéo',
+            noNewVideo: 'Aucune nouvelle vidéo sélectionnée',
+            keepVideo2: 'Laissez vide pour conserver la deuxième vidéo actuelle.',
+            preview2: 'Aperçu de la nouvelle deuxième vidéo',
+            videoUrl: 'Lien vidéo externe (facultatif)',
+            order: 'Ordre du cours',
+            save: 'Enregistrer les modifications',
+            cancel: 'Annuler',
+            deleteFile: 'Supprimer',
+            language: 'العربية',
+            selected: 'Fichier sélectionné : ',
+            invalidVideo: 'Veuillez sélectionner un fichier vidéo valide.',
+            invalidPdf: 'Veuillez sélectionner un fichier PDF valide.'
+        },
+
+        ar: {
+            dashboard: 'العودة إلى لوحة التحكم',
+            title: 'تعديل الدرس',
+            subtitle: 'عدّلي محتوى الدرس أو ملف PDF أو الفيديوهات.',
+            errorTitle: 'يرجى تصحيح الأخطاء التالية:',
+            formation: 'التكوين',
+            courseTitle: 'عنوان الدرس',
+            description: 'الوصف',
+            content: 'محتوى الدرس',
+            pdf: 'ملف PDF',
+            currentPdf: 'ملف PDF الحالي',
+            openPdf: 'فتح ملف PDF',
+            noPdf: 'لا يوجد ملف PDF محفوظ.',
+            keepPdf: 'اتركي الخانة فارغة للاحتفاظ بملف PDF الحالي.',
+            video1: 'الفيديو الأول للدرس',
+            currentVideo1: 'الفيديو الأول الحالي',
+            noVideo1: 'لا يوجد فيديو أول محفوظ.',
+            keepVideo1: 'اتركي الخانة فارغة للاحتفاظ بالفيديو الأول الحالي.',
+            preview1: 'معاينة الفيديو الجديد',
+            video2: 'الفيديو الثاني للدرس',
+            uploadTitle: 'إضافة فيديو ثانٍ',
+            formats: 'الصيغ المقبولة: MP4 وWebM وMOV وM4V',
+            maxSize: 'الحجم الأقصى: 100 ميغابايت',
+            currentVideo2: 'الفيديو الثاني الحالي',
+            noVideo2: 'لا يوجد فيديو ثانٍ محفوظ.',
+            chooseVideo: 'اختيار فيديو ثانٍ',
+            noNewVideo: 'لم يتم اختيار فيديو جديد',
+            keepVideo2: 'اتركي الخانة فارغة للاحتفاظ بالفيديو الثاني الحالي.',
+            preview2: 'معاينة الفيديو الثاني الجديد',
+            videoUrl: 'رابط فيديو خارجي (اختياري)',
+            order: 'ترتيب الدرس',
+            save: 'حفظ التعديلات',
+            cancel: 'إلغاء',
+            deleteFile: 'حذف',
+            language: 'Français',
+            selected: 'الملف المختار: ',
+            invalidVideo: 'يرجى اختيار ملف فيديو صالح.',
+            invalidPdf: 'يرجى اختيار ملف PDF صالح.'
+        }
+    };
+
+    let currentLanguage = 'fr';
+
+    function toggleLanguage() {
+        currentLanguage = currentLanguage === 'fr' ? 'ar' : 'fr';
+        applyLanguage();
+    }
+
+    function applyLanguage() {
+        const t = translations[currentLanguage];
+
+        document.documentElement.lang = currentLanguage;
+        document.documentElement.dir = currentLanguage === 'ar' ? 'rtl' : 'ltr';
+
+        document.querySelectorAll('[data-i18n]').forEach(element => {
+            const key = element.dataset.i18n;
+
+            if (Object.prototype.hasOwnProperty.call(t, key)) {
+                element.textContent = t[key];
+            }
+        });
+
+        document.getElementById('language-button').textContent = t.language;
+        document.title = t.title + ' | ÉtudeEnLigne';
+    }
+
+    function deleteMedia(button) {
+        const message = currentLanguage === 'ar'
+            ? 'واش متأكدة بغيتي تحذفي هاد الملف فقط؟ الدرس غادي يبقى موجود.'
+            : 'Voulez-vous vraiment supprimer uniquement ce fichier ? Le cours sera conservé.';
+
+        if (!confirm(message)) {
+            return;
+        }
+
+        const form = document.getElementById('delete-media-form');
+        form.action = button.dataset.deleteUrl;
+        form.requestSubmit();
+    }
+
+    function setupVideoPreview(inputId, previewId, containerId, nameId) {
+        const input = document.getElementById(inputId);
+        const preview = document.getElementById(previewId);
+        const container = document.getElementById(containerId);
+        const name = document.getElementById(nameId);
+
+        let currentUrl = null;
+
+        input.addEventListener('change', function () {
+            if (currentUrl) {
+                URL.revokeObjectURL(currentUrl);
+                currentUrl = null;
+            }
+
+            if (!this.files || !this.files.length) {
+                container.classList.add('hidden');
+                name.textContent = '';
+
+                if (inputId === 'video2') {
+                    name.textContent = translations[currentLanguage].noNewVideo;
+                }
+
+                preview.removeAttribute('src');
+                preview.load();
+                return;
+            }
+
+            const file = this.files[0];
+
+            if (!file.type.startsWith('video/')) {
+                this.value = '';
+                container.classList.add('hidden');
+                name.textContent = translations[currentLanguage].invalidVideo;
+                return;
+            }
+
+            name.textContent = translations[currentLanguage].selected + file.name;
+            currentUrl = URL.createObjectURL(file);
+            preview.src = currentUrl;
+            container.classList.remove('hidden');
+        });
+    }
+
+    setupVideoPreview(
+        'video',
+        'video1-preview',
+        'video1-preview-container',
+        'video1-name'
+    );
+
+    setupVideoPreview(
+        'video2',
+        'video2-preview',
+        'video2-preview-container',
+        'video2-name'
+    );
+
+    document.getElementById('file').addEventListener('change', function () {
+        if (this.files.length) {
+            const file = this.files[0];
+            const validPdf = file.type === 'application/pdf' ||
+                             file.name.toLowerCase().endsWith('.pdf');
+
+            if (!validPdf) {
+                this.value = '';
+                alert(translations[currentLanguage].invalidPdf);
+            }
+        }
+    });
+
+    applyLanguage();
+</script>
+
+</body>
+</html>
