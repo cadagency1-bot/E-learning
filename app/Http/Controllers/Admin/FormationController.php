@@ -7,7 +7,8 @@ use App\Models\Formation;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
-
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 class FormationController extends Controller
 {
     /**
@@ -31,7 +32,8 @@ class FormationController extends Controller
     /**
      * Enregistrer une nouvelle formation
      */
-    public function store(Request $request)
+    
+public function store(Request $request)
 {
     $validated = $request->validate([
         'name' => ['required', 'string', 'max:255'],
@@ -43,35 +45,38 @@ class FormationController extends Controller
         'courses.*.description' => ['nullable', 'string'],
         'courses.*.content' => ['nullable', 'string'],
         'courses.*.pdf' => ['nullable', 'file', 'mimes:pdf', 'max:10240'],
+        'courses.*.video' => ['nullable', 'file', 'mimes:mp4,mov,webm,m4v', 'max:102400'],
+        'courses.*.video2' => ['nullable', 'file', 'mimes:mp4,mov,webm,m4v', 'max:102400'],
     ]);
 
     $uploadedFiles = [];
 
     try {
         DB::transaction(function () use ($request, $validated, &$uploadedFiles) {
-
-            // 1. Création de la formation
             $formation = Formation::create([
                 'name' => $validated['name'],
                 'category' => $validated['category'],
                 'description' => $validated['description'] ?? null,
             ]);
 
-            // 2. Création des cours liés à cette formation
             foreach ($request->input('courses', []) as $index => $courseData) {
-
                 $title = trim($courseData['title'] ?? '');
                 $description = trim($courseData['description'] ?? '');
                 $content = trim($courseData['content'] ?? '');
 
                 $pdf = $request->file("courses.$index.pdf");
+                $video = $request->file("courses.$index.video");
+                $video2 = $request->file("courses.$index.video2");
 
-                // Ignorer les lignes de cours laissées entièrement vides
-                if ($title === '' && $description === '' && $content === '' && !$pdf) {
+                if (
+                    $title === '' &&
+                    $description === '' &&
+                    $content === '' &&
+                    !$pdf && !$video && !$video2
+                ) {
                     continue;
                 }
 
-                // Un cours renseigné doit avoir un titre
                 if ($title === '') {
                     throw \Illuminate\Validation\ValidationException::withMessages([
                         "courses.$index.title" => 'Veuillez donner un titre à chaque cours renseigné.',
@@ -79,10 +84,22 @@ class FormationController extends Controller
                 }
 
                 $filePath = null;
+                $videoPath = null;
+                $video2Path = null;
 
                 if ($pdf) {
                     $filePath = $pdf->store('cours', 'public');
                     $uploadedFiles[] = $filePath;
+                }
+
+                if ($video) {
+                    $videoPath = $video->store('cours/videos', 'public');
+                    $uploadedFiles[] = $videoPath;
+                }
+
+                if ($video2) {
+                    $video2Path = $video2->store('cours/videos', 'public');
+                    $uploadedFiles[] = $video2Path;
                 }
 
                 $formation->cours()->create([
@@ -90,12 +107,13 @@ class FormationController extends Controller
                     'description' => $description !== '' ? $description : null,
                     'content' => $content !== '' ? $content : null,
                     'file_path' => $filePath,
+                    'video_path' => $videoPath,
+                    'video2_path' => $video2Path,
                     'order' => $index + 1,
                 ]);
             }
         });
     } catch (\Throwable $e) {
-        // Nettoyer les fichiers enregistrés si la transaction échoue
         foreach ($uploadedFiles as $file) {
             Storage::disk('public')->delete($file);
         }
@@ -107,9 +125,9 @@ class FormationController extends Controller
         ->route('admin.formations.index')
         ->with('success', 'La formation et ses cours ont été ajoutés avec succès.');
 }
-    /**
-     * Afficher une formation
-     */
+
+    
+    
     public function show(Formation $formation): View
     {
         return view('admin.formations.show', compact('formation'));

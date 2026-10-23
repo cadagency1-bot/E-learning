@@ -1,9 +1,9 @@
-
 <!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>Mon profil | ÉtudeEnLigne</title>
 
@@ -97,21 +97,68 @@
             transform: translateY(-1px);
         }
 
+        #photoSubmitButton:disabled {
+            cursor: not-allowed;
+            opacity: .5;
+        }
+
         @media (max-width: 640px) {
             .profile-card { border-radius: 17px; }
         }
     </style>
+
+    <script>
+        /**
+         * Si une image ne peut pas être chargée, on la masque
+         * et on affiche la première lettre du nom (élément suivant).
+         */
+        function showInitialFallback(img) {
+            img.onerror = null;
+            img.classList.add('hidden');
+            img.classList.remove('block');
+
+            var fallback = img.nextElementSibling;
+            if (fallback) {
+                fallback.classList.remove('hidden');
+                fallback.classList.add('flex');
+            }
+        }
+    </script>
 </head>
 
 <body>
 
 @php
     $user = Auth::user();
-    $photoUrl = $user->profile_photo_path
-        ? asset('storage/' . $user->profile_photo_path)
-        : null;
 
-    $initial = strtoupper(substr($user->name ?? 'E', 0, 1));
+    // Chemin enregistré dans la table users (colonne profile_photo_path).
+    $photoPath = $user->profile_photo_path;
+
+    // URL construite avec le disque Laravel "public".
+    // On vérifie aussi que le fichier existe réellement sur le serveur.
+    $photoUrl = null;
+
+    if ($photoPath && \Illuminate\Support\Facades\Storage::disk('public')->exists($photoPath)) {
+        $photoUrl = \Illuminate\Support\Facades\Storage::disk('public')->url($photoPath)
+            . '?v=' . (optional($user->updated_at)->timestamp ?? time());
+    }
+
+    $initial = mb_strtoupper(mb_substr(trim($user->name ?? 'E'), 0, 1)) ?: 'E';
+
+    // Messages de succès en français.
+    $statusKey = session('status');
+
+    $statusMessage = match ($statusKey) {
+        'photo-updated'          => 'Votre photo de profil a été enregistrée avec succès.',
+        'photo-deleted'          => 'Votre photo de profil a été supprimée.',
+        'profile-updated'        => 'Vos informations personnelles ont été enregistrées.',
+        'password-updated'       => 'Votre mot de passe a été modifié avec succès.',
+        'verification-link-sent' => 'Un nouveau lien de vérification a été envoyé à votre adresse e-mail.',
+        default                  => $statusKey,
+    };
+
+    // Erreurs générales (les erreurs de la photo sont affichées sous le formulaire d'upload).
+    $globalErrors = collect($errors->getMessages())->except('profile_photo')->flatten();
 @endphp
 
 <!-- NAVBAR -->
@@ -147,7 +194,13 @@
 
         <a href="{{ route('profile.edit') }}" class="flex shrink-0 items-center gap-3 rounded-full border border-gray-100 bg-gray-50 p-1.5 pr-3 transition hover:bg-emerald-50">
             @if($photoUrl)
-                <img src="{{ $photoUrl }}" alt="Photo de profil" class="h-9 w-9 rounded-full object-cover">
+                <img src="{{ $photoUrl }}"
+                     alt="Photo de profil"
+                     class="h-9 w-9 rounded-full object-cover"
+                     onerror="showInitialFallback(this)">
+                <span class="hidden h-9 w-9 items-center justify-center rounded-full bg-emerald-100 text-sm font-extrabold text-emerald-700">
+                    {{ $initial }}
+                </span>
             @else
                 <span class="flex h-9 w-9 items-center justify-center rounded-full bg-emerald-100 text-sm font-extrabold text-emerald-700">
                     {{ $initial }}
@@ -209,27 +262,27 @@
     </section>
 
     <!-- SUCCESS MESSAGE -->
-    @if(session('status'))
+    @if($statusMessage)
         <div class="mb-6 flex items-start gap-3 rounded-2xl border border-emerald-200 bg-emerald-50 p-4 text-emerald-800">
             <div class="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-emerald-100">
                 <i data-lucide="check-circle-2" class="h-5 w-5"></i>
             </div>
             <div>
                 <p class="font-bold">Opération réussie</p>
-                <p class="mt-1 text-sm">{{ session('status') }}</p>
+                <p class="mt-1 text-sm">{{ $statusMessage }}</p>
             </div>
         </div>
     @endif
 
     <!-- VALIDATION ERRORS -->
-    @if($errors->any())
+    @if($globalErrors->isNotEmpty())
         <div class="mb-6 rounded-2xl border border-red-200 bg-red-50 p-4 text-sm text-red-700">
             <div class="mb-2 flex items-center gap-2 font-bold">
                 <i data-lucide="alert-circle" class="h-5 w-5"></i>
                 Vérifiez les informations saisies
             </div>
             <ul class="list-inside list-disc space-y-1">
-                @foreach($errors->all() as $error)
+                @foreach($globalErrors as $error)
                     <li>{{ $error }}</li>
                 @endforeach
             </ul>
@@ -247,11 +300,14 @@
                 <div class="px-5 pb-6">
                     <div class="-mt-12 mb-4 flex items-end justify-between">
                         <div class="avatar-ring flex h-24 w-24 items-center justify-center overflow-hidden rounded-full bg-emerald-100">
+                            {{-- Photo enregistrée sur le serveur (ou aperçu avant envoi) --}}
                             <img id="profilePhotoPreview"
-                                 src="{{ $photoUrl ?? '' }}"
+                                 @if($photoUrl) src="{{ $photoUrl }}" @endif
                                  alt="Photo de profil"
-                                 class="{{ $photoUrl ? 'block' : 'hidden' }} h-full w-full object-cover">
+                                 class="{{ $photoUrl ? 'block' : 'hidden' }} h-full w-full object-cover"
+                                 onerror="showInitialFallback(this)">
 
+                            {{-- Première lettre du nom (affichée si aucune photo ou image cassée) --}}
                             <span id="profilePhotoInitial"
                                   class="{{ $photoUrl ? 'hidden' : 'flex' }} h-full w-full items-center justify-center text-3xl font-extrabold text-emerald-700">
                                 {{ $initial }}
@@ -263,6 +319,11 @@
                             Compte actif
                         </span>
                     </div>
+
+                    <p id="previewNotice"
+                       class="mb-3 hidden rounded-xl border border-amber-200 bg-amber-50 px-3 py-2 text-xs font-semibold text-amber-700">
+                        Aperçu uniquement : cliquez sur « Enregistrer la photo » pour la sauvegarder.
+                    </p>
 
                     <h3 class="break-words text-xl font-extrabold text-gray-900">
                         {{ $user->name }}
@@ -315,28 +376,33 @@
                         <span class="text-sm font-extrabold text-gray-800">Choisir une image</span>
                         <span class="mt-2 text-xs text-gray-500">JPG, PNG ou WEBP · 2 Mo maximum</span>
 
+                        {{-- Pas d'attribut "required" : un champ caché + required bloque l'envoi sans message.
+                             La vérification est faite en JavaScript ET côté serveur. --}}
                         <input id="profile_photo"
                                name="profile_photo"
                                type="file"
-                               accept="image/jpeg,image/png,image/webp"
-                               class="hidden"
-                               required>
+                               accept="image/jpeg,image/png,image/webp,.jpg,.jpeg,.png,.webp"
+                               class="hidden">
                     </label>
 
                     <p id="selectedPhotoName" class="mt-3 hidden break-all text-xs font-semibold text-emerald-700"></p>
 
+                    <p id="clientPhotoError" class="mt-2 hidden text-sm font-semibold text-red-600"></p>
+
                     @error('profile_photo')
-                        <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+                        <p class="mt-2 text-sm font-semibold text-red-600">{{ $message }}</p>
                     @enderror
 
                     <button type="submit"
+                            id="photoSubmitButton"
+                            disabled
                             class="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-emerald-600 px-4 py-3 text-sm font-bold text-white transition hover:bg-emerald-700">
                         <i data-lucide="upload" class="h-4 w-4"></i>
-                        Enregistrer la photo
+                        <span id="photoSubmitLabel">Enregistrer la photo</span>
                     </button>
                 </form>
 
-                @if($photoUrl)
+                @if($photoPath)
                     <form action="{{ route('profile.photo.destroy') }}" method="POST" class="mt-3"
                           onsubmit="return confirm('Voulez-vous vraiment supprimer votre photo de profil ?');">
                         @csrf
@@ -351,8 +417,18 @@
                 @endif
 
                 <p class="mt-4 text-xs leading-6 text-gray-400">
-                    Votre photo sera affichée sur votre espace personnel après son enregistrement.
+                    Votre photo sera enregistrée sur le serveur et affichée dans votre espace personnel après validation.
                 </p>
+
+                {{-- DIAGNOSTIC TEMPORAIRE : à supprimer quand la photo s'affiche --}}
+                <div class="mt-3 break-all rounded-lg bg-yellow-50 p-3 text-xs text-gray-700">
+                    path : {{ $user->profile_photo_path ?? 'NULL' }}<br>
+                    exists : {{ $user->profile_photo_path && \Illuminate\Support\Facades\Storage::disk('public')->exists($user->profile_photo_path) ? 'OUI' : 'NON' }}<br>
+                    url : {{ $user->profile_photo_path ? \Illuminate\Support\Facades\Storage::disk('public')->url($user->profile_photo_path) : '-' }}<br>
+                    @if($user->profile_photo_path)
+                        <a href="{{ \Illuminate\Support\Facades\Storage::disk('public')->url($user->profile_photo_path) }}" target="_blank" class="font-bold text-emerald-700 underline">Tester l'URL</a>
+                    @endif
+                </div>
             </section>
 
         </aside>
@@ -429,35 +505,88 @@
 </main>
 
 <script>
-    lucide.createIcons();
+    if (window.lucide) {
+        lucide.createIcons();
+    }
 
-    const photoInput = document.getElementById('profile_photo');
-    const photoPreview = document.getElementById('profilePhotoPreview');
-    const photoInitial = document.getElementById('profilePhotoInitial');
-    const photoName = document.getElementById('selectedPhotoName');
-    const photoForm = document.getElementById('photoUploadForm');
+    const photoInput    = document.getElementById('profile_photo');
+    const photoPreview  = document.getElementById('profilePhotoPreview');
+    const photoInitial  = document.getElementById('profilePhotoInitial');
+    const photoName     = document.getElementById('selectedPhotoName');
+    const photoForm     = document.getElementById('photoUploadForm');
+    const photoButton   = document.getElementById('photoSubmitButton');
+    const photoLabel    = document.getElementById('photoSubmitLabel');
+    const photoError    = document.getElementById('clientPhotoError');
+    const previewNotice = document.getElementById('previewNotice');
+
+    // Photo actuellement enregistrée sur le serveur (pour restaurer si le choix est annulé).
+    const savedPhotoSrc = @json($photoUrl);
 
     let previewUrl = null;
 
+    function showClientError(message) {
+        photoError.textContent = message;
+        photoError.classList.remove('hidden');
+    }
+
+    function clearClientError() {
+        photoError.textContent = '';
+        photoError.classList.add('hidden');
+    }
+
+    function resetPreview() {
+        if (previewUrl) {
+            URL.revokeObjectURL(previewUrl);
+            previewUrl = null;
+        }
+
+        photoName.classList.add('hidden');
+        photoName.textContent = '';
+        previewNotice.classList.add('hidden');
+        photoButton.disabled = true;
+
+        if (savedPhotoSrc) {
+            photoPreview.src = savedPhotoSrc;
+            photoPreview.classList.remove('hidden');
+            photoPreview.classList.add('block');
+            photoInitial.classList.add('hidden');
+            photoInitial.classList.remove('flex');
+        } else {
+            photoPreview.removeAttribute('src');
+            photoPreview.classList.add('hidden');
+            photoPreview.classList.remove('block');
+            photoInitial.classList.remove('hidden');
+            photoInitial.classList.add('flex');
+        }
+    }
+
+    // Aperçu immédiat (ce n'est PAS un enregistrement : la sauvegarde se fait côté serveur à l'envoi du formulaire).
     photoInput.addEventListener('change', function () {
+        clearClientError();
+
         const file = this.files[0];
 
         if (!file) {
+            resetPreview();
             return;
         }
 
         const allowedTypes = ['image/jpeg', 'image/png', 'image/webp'];
+        const allowedExtensions = ['jpg', 'jpeg', 'png', 'webp'];
+        const extension = file.name.split('.').pop().toLowerCase();
         const maxSize = 2 * 1024 * 1024;
 
-        if (!allowedTypes.includes(file.type)) {
-            alert('Choisissez une image JPG, PNG ou WEBP.');
+        if (!allowedTypes.includes(file.type) || !allowedExtensions.includes(extension)) {
+            showClientError('Choisissez une image au format JPG, JPEG, PNG ou WEBP.');
             this.value = '';
+            resetPreview();
             return;
         }
 
         if (file.size > maxSize) {
-            alert('La taille de l’image ne doit pas dépasser 2 Mo.');
+            showClientError('La taille de l’image ne doit pas dépasser 2 Mo.');
             this.value = '';
+            resetPreview();
             return;
         }
 
@@ -466,18 +595,34 @@
         }
 
         previewUrl = URL.createObjectURL(file);
+
         photoPreview.src = previewUrl;
         photoPreview.classList.remove('hidden');
         photoPreview.classList.add('block');
         photoInitial.classList.add('hidden');
+        photoInitial.classList.remove('flex');
+
         photoName.textContent = file.name;
         photoName.classList.remove('hidden');
+        previewNotice.classList.remove('hidden');
+        photoButton.disabled = false;
     });
 
     photoForm.addEventListener('submit', function (event) {
         if (!photoInput.files.length) {
             event.preventDefault();
-            alert('Veuillez choisir une photo avant de continuer.');
+            showClientError('Veuillez choisir une photo avant de continuer.');
+            return;
+        }
+
+        photoButton.disabled = true;
+        photoLabel.textContent = 'Enregistrement en cours...';
+    });
+
+    // Si une image du serveur a échoué avant le chargement du script, on affiche la lettre.
+    document.querySelectorAll('img[alt="Photo de profil"]').forEach(function (img) {
+        if (img.getAttribute('src') && img.complete && img.naturalWidth === 0) {
+            showInitialFallback(img);
         }
     });
 </script>

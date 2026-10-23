@@ -1,652 +1,429 @@
 <!DOCTYPE html>
 <html lang="fr" dir="ltr" data-lang="fr">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mon espace étudiant - ÉtudeEnLigne</title>
-
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/lucide@0.462.0/dist/umd/lucide.min.js"></script>
-
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
-
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: { sans: ['Plus Jakarta Sans', 'IBM Plex Sans Arabic', 'sans-serif'] }
-                }
-            }
-        };
-    </script>
-
-    <style>
-        * { box-sizing: border-box; }
-        html { scroll-behavior: smooth; scroll-padding-top: 150px; }
-
-        body {
-            margin: 0;
-            font-family: 'Plus Jakarta Sans', 'IBM Plex Sans Arabic', sans-serif;
-            background: linear-gradient(180deg, #f0fdf7 0%, #f8fffb 45%, #ffffff 100%);
-            background-attachment: fixed;
-            color: #1f3d33;
-            -webkit-font-smoothing: antialiased;
-        }
-        html[dir="rtl"] body { font-family: 'IBM Plex Sans Arabic', 'Plus Jakarta Sans', sans-serif; line-height: 1.9; }
-
-        :focus-visible { outline: 2px solid #34d399; outline-offset: 2px; }
-
-        /* Bascule de langue : un seul texte visible à la fois */
-        html[data-lang="fr"] .t-ar { display: none !important; }
-        html[data-lang="ar"] .t-fr { display: none !important; }
-
-        html[dir="rtl"] .flip { transform: scaleX(-1); }
-
-        .card {
-            background: #fff;
-            border: 1px solid #d9f2e6;
-            border-radius: 22px;
-            box-shadow: 0 6px 24px rgba(52, 211, 153, .10);
-        }
-
-        .menu-link {
-            display: inline-flex; align-items: center; gap: 8px;
-            padding: 9px 16px; border-radius: 999px;
-            color: #4b6b5d; font-size: 14px; font-weight: 700; white-space: nowrap;
-            transition: background .15s, color .15s;
-        }
-        .menu-link:hover, .menu-link.active { background: #d1fae5; color: #047857; }
-
-        .formation-card {
-            background: #fff;
-            border: 1px solid #d9f2e6;
-            border-radius: 22px;
-            overflow: hidden;
-            box-shadow: 0 6px 24px rgba(52, 211, 153, .10);
-            transition: transform .2s ease, box-shadow .2s ease;
-        }
-        .formation-card:hover { transform: translateY(-4px); box-shadow: 0 16px 36px rgba(52, 211, 153, .22); }
-
-        .formation-image { height: 176px; width: 100%; object-fit: cover; display: block; }
-
-        .btn-start {
-            display: flex; width: 100%; align-items: center; justify-content: center; gap: 8px;
-            padding: 13px 16px; border-radius: 14px;
-            background: #34d399; color: #fff; font-size: 14px; font-weight: 800;
-            text-decoration: none; box-shadow: 0 8px 18px rgba(52, 211, 153, .35);
-            transition: background .15s, transform .15s;
-        }
-        .btn-start:hover { background: #10b981; transform: translateY(-1px); }
-
-        .btn-soft {
-            display: flex; width: 100%; align-items: center; justify-content: center; gap: 8px;
-            padding: 12px 16px; border-radius: 14px;
-            background: #d1fae5; color: #047857; font-size: 14px; font-weight: 800;
-            transition: background .15s;
-        }
-        .btn-soft:hover { background: #a7f3d0; }
-
-        .lang-btn { padding: 6px 12px; border-radius: 9px; font-size: 12px; font-weight: 800; color: #047857; }
-        .lang-btn.on { background: #34d399; color: #fff; }
-
-        @media (max-width: 640px) {
-            .formation-image { height: 160px; }
-            .menu-link { padding: 8px 12px; font-size: 13px; }
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mon espace étudiant - ÉtudeEnLigne</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://unpkg.com/lucide@0.462.0/dist/umd/lucide.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,600&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script>
+tailwind.config={theme:{extend:{fontFamily:{sans:['Plus Jakarta Sans','IBM Plex Sans Arabic','sans-serif']},colors:{fo:{50:'#eef6f1',100:'#d7ebdf',200:'#b0d6c0',400:'#3fa876',500:'#1f8a5b',600:'#17734c',700:'#0f5a3c',800:'#0b4630',900:'#073323',950:'#052619'}}}}};
+</script>
+<style>
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:84px}
+body{margin:0;font-family:'Plus Jakarta Sans','IBM Plex Sans Arabic',sans-serif;background:#fff;color:#14281f;-webkit-font-smoothing:antialiased;line-height:1.6}
+html[dir=rtl] body{font-family:'IBM Plex Sans Arabic','Plus Jakarta Sans',sans-serif;line-height:1.8}
+:focus-visible{outline:3px solid #1f8a5b;outline-offset:2px;border-radius:8px}
+html[data-lang=fr] .t-ar{display:none!important}
+html[data-lang=ar] .t-fr{display:none!important}
+html[dir=rtl] .flip{transform:scaleX(-1)}
+.nl{padding:6px 2px;font-size:13px;font-weight:600;color:#3d5a4d;white-space:nowrap;border-bottom:2px solid transparent}
+.nl:hover,.nl.on{color:#0f5a3c;border-color:#1f8a5b}
+.lb{padding:4px 10px;border-radius:8px;font-size:12px;font-weight:700;color:#3d5a4d}
+.lb.on{background:#0f5a3c;color:#fff}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:10px 18px;border-radius:8px;font-size:13px;font-weight:700;transition:background .15s,color .15s;cursor:pointer}
+.bp{background:#1f8a5b;color:#fff}.bp:hover{background:#17734c}
+.bg{background:rgba(255,255,255,.08);color:#fff;border:1px solid rgba(255,255,255,.4)}.bg:hover{background:rgba(255,255,255,.18)}
+.bd{background:#0b4630;color:#fff}.bd:hover{background:#1f8a5b}
+.bs{background:#eef6f1;color:#0f5a3c;border:1px solid #b0d6c0}.bs:hover{background:#d7ebdf}
+.bw{background:#fff;color:#0b4630}.bw:hover{background:#d7ebdf}
+.bb{width:100%}
+.card{background:#fff;border:1px solid #e3ece7;border-radius:14px;box-shadow:0 2px 12px rgba(11,70,48,.06)}
+.hero{background:linear-gradient(90deg,rgba(5,38,25,.95) 0%,rgba(7,51,35,.78) 48%,rgba(7,51,35,.1) 100%),url('https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=1800&q=80') center/cover}
+html[dir=rtl] .hero{background:linear-gradient(270deg,rgba(5,38,25,.95) 0%,rgba(7,51,35,.78) 48%,rgba(7,51,35,.1) 100%),url('https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=1800&q=80') center/cover}
+.script{font-style:italic;font-weight:600;color:#4ade80}
+.ib{display:flex;align-items:center;justify-content:center;width:38px;height:38px;flex-shrink:0;border-radius:10px;background:#eef6f1;color:#17734c}
+.ibw{background:#fff;box-shadow:0 4px 12px rgba(0,0,0,.18)}
+.pc{transition:box-shadow .2s,border-color .2s}
+.pc:hover{box-shadow:0 14px 30px rgba(11,70,48,.15);border-color:#86c9a3}
+.pc img{transition:transform .5s}.pc:hover img{transform:scale(1.05)}
+.fb{padding:7px 16px;border-radius:8px;font-size:12.5px;font-weight:700;color:#3d5a4d;background:#fff;border:1px solid #dbe8e0}
+.fb.on{background:#0f5a3c;color:#fff;border-color:#0f5a3c}
+.tile{transition:background .15s,transform .15s}.tile:hover{background:#d7ebdf;transform:translateY(-2px)}
+.eb{display:flex;align-items:center;gap:8px;font-size:11px;font-weight:700;color:#1f8a5b;margin-bottom:8px}
+.eb::before{content:"";width:20px;height:2px;background:currentColor}.eb.l{color:#4ade80}
+.glass{background:rgba(255,255,255,.12);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.25);border-radius:16px}
+.impact{background:linear-gradient(rgba(5,38,25,.9),rgba(5,38,25,.86)),url('https://images.unsplash.com/photo-1541339907198-e08756dedf3f?auto=format&fit=crop&w=1600&q=70') center/cover}
+.cta{background:linear-gradient(90deg,rgba(7,51,35,.95),rgba(15,90,60,.8)),url('https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=1600&q=70') center/cover}
+.ring-i{display:flex;align-items:center;justify-content:center;width:46px;height:46px;border-radius:12px;border:1px solid rgba(255,255,255,.3);background:rgba(255,255,255,.08);color:#86efac}
+.tip{transition:box-shadow .2s,transform .2s}.tip:hover{box-shadow:0 14px 30px rgba(11,70,48,.14);transform:translateY(-3px)}
+.ns{scrollbar-width:none}.ns::-webkit-scrollbar{display:none}
+@@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.pc,.pc img,.tile,.tip{transition:none}}
+</style>
 </head>
-
 <body>
-
 @php
-    $student = auth()->user();
+$student=auth()->user();
+$certs = $student->certificates()
+    ->whereIn('status', ['active', 'approved'])
+    ->get()
+    ->keyBy('formation_id');
+$certOf = function ($id) use ($certs) {
+    $certificate = $certs->get($id);
 
-    $getFormationImage = function ($formation) {
-        $text = \Illuminate\Support\Str::ascii(
-            strtolower(($formation->category ?? '') . ' ' . ($formation->name ?? ''))
-        );
+    if (!$certificate) {
+        return 'none';
+    }
 
-        if (str_contains($text, 'medical') || str_contains($text, 'sante') ||
-            str_contains($text, 'aide medicale') || str_contains($text, 'diabete') ||
-            str_contains($text, 'soin') || str_contains($text, 'patient') ||
-            str_contains($text, 'personne agee')) {
-            return 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=1200&q=85';
-        }
+    $status = $certificate->status ?? 'none';
 
-        if (str_contains($text, 'hotel') || str_contains($text, 'restauration') ||
-            str_contains($text, 'cuisine') || str_contains($text, 'restaurant') ||
-            str_contains($text, 'hospitality')) {
-            return 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=1200&q=85';
-        }
+    if (in_array($status, ['active', 'approved'], true)) {
+        return 'active';
+    }
 
-        if (str_contains($text, 'programmation') || str_contains($text, 'informatique') ||
-            str_contains($text, 'developpement') || str_contains($text, 'web') ||
-            str_contains($text, 'design') || str_contains($text, 'digital') ||
-            str_contains($text, 'reseau')) {
-            return 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=1200&q=85';
-        }
-
-        if (str_contains($text, 'secretariat') || str_contains($text, 'commerce') ||
-            str_contains($text, 'bureautique') || str_contains($text, 'gestion') ||
-            str_contains($text, 'entreprise') || str_contains($text, 'administrative')) {
-            return 'https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=1200&q=85';
-        }
-
-        if (str_contains($text, 'construction') || str_contains($text, 'batiment') ||
-            str_contains($text, 'mecanique') || str_contains($text, 'menuiserie') ||
-            str_contains($text, 'artisanat') || str_contains($text, 'platre') ||
-            str_contains($text, 'electricite')) {
-            return 'https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&w=1200&q=85';
-        }
-
-        if (str_contains($text, 'ingenierie') || str_contains($text, 'ingenieur') ||
-            str_contains($text, 'industriel')) {
-            return 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=1200&q=85';
-        }
-
-        return 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1200&q=85';
-    };
-
-    $getFormationColor = function ($formation) {
-        $text = \Illuminate\Support\Str::ascii(
-            strtolower(($formation->category ?? '') . ' ' . ($formation->name ?? ''))
-        );
-
-        if (str_contains($text, 'medical') || str_contains($text, 'sante')) {
-            return ['bg'=>'bg-rose-50','text'=>'text-rose-600','border'=>'border-rose-100','icon'=>'heart-pulse'];
-        }
-
-        if (str_contains($text, 'hotel') || str_contains($text, 'restauration')) {
-            return ['bg'=>'bg-orange-50','text'=>'text-orange-600','border'=>'border-orange-100','icon'=>'utensils'];
-        }
-
-        if (str_contains($text, 'programmation') || str_contains($text, 'informatique') ||
-            str_contains($text, 'web') || str_contains($text, 'digital')) {
-            return ['bg'=>'bg-blue-50','text'=>'text-blue-600','border'=>'border-blue-100','icon'=>'laptop'];
-        }
-
-        if (str_contains($text, 'commerce') || str_contains($text, 'secretariat')) {
-            return ['bg'=>'bg-purple-50','text'=>'text-purple-600','border'=>'border-purple-100','icon'=>'briefcase-business'];
-        }
-
-        return ['bg'=>'bg-emerald-50','text'=>'text-emerald-600','border'=>'border-emerald-100','icon'=>'graduation-cap'];
-    };
-
-    // Charger les statuts de demande pour cet étudiant
-    $studentFormationStatuses = $student->formations()
-        ->get()
-        ->keyBy('id');
-
-    $totalFormations = isset($allFormations) ? $allFormations->count() : 0;
-    $activeFormations = $studentFormationStatuses
-        ->filter(fn ($f) => ($f->pivot->status ?? '') === 'active')
-        ->count();
-    $pendingFormations = $studentFormationStatuses
-        ->filter(fn ($f) => ($f->pivot->status ?? '') === 'pending')
-        ->count();
+    return $status;
+};
+$txt=fn($f)=>\Illuminate\Support\Str::ascii(strtolower(($f->category??'').' '.($f->name??'')));
+$has=fn($t,$words)=>collect($words)->contains(fn($w)=>str_contains($t,$w));
+$img=function($f)use($txt,$has){$t=$txt($f);
+ if($has($t,['medical','sante','soin','patient','diabete','personne agee']))return 'photo-1576091160399-112ba8d25d1d';
+ if($has($t,['hotel','restauration','cuisine','restaurant']))return 'photo-1555396273-367ea4eb4db5';
+ if($has($t,['programmation','informatique','developpement','web','design','digital','reseau']))return 'photo-1498050108023-c5249f4df085';
+ if($has($t,['secretariat','commerce','bureautique','gestion','entreprise','administrative']))return 'photo-1497366754035-f200968a6e72';
+ if($has($t,['construction','batiment','mecanique','menuiserie','artisanat','platre','electricite']))return 'photo-1504307651254-35680f356dfd';
+ if($has($t,['ingenierie','ingenieur','industriel']))return 'photo-1581091226825-a6a2a5aee158';
+ return 'photo-1516321318423-f06f85e504b3';};
+$icon=function($f)use($txt,$has){$t=$txt($f);
+ if($has($t,['medical','sante']))return 'heart-pulse';
+ if($has($t,['hotel','restauration']))return 'utensils';
+ if($has($t,['programmation','informatique','web','digital']))return 'laptop';
+ if($has($t,['commerce','secretariat']))return 'briefcase-business';
+ return 'graduation-cap';};
+$sfs=$student->formations()->get()->keyBy('id');
+$total=isset($allFormations)?$allFormations->count():0;
+$nActive=$sfs->filter(fn($f)=>($f->pivot->status??'')==='active')->count();
+$nPending=$sfs->filter(fn($f)=>($f->pivot->status??'')==='pending')->count();
+$nCerts = $certs->filter(function ($c) {
+    return in_array($c->status ?? '', ['active', 'approved'])
+        && !empty($c->file_path);
+})->count();
+$activeList=isset($allFormations)?$allFormations->filter(fn($f)=>(($sfs->get($f->id)->pivot->status??'')==='active')):collect();
 @endphp
 
-<!-- HEADER -->
-<header class="sticky top-0 z-50 bg-white/90 backdrop-blur border-b border-emerald-100 shadow-sm">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
-        <div class="flex items-center justify-between gap-4 py-3">
-            <a href="{{ route('home') }}" class="flex items-center gap-3 min-w-0">
-                <div class="flex items-center justify-center w-11 h-11 rounded-xl bg-emerald-100 overflow-hidden flex-shrink-0">
-                    <img src="{{ asset('images/logo-centre.png') }}"
-                         alt="Logo du centre"
-                         class="w-full h-full object-contain"
-                         onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
-                    <i data-lucide="graduation-cap" class="w-6 h-6 text-emerald-600" style="display:none"></i>
-                </div>
 
-                <div class="min-w-0">
-                    <h1 class="text-lg font-extrabold text-emerald-700 leading-tight">ÉtudeEnLigne</h1>
-                    <p class="text-xs text-emerald-600/70">
-                        <span class="t-fr">Votre espace d'apprentissage</span>
-                        <span class="t-ar">فضاؤك للتعلم</span>
-                    </p>
-                </div>
-            </a>
 
-            <div class="flex items-center gap-3">
-                <div class="flex rounded-xl bg-emerald-50 p-1">
-                    <button type="button" id="lang-fr" class="lang-btn">FR</button>
-                    <button type="button" id="lang-ar" class="lang-btn">عربي</button>
-                </div>
 
-                <div class="hidden sm:block text-end">
-                    <p class="text-sm font-bold text-emerald-900">{{ $student->name }}</p>
-                    <p class="text-xs text-emerald-600/70">
-                        <span class="t-fr">Espace étudiant</span>
-                        <span class="t-ar">فضاء الطالب</span>
-                    </p>
-                </div>
+<header class="sticky top-0 z-50 bg-white/95 backdrop-blur border-b border-fo-100">
+ <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+  <div class="flex items-center justify-between gap-3 h-16">
+   <a href="{{ route('home') }}" class="flex items-center gap-2.5 min-w-0">
+    <span class="flex items-center justify-center w-9 h-9 rounded-lg bg-fo-700 text-white shrink-0"><i data-lucide="graduation-cap" class="w-5 h-5"></i></span>
+    <span class="leading-tight"><span class="block text-[15px] font-extrabold text-fo-900">Étude<span class="text-fo-500">EnLigne</span></span><span class="hidden sm:block text-[10px] font-semibold text-slate-500"><span class="t-fr">Espace d'apprentissage</span><span class="t-ar">فضاؤك للتعلم</span></span></span>
+   </a>
+   <nav class="hidden md:flex items-center gap-6" aria-label="Navigation">
+    <a href="#accueil" class="nl on"><span class="t-fr">Accueil</span><span class="t-ar">الرئيسية</span></a>
+    <a href="#formations" class="nl"><span class="t-fr">Mes formations</span><span class="t-ar">تكويناتي</span></a>
+    <a href="#parcours" class="nl"><span class="t-fr">Parcours</span><span class="t-ar">المسار</span></a>
+    <a href="#certificats" class="nl"><span class="t-fr">Certificats</span><span class="t-ar">الشهادات</span></a>
+    <a href="{{ route('profile.edit') }}" class="nl"><span class="t-fr">Mon profil</span><span class="t-ar">ملفي</span></a>
+   </nav>
+   <div class="flex items-center gap-2 sm:gap-3">
+    <div class="flex rounded-lg bg-fo-50 p-1 border border-fo-100"><button type="button" id="lang-fr" class="lb">FR</button><button type="button" id="lang-ar" class="lb">عربي</button></div>
+    <a href="{{ route('profile.edit') }}"
+   class="hidden sm:flex items-center justify-center w-9 h-9 rounded-full overflow-hidden border-2 border-fo-200 bg-fo-100 shrink-0"
+   title="Mon profil">
 
-                <a href="{{ route('profile.edit') }}"
-                   title="Mon profil"
-                   class="flex items-center justify-center w-10 h-10 rounded-xl bg-emerald-100 text-emerald-700 hover:bg-emerald-200 transition">
-                    <i data-lucide="user-round" class="w-5 h-5"></i>
-                </a>
-            </div>
-        </div>
+    @if($student->profile_photo_path)
+        <img
+            src="{{ \Illuminate\Support\Facades\Storage::disk('public')->url($student->profile_photo_path) }}"
+            alt="Photo de profil"
+            class="w-full h-full object-cover"
+            onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+        >
 
-        <nav class="flex items-center gap-1 sm:gap-2 overflow-x-auto pb-3">
-            <a href="#accueil" class="menu-link active">
-                <i data-lucide="house" class="w-4 h-4"></i>
-                <span class="t-fr">Accueil</span><span class="t-ar">الرئيسية</span>
-            </a>
+        <span
+            class="w-full h-full items-center justify-center text-fo-800 font-extrabold text-sm"
+            style="display:none;">
+            {{ mb_strtoupper(mb_substr($student->name ?? 'E', 0, 1)) }}
+        </span>
+    @else
+        <span class="flex items-center justify-center w-full h-full text-fo-800 font-extrabold text-sm">
+            {{ mb_strtoupper(mb_substr($student->name ?? 'E', 0, 1)) }}
+        </span>
+    @endif
 
-            <a href="#formations" class="menu-link">
-                <i data-lucide="book-open" class="w-4 h-4"></i>
-                <span class="t-fr">Mes formations</span><span class="t-ar">تكويناتي</span>
-            </a>
-
-            <a href="{{ route('profile.edit') }}" class="menu-link">
-                <i data-lucide="user-round" class="w-4 h-4"></i>
-                <span class="t-fr">Mon profil</span><span class="t-ar">ملفي الشخصي</span>
-            </a>
-
-            <form action="{{ route('logout') }}" method="POST" class="ms-auto flex-shrink-0">
-                @csrf
-                <button type="submit" class="menu-link text-rose-500 hover:bg-rose-50">
-                    <i data-lucide="log-out" class="w-4 h-4"></i>
-                    <span class="t-fr">Déconnexion</span><span class="t-ar">تسجيل الخروج</span>
-                </button>
-            </form>
-        </nav>
-    </div>
+</a>
+    <form action="{{ route('logout') }}" method="POST">@csrf<button type="submit" class="btn bp !px-3 sm:!px-4"><i data-lucide="log-out" class="w-4 h-4"></i><span class="hidden sm:inline"><span class="t-fr">Déconnexion</span><span class="t-ar">تسجيل الخروج</span></span></button></form>
+   </div>
+  </div>
+  <nav class="md:hidden ns flex items-center gap-5 overflow-x-auto pb-2" aria-label="Navigation mobile">
+   <a href="#accueil" class="nl on"><span class="t-fr">Accueil</span><span class="t-ar">الرئيسية</span></a>
+   <a href="#formations" class="nl"><span class="t-fr">Formations</span><span class="t-ar">التكوينات</span></a>
+   <a href="#certificats" class="nl"><span class="t-fr">Certificats</span><span class="t-ar">الشهادات</span></a>
+   <a href="{{ route('profile.edit') }}" class="nl"><span class="t-fr">Profil</span><span class="t-ar">ملفي</span></a>
+  </nav>
+ </div>
 </header>
 
-<main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-7 sm:py-10">
 
-    <!-- HERO -->
-    <section id="accueil"
-             class="relative overflow-hidden rounded-[28px] bg-gradient-to-br from-emerald-200 via-emerald-100 to-teal-50 border border-emerald-200/70 p-6 sm:p-9 lg:p-10 mb-10 shadow-[0_12px_40px_rgba(52,211,153,.18)]">
 
-        <div class="absolute -top-16 -end-10 w-64 h-64 rounded-full bg-white/50 blur-2xl"></div>
-        <div class="absolute -bottom-20 start-1/3 w-56 h-56 rounded-full bg-emerald-300/30 blur-3xl"></div>
-
-        <div class="relative z-10 grid gap-8 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-center">
-            <div class="max-w-2xl">
-                <p class="inline-flex items-center gap-2 rounded-full bg-white/70 px-3 py-1.5 text-emerald-700 text-xs font-bold mb-4">
-                    <i data-lucide="sparkles" class="w-4 h-4"></i>
-                    <span class="t-fr">Votre espace étudiant</span>
-                    <span class="t-ar">فضاؤك الدراسي</span>
-                </p>
-
-                <h2 class="text-2xl sm:text-3xl lg:text-4xl font-extrabold leading-tight text-emerald-950 mb-4">
-                    <span class="t-fr">Bienvenue, {{ $student->name }} !</span>
-                    <span class="t-ar">مرحباً، {{ $student->name }} !</span>
-                </h2>
-
-                <p class="t-fr text-sm sm:text-base leading-7 text-emerald-900/80">
-                    Retrouvez vos formations, consultez vos cours et documents PDF, puis testez vos connaissances grâce aux quiz disponibles.
-                </p>
-
-                <p class="t-ar text-sm sm:text-base text-emerald-900/80">
-                    اكتشف التكوينات الخاصة بك، واطّلع على الدروس والملفات والاختبارات المتاحة لك.
-                </p>
-
-                <a href="#formations" class="inline-flex items-center gap-2 mt-6 rounded-2xl bg-emerald-500 hover:bg-emerald-600 px-5 py-3 text-sm font-extrabold text-white shadow-lg shadow-emerald-500/30 transition">
-                    <span class="t-fr">Découvrir mes formations</span><span class="t-ar">اكتشف تكويناتي</span>
-                    <i data-lucide="arrow-down" class="w-4 h-4"></i>
-                </a>
-            </div>
-
-            <div class="grid grid-cols-3 gap-3">
-                <div class="rounded-2xl bg-white/80 px-4 py-4 text-center min-w-[92px]">
-                    <p class="text-2xl font-extrabold text-emerald-700">{{ $totalFormations }}</p>
-                    <p class="text-[11px] font-bold text-emerald-600/80 mt-1">
-                        <span class="t-fr">Formations</span><span class="t-ar">تكوينات</span>
-                    </p>
-                </div>
-                <div class="rounded-2xl bg-white/80 px-4 py-4 text-center min-w-[92px]">
-                    <p class="text-2xl font-extrabold text-emerald-700">{{ $activeFormations }}</p>
-                    <p class="text-[11px] font-bold text-emerald-600/80 mt-1">
-                        <span class="t-fr">Activées</span><span class="t-ar">مفعّلة</span>
-                    </p>
-                </div>
-                <div class="rounded-2xl bg-white/80 px-4 py-4 text-center min-w-[92px]">
-                    <p class="text-2xl font-extrabold text-amber-500">{{ $pendingFormations }}</p>
-                    <p class="text-[11px] font-bold text-emerald-600/80 mt-1">
-                        <span class="t-fr">En attente</span><span class="t-ar">قيد الانتظار</span>
-                    </p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- FORMATIONS -->
-    <section id="formations" class="scroll-mt-40">
-
-        @if(session('formation_message'))
-            <div class="mb-6 rounded-2xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm font-semibold text-emerald-800">
-                <div class="flex items-center gap-2">
-                    <i data-lucide="check-circle" class="w-5 h-5 flex-shrink-0"></i>
-                    <span>{{ session('formation_message') }}</span>
-                </div>
-            </div>
-        @endif
-
-        @if(session('error'))
-            <div class="mb-6 rounded-2xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm font-semibold text-rose-800">
-                {{ session('error') }}
-            </div>
-        @endif
-
-        <div class="mb-7">
-            <p class="flex items-center gap-2 text-xs font-bold uppercase tracking-[1.5px] text-emerald-600 mb-2">
-                <i data-lucide="graduation-cap" class="w-4 h-4"></i>
-                <span class="t-fr">Mon apprentissage</span><span class="t-ar">تعلّمي</span>
-            </p>
-
-            <h2 class="text-2xl sm:text-3xl font-extrabold text-emerald-950">
-                <span class="t-fr">Mes formations</span><span class="t-ar">تكويناتي</span>
-            </h2>
-
-            <p class="t-fr text-sm text-emerald-800/70 mt-2 leading-6">
-                Accédez aux cours, aux fichiers PDF et aux quiz depuis chaque formation.
-            </p>
-            <p class="t-ar text-sm text-emerald-800/70 mt-2">
-                يمكنك الوصول إلى الدروس وملفات PDF والاختبارات من خلال كل تكوين.
-            </p>
-        </div>
-
-        @if(isset($allFormations) && $allFormations->count() > 0)
-
-            <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-
-                @foreach($allFormations as $formation)
-                    @php
-                        $studentFormation = $studentFormationStatuses->get($formation->id);
-
-                        $status = $studentFormation
-                            ? ($studentFormation->pivot->status ?? 'locked')
-                            : 'locked';
-
-                        $isActive = $status === 'active';
-                        $isPending = $status === 'pending';
-                        $isRejected = $status === 'rejected';
-
-                        $image = $getFormationImage($formation);
-                        $color = $getFormationColor($formation);
-                        $courses = $formation->cours->sortBy('order');
-                        $quizzes = $formation->quizzes ?? collect();
-                    @endphp
-
-                    <article class="formation-card flex flex-col">
-
-                        <div class="relative bg-emerald-100">
-                            <img src="{{ $image }}"
-                                 alt="{{ $formation->name }}"
-                                 class="formation-image"
-                                 loading="lazy">
-
-                            <div class="absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-emerald-900/40 to-transparent"></div>
-
-                            <div class="absolute top-3 start-3">
-                                <span class="inline-flex items-center gap-1.5 rounded-full bg-white/95 px-3 py-1.5 text-xs font-bold text-emerald-900 shadow-sm">
-                                    <i data-lucide="{{ $color['icon'] }}" class="w-3.5 h-3.5 {{ $color['text'] }}"></i>
-                                    {{ $formation->category ?: 'Formation' }}
-                                </span>
-                            </div>
-
-                            <div class="absolute top-3 end-3">
-                                @if($isActive)
-                                    <span class="inline-flex items-center gap-1 rounded-full bg-emerald-400 px-2.5 py-1 text-[11px] font-extrabold text-white shadow-sm">
-                                        <i data-lucide="check" class="w-3 h-3"></i>
-                                        <span class="t-fr">Activée</span><span class="t-ar">مفعّل</span>
-                                    </span>
-                                @elseif($isPending)
-                                    <span class="inline-flex items-center gap-1 rounded-full bg-amber-300 px-2.5 py-1 text-[11px] font-extrabold text-amber-900 shadow-sm">
-                                        <i data-lucide="clock" class="w-3 h-3"></i>
-                                        <span class="t-fr">En attente</span><span class="t-ar">قيد الانتظار</span>
-                                    </span>
-                                @else
-                                    <span class="inline-flex items-center gap-1 rounded-full bg-white/95 px-2.5 py-1 text-[11px] font-extrabold text-slate-600 shadow-sm">
-                                        <i data-lucide="lock-keyhole" class="w-3 h-3"></i>
-                                        <span class="t-fr">Verrouillée</span><span class="t-ar">مقفل</span>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
-
-                        <div class="p-5 flex flex-col flex-1">
-
-                            <h3 class="text-lg font-extrabold text-emerald-950 leading-snug mb-2">
-                                {{ $formation->name }}
-                            </h3>
-
-                            <p class="text-sm text-emerald-800/70 leading-6 mb-5 line-clamp-3">
-                                {{ $formation->description ?: 'Découvrez les ressources pédagogiques proposées dans cette formation.' }}
-                            </p>
-
-                            {{-- FORMATION ACTIVE : bouton pour commencer --}}
-                            @if($isActive)
-
-                                <div class="mt-auto">
-
-                                    <div class="flex items-center gap-3 rounded-2xl bg-emerald-50 border border-emerald-100 px-3.5 py-3 mb-4">
-                                        <i data-lucide="check-circle" class="w-5 h-5 text-emerald-500 flex-shrink-0"></i>
-                                        <div>
-                                            <p class="text-sm font-bold text-emerald-800">
-                                                <span class="t-fr">Formation activée</span><span class="t-ar">تم تفعيل التكوين</span>
-                                            </p>
-                                            <p class="text-xs text-emerald-700/80 mt-0.5">
-                                                <span class="t-fr">Vos ressources sont disponibles.</span>
-                                                <span class="t-ar">مواردك متاحة الآن.</span>
-                                            </p>
-                                        </div>
-                                    </div>
-
-                                    <div class="flex items-center gap-5 text-xs font-bold text-emerald-700/80 mb-4">
-                                        <span class="inline-flex items-center gap-1.5">
-                                            <i data-lucide="book-open" class="w-4 h-4 text-emerald-500"></i>
-                                            {{ $courses->count() }} <span class="t-fr">cours</span><span class="t-ar">دروس</span>
-                                        </span>
-
-                                        <span class="inline-flex items-center gap-1.5">
-                                            <i data-lucide="clipboard-check" class="w-4 h-4 text-emerald-500"></i>
-                                            {{ $quizzes->count() }} <span class="t-fr">quiz</span><span class="t-ar">اختبارات</span>
-                                        </span>
-                                    </div>
-
-                                    <a href="{{ route('formations.learn', $formation) }}" class="btn-start">
-                                        <i data-lucide="play-circle" class="w-5 h-5"></i>
-                                        <span class="t-fr">Commencer la formation</span><span class="t-ar">ابدأ التكوين</span>
-                                    </a>
-
-                                </div>
-
-                            {{-- DEMANDE EN ATTENTE --}}
-                            @elseif($isPending)
-
-                                <div class="mt-auto rounded-2xl border border-amber-200 bg-amber-50 p-4">
-                                    <div class="flex items-start gap-3">
-                                        <span class="flex items-center justify-center w-9 h-9 rounded-xl bg-amber-100 flex-shrink-0">
-                                            <i data-lucide="clock" class="w-5 h-5 text-amber-600"></i>
-                                        </span>
-
-                                        <div>
-                                            <h4 class="font-bold text-amber-800 text-sm">
-                                                <span class="t-fr">Demande en attente</span><span class="t-ar">الطلب قيد الانتظار</span>
-                                            </h4>
-
-                                            <p class="t-fr text-sm text-amber-700 leading-6 mt-1.5">
-                                                Votre demande d'accès à cette formation est en cours de traitement par l'administration.
-                                            </p>
-                                            <p class="t-ar text-sm text-amber-700 mt-1.5">
-                                                طلب الالتحاق بهذا التكوين ما زال في انتظار موافقة الإدارة.
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-
-                            {{-- DEMANDE REFUSÉE : NOUVELLE DEMANDE POSSIBLE --}}
-                            @elseif($isRejected)
-
-                                <div class="mt-auto rounded-2xl border border-rose-200 bg-rose-50 p-4">
-                                    <div class="flex items-start gap-3">
-                                        <span class="flex items-center justify-center w-9 h-9 rounded-xl bg-rose-100 flex-shrink-0">
-                                            <i data-lucide="lock-keyhole" class="w-5 h-5 text-rose-500"></i>
-                                        </span>
-
-                                        <div>
-                                            <h4 class="font-bold text-rose-800 text-sm">
-                                                <span class="t-fr">Demande refusée</span><span class="t-ar">تم رفض الطلب</span>
-                                            </h4>
-
-                                            <p class="t-fr text-sm text-rose-700 leading-6 mt-1.5">
-                                                Votre demande précédente n'a pas été acceptée. Vous pouvez envoyer une nouvelle demande à l'administration.
-                                            </p>
-                                            <p class="t-ar text-sm text-rose-700 mt-1.5">
-                                                يمكنك إرسال طلب جديد للالتحاق بهذا التكوين.
-                                            </p>
-                                        </div>
-                                    </div>
-
-                                    <form action="{{ route('formations.request', $formation) }}"
-                                          method="POST"
-                                          class="mt-4">
-                                        @csrf
-
-                                        <button type="submit" class="btn-soft">
-                                            <i data-lucide="send" class="w-4 h-4 flip"></i>
-                                            <span class="t-fr">Demander à nouveau l’accès</span>
-                                            <span class="t-ar">إعادة طلب الوصول</span>
-                                        </button>
-                                    </form>
-                                </div>
-
-                            {{-- FORMATION VERROUILLÉE : DEMANDER L'ACCÈS --}}
-                            @else
-
-                                <div class="mt-auto rounded-2xl border border-emerald-100 bg-emerald-50/60 p-4">
-                                    <div class="flex items-start gap-3">
-                                        <span class="flex items-center justify-center w-9 h-9 rounded-xl bg-emerald-100 flex-shrink-0">
-                                            <i data-lucide="lock-keyhole" class="w-5 h-5 text-emerald-600"></i>
-                                        </span>
-
-                                        <div>
-                                            <h4 class="font-bold text-emerald-900 text-sm">
-                                                <span class="t-fr">Formation verrouillée</span><span class="t-ar">تكوين مقفل</span>
-                                            </h4>
-
-                                            <p class="t-fr text-sm text-emerald-800/70 leading-6 mt-1.5">
-                                                Demandez l'accès à cette formation. L'administration étudiera votre demande avant d'activer les cours, les PDF et les quiz.
-                                            </p>
-                                            <p class="t-ar text-sm text-emerald-800/70 mt-1.5">
-                                                يمكنك طلب الالتحاق بهذا التكوين. ستقوم الإدارة بدراسة طلبك قبل تفعيل الدروس والملفات والاختبارات.
-                                            </p>
-                                        </div>
-                                    </div>
-
-                                    <form action="{{ route('formations.request', $formation) }}"
-                                          method="POST"
-                                          class="mt-4">
-                                        @csrf
-
-                                        <button type="submit" class="btn-start">
-                                            <i data-lucide="send" class="w-4 h-4 flip"></i>
-                                            <span class="t-fr">Demander l’accès à cette formation</span>
-                                            <span class="t-ar">طلب الوصول إلى هذا التكوين</span>
-                                        </button>
-                                    </form>
-                                </div>
-
-                            @endif
-
-                        </div>
-                    </article>
-                @endforeach
-
-            </div>
-
-        @else
-
-            <div class="card border-dashed px-5 py-14 text-center">
-                <div class="flex items-center justify-center w-16 h-16 mx-auto rounded-2xl bg-emerald-100 mb-5">
-                    <i data-lucide="graduation-cap" class="w-8 h-8 text-emerald-600"></i>
-                </div>
-
-                <h3 class="text-xl font-extrabold text-emerald-950">
-                    <span class="t-fr">Aucune formation disponible</span><span class="t-ar">لا توجد تكوينات متاحة</span>
-                </h3>
-
-                <p class="t-fr max-w-md mx-auto text-sm text-emerald-800/70 leading-7 mt-3">
-                    Les formations proposées par le centre apparaîtront ici. Veuillez contacter l'administration si vous avez besoin d'aide.
-                </p>
-                <p class="t-ar max-w-md mx-auto text-sm text-emerald-800/70 mt-3">
-                    ستظهر التكوينات المتاحة هنا. يمكنك التواصل مع الإدارة إذا كنت تحتاج إلى المساعدة.
-                </p>
-            </div>
-
-        @endif
-    </section>
-
-    <!-- AIDE -->
-    <section class="card mt-10 p-5 sm:p-6 bg-gradient-to-br from-emerald-50 to-white">
-        <div class="flex items-start gap-4">
-            <div class="flex items-center justify-center w-12 h-12 rounded-2xl bg-emerald-100 flex-shrink-0">
-                <i data-lucide="lightbulb" class="w-6 h-6 text-emerald-600"></i>
+@if (session('certificate_message'))
+    <div class="mb-6 rounded-2xl border border-emerald-200 bg-emerald-50 p-4 text-emerald-800 shadow-sm">
+        <div class="flex items-center gap-3">
+            <div class="flex h-10 w-10 items-center justify-center rounded-full bg-emerald-100 text-xl">
+                ✓
             </div>
 
             <div>
-                <h3 class="font-extrabold text-emerald-950">
-                    <span class="t-fr">Besoin d'aide ?</span><span class="t-ar">هل تحتاج إلى مساعدة؟</span>
+                <h3 class="font-bold">
+                    Bonjour {{ auth()->user()->name }} !
                 </h3>
 
-                <p class="t-fr text-sm text-emerald-800/70 leading-7 mt-1">
-                    Si une formation, un cours ou un quiz n'est pas visible, vérifiez son statut ou contactez l'administration du centre.
-                </p>
-                <p class="t-ar text-sm text-emerald-800/70 mt-1">
-                    إذا لم يظهر لك أحد التكوينات أو الدروس أو الاختبارات، يرجى التواصل مع إدارة المركز.
+                <p class="text-sm">
+                    {{ session('certificate_message') }}
                 </p>
             </div>
         </div>
-    </section>
+    </div>
+@endif
 
+
+<main>
+<!-- HERO -->
+<section id="accueil" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4">
+ <div class="hero relative rounded-3xl px-6 sm:px-12 pt-14 pb-32 text-white">
+  <div class="max-w-xl">
+   <p class="text-[11px] font-bold tracking-wide text-emerald-200 mb-3"><span class="t-fr">Apprendre · Progresser · Réussir</span><span class="t-ar">تعلّم · تقدّم · انجح</span></p>
+   <h1 class="text-3xl sm:text-5xl font-extrabold leading-[1.1] mb-4">
+    <span class="t-fr">Bonjour {{ $student->name }},<br>votre réussite commence <span class="script">ici.</span></span>
+    <span class="t-ar">مرحباً {{ $student->name }}،<br>نجاحك يبدأ <span class="script">من هنا.</span></span>
+   </h1>
+   <p class="t-fr text-emerald-50/85 text-sm sm:text-base">Suivez vos cours en ligne, téléchargez vos supports, passez vos quiz et obtenez votre certificat.</p>
+   <p class="t-ar text-emerald-50/85 text-sm sm:text-base">تابع دروسك، حمّل ملفاتك، اجتز الاختبارات واحصل على شهادتك.</p>
+   <div class="flex flex-wrap gap-3 mt-6">
+    <a href="#formations" class="btn bp"><span class="t-fr">Voir mes formations</span><span class="t-ar">عرض تكويناتي</span><i data-lucide="arrow-right" class="w-4 h-4 flip"></i></a>
+    <a href="#certificats" class="btn bg"><i data-lucide="award" class="w-4 h-4"></i><span class="t-fr">Mes certificats</span><span class="t-ar">شهاداتي</span></a>
+   </div>
+  </div>
+ <div class="glass hidden lg:flex absolute end-10 bottom-28 items-center gap-3 px-5 py-4 text-white">
+  <span class="flex items-center justify-center w-11 h-11 rounded-xl bg-white/15"><i data-lucide="sparkles" class="w-5 h-5 text-emerald-200"></i></span>
+  <div class="leading-tight"><p class="script text-xl"><span class="t-fr">Plus qu'un cours</span><span class="t-ar">أكثر من دورة</span></p><p class="text-xs text-emerald-100/80"><span class="t-fr">Une vraie montée en compétences</span><span class="t-ar">تطوير حقيقي للمهارات</span></p></div>
+ </div>
+ </div>
+ <div class="card relative -mt-16 mx-3 sm:mx-10 grid grid-cols-2 lg:grid-cols-4 gap-y-1 lg:divide-x lg:divide-fo-100 rtl:lg:divide-x-reverse">
+  @foreach([['library',$total,'Formations','التكوينات'],['check-circle-2',$nActive,'Actives','مفعّلة'],['clock',$nPending,'En attente','قيد الانتظار'],['award',$nCerts,'Certificats','الشهادات']] as $s)
+  <div class="flex items-center gap-3 p-4 sm:p-5"><span class="ib"><i data-lucide="{{ $s[0] }}" class="w-5 h-5"></i></span><div class="leading-tight"><p class="text-xl font-extrabold text-fo-900">{{ $s[1] }}</p><p class="text-xs text-slate-500"><span class="t-fr">{{ $s[2] }}</span><span class="t-ar">{{ $s[3] }}</span></p></div></div>
+  @endforeach
+ </div>
+</section>
+
+<!-- RACCOURCIS -->
+<section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-14">
+ <div class="grid lg:grid-cols-2 gap-8 items-center">
+  <div>
+   <p class="eb"><span class="t-fr">VOTRE ESPACE</span><span class="t-ar">فضاؤك</span></p><h2 class="text-2xl sm:text-3xl font-extrabold text-fo-900 leading-tight"><span class="t-fr">Explorez vos formations</span><span class="t-ar">استكشف تكويناتك</span></h2>
+   <p class="t-fr text-sm text-slate-500 mt-3 max-w-md">Cours vidéo, documents PDF et quiz : tout ce qu'il faut pour valider vos modules, au même endroit.</p>
+   <p class="t-ar text-sm text-slate-500 mt-3 max-w-md">دروس بالفيديو، ملفات PDF واختبارات: كل ما تحتاجه لإتمام وحداتك في مكان واحد.</p>
+   <a href="#formations" class="btn bd mt-5"><span class="t-fr">Voir les formations</span><span class="t-ar">عرض التكوينات</span><i data-lucide="arrow-right" class="w-4 h-4 flip"></i></a>
+  </div>
+  <div class="relative">
+   <img src="https://images.unsplash.com/photo-1524178232363-1fb2b075b655?auto=format&fit=crop&w=1100&q=80" alt="" class="w-full h-60 sm:h-72 object-cover rounded-2xl" loading="lazy">
+   <div class="card absolute bottom-4 start-4 flex items-center gap-3 px-4 py-3"><span class="ib"><i data-lucide="play-circle" class="w-5 h-5"></i></span><div class="leading-tight"><p class="text-sm font-bold text-fo-900"><span class="t-fr">Apprentissage pratique</span><span class="t-ar">تعلّم تطبيقي</span></p><p class="text-xs text-slate-500"><span class="t-fr">Compétences concrètes</span><span class="t-ar">مهارات عملية</span></p></div></div>
+  </div>
+ </div>
+ <div class="grid grid-cols-2 md:grid-cols-5 gap-3 mt-8">
+  @foreach([['book-open','#formations','Formations','التكوينات','Vos programmes','برامجك'],['file-text','#formations','Cours','الدروس','Vidéos et PDF','فيديو وPDF'],['clipboard-check','#formations','Quiz','الاختبارات','Évaluez-vous','قيّم نفسك'],['award','#certificats','Certificats','الشهادات','Votre réussite','نجاحك'],['user-round',route('profile.edit'),'Profil','الملف','Vos informations','معلوماتك']] as $t)
+  <a href="{{ $t[1] }}" class="tile rounded-xl bg-fo-50 p-4 text-center"><i data-lucide="{{ $t[0] }}" class="w-6 h-6 mx-auto text-fo-600"></i><p class="text-sm font-bold text-fo-900 mt-2"><span class="t-fr">{{ $t[2] }}</span><span class="t-ar">{{ $t[3] }}</span></p><p class="text-[11px] text-slate-500"><span class="t-fr">{{ $t[4] }}</span><span class="t-ar">{{ $t[5] }}</span></p></a>
+  @endforeach
+ </div>
+</section>
+
+<!-- PARCOURS -->
+<section id="parcours" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-14">
+ <div class="rounded-3xl bg-fo-800 text-white overflow-hidden grid lg:grid-cols-[1fr_1.1fr]">
+  <img src="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&w=1000&q=80" alt="" class="w-full h-56 lg:h-full object-cover" loading="lazy">
+  <div class="p-6 sm:p-10">
+   <h2 class="text-2xl font-extrabold"><span class="t-fr">Un parcours en 3 étapes</span><span class="t-ar">مسار في 3 مراحل</span></h2>
+   <div class="mt-5 space-y-4">
+    @foreach([['key-round','Demandez l\'accès','اطلب الوصول','L\'administration active votre formation.','تقوم الإدارة بتفعيل تكوينك.'],['play-circle','Suivez cours et quiz','تابع الدروس والاختبارات','Terminez toutes les leçons à votre rythme.','أكمل جميع الدروس بوتيرتك.'],['award','Obtenez votre certificat','احصل على شهادتك','Demandez-le, l\'administration l\'active.','اطلبها وستفعّلها الإدارة.']] as $st)
+    <div class="flex items-start gap-3"><span class="flex items-center justify-center w-10 h-10 rounded-xl bg-white/10 shrink-0"><i data-lucide="{{ $st[0] }}" class="w-5 h-5 text-emerald-200"></i></span><div><p class="font-bold text-sm"><span class="t-fr">{{ $st[1] }}</span><span class="t-ar">{{ $st[2] }}</span></p><p class="text-xs text-emerald-100/75"><span class="t-fr">{{ $st[3] }}</span><span class="t-ar">{{ $st[4] }}</span></p></div></div>
+    @endforeach
+   </div>
+  </div>
+ </div>
+</section>
+
+<!-- FORMATIONS -->
+<section id="formations" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-14">
+ @foreach(['formation_message'=>'check-circle-2','certificate_message'=>'award'] as $k=>$ic)
+  @if(session($k))<div class="mb-4 rounded-xl border border-fo-200 bg-fo-50 p-4 text-sm font-medium text-fo-800 flex items-center gap-3"><i data-lucide="{{ $ic }}" class="w-5 h-5 text-fo-500 shrink-0"></i><span>{{ session($k) }}</span></div>@endif
+ @endforeach
+ @if(session('error'))<div class="mb-4 rounded-xl border border-rose-200 bg-rose-50 p-4 text-sm font-medium text-rose-800 flex items-center gap-3"><i data-lucide="alert-circle" class="w-5 h-5 text-rose-600 shrink-0"></i><span>{{ session('error') }}</span></div>@endif
+
+ <div class="rounded-3xl bg-fo-800 px-6 sm:px-10 pt-8 pb-16 text-white">
+  <p class="eb l"><span class="t-fr">NOS FORMATIONS</span><span class="t-ar">تكويناتنا</span></p><h2 class="text-2xl sm:text-3xl font-extrabold"><span class="t-fr">Trouvez la bonne formation</span><span class="t-ar">اعثر على التكوين المناسب</span></h2>
+  <p class="t-fr text-sm text-emerald-100/80 mt-2">Retrouvez ici la liste de vos programmes d'études.</p>
+  <p class="t-ar text-sm text-emerald-100/80 mt-2">تجد هنا قائمة البرامج الدراسية الخاصة بك.</p>
+ </div>
+ <div class="card -mt-10 mx-2 sm:mx-6 p-4 sm:p-6">
+  <div class="flex flex-wrap gap-2 mb-5" role="group">
+   <button type="button" class="fb on" data-filter="all"><span class="t-fr">Toutes</span><span class="t-ar">الكل</span></button>
+   <button type="button" class="fb" data-filter="active"><span class="t-fr">Actives</span><span class="t-ar">مفعّلة</span></button>
+   <button type="button" class="fb" data-filter="pending"><span class="t-fr">En attente</span><span class="t-ar">قيد الانتظار</span></button>
+   <button type="button" class="fb" data-filter="locked"><span class="t-fr">Verrouillées</span><span class="t-ar">مقفلة</span></button>
+  </div>
+  @if(isset($allFormations)&&$allFormations->count()>0)
+  <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
+   @foreach($allFormations as $formation)
+   @php
+    $sf=$sfs->get($formation->id);$st=$sf?($sf->pivot->status??'locked'):'locked';
+    $isA=$st==='active';$isP=$st==='pending';$isR=$st==='rejected';
+    $fk=$isA?'active':($isP?'pending':'locked');
+    $nc=$formation->cours->count();$nq=($formation->quizzes??collect())->count();
+   @endphp
+   <article class="pc card flex flex-col overflow-hidden" data-status="{{ $fk }}">
+    <div class="relative h-36 overflow-hidden bg-fo-100">
+     <img src="https://images.unsplash.com/{{ $img($formation) }}?auto=format&fit=crop&w=900&q=75" alt="{{ $formation->name }}" class="w-full h-full object-cover" loading="lazy">
+     <span class="ib ibw absolute bottom-3 start-3"><i data-lucide="{{ $icon($formation) }}" class="w-[18px] h-[18px]"></i></span>
+     <span class="absolute top-3 end-3 inline-flex items-center gap-1 rounded-md px-2.5 py-1 text-xs font-bold {{ $isA?'bg-fo-500 text-white':($isP?'bg-amber-300 text-amber-950':'bg-fo-900/80 text-white') }}">
+      <i data-lucide="{{ $isA?'check':($isP?'clock':'lock') }}" class="w-3 h-3"></i>
+      @if($isA)<span class="t-fr">Activée</span><span class="t-ar">مفعّل</span>@elseif($isP)<span class="t-fr">En attente</span><span class="t-ar">قيد الانتظار</span>@else<span class="t-fr">Verrouillée</span><span class="t-ar">مقفل</span>@endif
+     </span>
+    </div>
+    <div class="p-4 flex flex-col flex-1">
+     <p class="text-xs font-semibold text-fo-500">{{ $formation->category ?: 'Formation' }}</p>
+     <h3 class="text-base font-bold text-fo-900 leading-snug mt-0.5">{{ $formation->name }}</h3>
+     <p class="text-sm text-slate-500 mt-1.5 mb-3 line-clamp-2">{{ $formation->description ?: 'Accédez aux cours et documents pour progresser.' }}</p>
+     <div class="flex flex-wrap gap-x-4 gap-y-1 text-xs font-semibold text-fo-700 mb-4">
+      <span class="inline-flex items-center gap-1.5"><i data-lucide="book-open" class="w-4 h-4 text-fo-500"></i>{{ $nc }} <span class="t-fr">cours</span><span class="t-ar">دروس</span></span>
+      <span class="inline-flex items-center gap-1.5"><i data-lucide="clipboard-check" class="w-4 h-4 text-fo-500"></i>{{ $nq }} <span class="t-fr">quiz</span><span class="t-ar">اختبارات</span></span>
+      @if(!empty($formation->duration))<span class="inline-flex items-center gap-1.5"><i data-lucide="calendar-clock" class="w-4 h-4 text-fo-500"></i>{{ $formation->duration }}</span>@endif
+     </div>
+     <div class="mt-auto">
+     @if($isA)
+      <a href="{{ route('formations.learn',$formation) }}" class="btn bd bb"><i data-lucide="play-circle" class="w-4 h-4"></i><span class="t-fr">Commencer la formation</span><span class="t-ar">ابدأ التكوين</span></a>
+     @elseif($isP)
+      <div class="rounded-xl border border-amber-200 bg-amber-50 p-3 flex gap-3"><i data-lucide="clock" class="w-5 h-5 text-amber-600 shrink-0"></i><div><p class="font-bold text-amber-900 text-sm"><span class="t-fr">Demande en attente</span><span class="t-ar">الطلب قيد الانتظار</span></p><p class="t-fr text-xs text-amber-800">L'administration étudie votre demande.</p><p class="t-ar text-xs text-amber-800">تدرس الإدارة طلبك.</p></div></div>
+     @else
+      @if($isR)<p class="text-xs font-bold text-rose-700 mb-2"><span class="t-fr">Demande refusée : vous pouvez la renvoyer.</span><span class="t-ar">تم رفض الطلب: يمكنك إعادة إرساله.</span></p>@endif
+      <form action="{{ route('formations.request',$formation) }}" method="POST">@csrf<button type="submit" class="btn bs bb"><i data-lucide="{{ $isR?'send':'lock' }}" class="w-4 h-4"></i><span class="t-fr">{{ $isR?'Demander à nouveau':"Demander l'accès" }}</span><span class="t-ar">{{ $isR?'إعادة الطلب':'طلب الوصول' }}</span></button></form>
+     @endif
+     </div>
+    </div>
+   </article>
+   @endforeach
+  </div>
+  <p id="filterEmpty" class="hidden text-center text-sm text-slate-500 py-6"><span class="t-fr">Aucune formation dans cette catégorie.</span><span class="t-ar">لا توجد تكوينات في هذه الفئة.</span></p>
+  @else
+  <div class="py-10 text-center"><i data-lucide="book-open" class="w-8 h-8 mx-auto text-fo-500"></i><h3 class="font-bold text-fo-900 mt-3"><span class="t-fr">Aucune formation disponible</span><span class="t-ar">لا توجد تكوينات متاحة</span></h3><p class="t-fr text-sm text-slate-500">Les formations apparaîtront ici.</p><p class="t-ar text-sm text-slate-500">ستظهر التكوينات هنا.</p></div>
+  @endif
+ </div>
+</section>
+
+<!-- IMPACT -->
+@php $nCours=$activeList->sum(fn($f)=>$f->cours->count()); $nQuiz=$activeList->sum(fn($f)=>($f->quizzes??collect())->count()); @endphp
+<section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-14">
+ <div class="impact rounded-3xl text-white px-6 sm:px-10 py-10">
+  <div class="text-center max-w-xl mx-auto"><h2 class="text-2xl sm:text-3xl font-extrabold"><span class="t-fr">Votre parcours en chiffres</span><span class="t-ar">مسارك بالأرقام</span></h2><p class="t-fr text-sm text-emerald-100/80 mt-2">Un aperçu de ce que vous pouvez suivre dès maintenant.</p><p class="t-ar text-sm text-emerald-100/80 mt-2">لمحة عمّا يمكنك متابعته الآن.</p></div>
+  <div class="grid grid-cols-2 lg:grid-cols-4 gap-6 mt-8 text-center">
+   @foreach([['book-open',$nActive,'Formations actives','تكوينات مفعّلة'],['file-text',$nCours,'Cours disponibles','دروس متاحة'],['clipboard-check',$nQuiz,'Quiz à passer','اختبارات'],['award',$nCerts,'Certificats obtenus','شهادات']] as $i)
+   <div class="flex flex-col items-center"><span class="ring-i"><i data-lucide="{{ $i[0] }}" class="w-5 h-5"></i></span><p class="text-3xl sm:text-4xl font-extrabold mt-3 leading-none">{{ $i[1] }}</p><p class="text-xs text-emerald-100/80 mt-2"><span class="t-fr">{{ $i[2] }}</span><span class="t-ar">{{ $i[3] }}</span></p></div>
+   @endforeach
+  </div>
+ </div>
+</section>
+
+<!-- CERTIFICATS -->
+<section id="certificats" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-14">
+ <div class="rounded-3xl bg-fo-900 text-white p-6 sm:p-10">
+  <div class="max-w-2xl mb-6">
+   <h2 class="text-2xl font-extrabold"><span class="t-fr">Mes certificats</span><span class="t-ar">شهاداتي</span></h2>
+   <p class="t-fr text-sm text-emerald-100/80 mt-2">Terminez toutes les leçons d'une formation, puis demandez votre certificat depuis la page du cours. L'administration l'active ensuite.</p>
+   <p class="t-ar text-sm text-emerald-100/80 mt-2">أكمل جميع دروس التكوين ثم اطلب شهادتك من صفحة الدورة، وستفعّلها الإدارة.</p>
+  </div>
+  @if($activeList->count()>0)
+  <div class="grid md:grid-cols-2 xl:grid-cols-3 gap-4">
+   @foreach($activeList as $formation)
+   @php $cs=$certOf($formation->id); $url=route('formations.learn',$formation).'#certificat'; @endphp
+   <div class="rounded-2xl bg-white text-fo-900 p-5 flex flex-col">
+    <div class="flex items-start gap-3 mb-4"><span class="ib"><i data-lucide="award" class="w-5 h-5"></i></span><div class="min-w-0"><h3 class="text-sm font-bold leading-snug">{{ $formation->name }}</h3><p class="text-xs text-slate-500">{{ $formation->category ?: 'Formation' }}</p></div></div>
+    <div class="mt-auto">
+@if($cs === 'active')
+    <p class="inline-flex items-center gap-1.5 text-xs font-bold text-fo-600 mb-3">
+        <i data-lucide="badge-check" class="w-4 h-4"></i>
+        <span class="t-fr">Certificat activé</span>
+        <span class="t-ar">الشهادة مفعّلة</span>
+    </p>
+
+    @php
+        $certificate = $certs->get($formation->id);
+    @endphp
+
+    @if($certificate && !empty($certificate->file_path))
+        <a href="{{ route('student.certificates.download', $certificate->id) }}"
+           class="btn bp bb">
+            <i data-lucide="download" class="w-4 h-4"></i>
+            <span class="t-fr">Télécharger mon certificat PDF</span>
+            <span class="t-ar">تحميل الشهادة PDF</span>
+        </a>
+    @else
+        <p class="text-xs text-amber-700">
+            <span class="t-fr">Le fichier PDF n'est pas encore disponible.</span>
+            <span class="t-ar">ملف الشهادة PDF غير متوفر حالياً.</span>
+        </p>
+    @endif
+     @elseif($cs==='pending')
+      <div class="rounded-xl border border-amber-200 bg-amber-50 p-3 flex gap-2.5"><i data-lucide="clock" class="w-4 h-4 text-amber-600 shrink-0 mt-0.5"></i><div><p class="text-xs font-bold text-amber-900"><span class="t-fr">Demande en attente</span><span class="t-ar">الطلب قيد الانتظار</span></p><p class="t-fr text-xs text-amber-800">L'administration étudie votre demande.</p><p class="t-ar text-xs text-amber-800">تدرس الإدارة طلبك.</p></div></div>
+     @elseif($cs==='rejected')
+      <p class="text-xs font-bold text-rose-700 mb-3"><span class="t-fr">Demande refusée. Vous pouvez la renvoyer.</span><span class="t-ar">تم رفض الطلب. يمكنك إعادة إرساله.</span></p>
+      <a href="{{ $url }}" class="btn bs bb"><i data-lucide="send" class="w-4 h-4 flip"></i><span class="t-fr">Demander à nouveau</span><span class="t-ar">إعادة الطلب</span></a>
+     @else
+      <a href="{{ $url }}" class="btn bd bb"><i data-lucide="award" class="w-4 h-4"></i><span class="t-fr">Demander le certificat</span><span class="t-ar">طلب الشهادة</span></a>
+     @endif
+    </div>
+   </div>
+   @endforeach
+  </div>
+  @else
+  <div class="rounded-2xl bg-white/10 border border-white/15 p-8 text-center"><i data-lucide="award" class="w-8 h-8 mx-auto text-emerald-200"></i><h3 class="font-bold mt-3"><span class="t-fr">Aucun certificat disponible</span><span class="t-ar">لا توجد شهادات متاحة</span></h3><p class="t-fr text-sm text-emerald-100/80 mt-1">Activez une formation pour demander son certificat.</p><p class="t-ar text-sm text-emerald-100/80 mt-1">فعّل تكوينًا لطلب شهادته.</p></div>
+  @endif
+ </div>
+</section>
+
+<!-- CONSEILS -->
+<section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-14">
+ <div class="flex items-end justify-between gap-4 mb-5"><div><p class="eb"><span class="t-fr">CONSEILS</span><span class="t-ar">نصائح</span></p><h2 class="text-2xl font-extrabold text-fo-900"><span class="t-fr">Réussir ses études en ligne</span><span class="t-ar">كيف تنجح في دراستك عن بُعد</span></h2></div></div>
+ <div class="grid md:grid-cols-3 gap-4">
+  @foreach([['photo-1434030216411-0b793f4b4173','Organisation','تنظيم','Planifiez un créneau fixe','خصص وقتاً ثابتاً','Quelques minutes chaque jour valent mieux qu\'une longue session le week-end.','دقائق قليلة كل يوم أفضل من جلسة طويلة في نهاية الأسبوع.'],['photo-1456513080510-7bf3a84b82f8','Méthode','منهجية','Prenez des notes en regardant','دوّن ملاحظات أثناء المشاهدة','Reprenez les PDF des leçons pour fixer les points importants.','استعن بملفات PDF لتثبيت النقاط المهمة.'],['photo-1517048676732-d65bc937f952','Évaluation','تقييم','Révisez avant chaque quiz','راجع قبل كل اختبار','Les quiz valident vos acquis et préparent votre certificat.','الاختبارات تثبّت مكتسباتك وتهيئك للشهادة.']] as $c)
+  <article class="tip card overflow-hidden"><img src="https://images.unsplash.com/{{ $c[0] }}?auto=format&fit=crop&w=800&q=70" alt="" class="w-full h-40 object-cover" loading="lazy"><div class="p-5"><p class="text-xs font-bold text-fo-500"><span class="t-fr">{{ $c[1] }}</span><span class="t-ar">{{ $c[2] }}</span></p><h3 class="font-bold text-fo-900 mt-1 leading-snug"><span class="t-fr">{{ $c[3] }}</span><span class="t-ar">{{ $c[4] }}</span></h3><p class="t-fr text-sm text-slate-500 mt-2">{{ $c[5] }}</p><p class="t-ar text-sm text-slate-500 mt-2">{{ $c[6] }}</p></div></article>
+  @endforeach
+ </div>
+</section>
+
+<!-- CTA -->
+<section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-14">
+ <div class="cta rounded-3xl text-white p-8 sm:p-12 flex flex-wrap items-center justify-between gap-5">
+  <div class="max-w-lg"><h2 class="text-xl sm:text-2xl font-extrabold"><span class="t-fr">Besoin d'aide ?</span><span class="t-ar">هل تحتاج إلى مساعدة؟</span></h2><p class="t-fr text-sm text-emerald-50/85 mt-1">Si un cours, un quiz ou un certificat ne s'affiche pas, vérifiez le statut de votre formation ou contactez l'administration du centre.</p><p class="t-ar text-sm text-emerald-50/85 mt-1">إذا لم يظهر درس أو اختبار أو شهادة، تحقق من حالة تكوينك أو تواصل مع إدارة المركز.</p></div>
+  <a href="#formations" class="btn bw"><span class="t-fr">Mes formations</span><span class="t-ar">تكويناتي</span><i data-lucide="arrow-right" class="w-4 h-4 flip"></i></a>
+ </div>
+</section>
 </main>
 
-<footer class="border-t border-emerald-100 bg-white/80 mt-10">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex flex-col sm:flex-row items-center justify-between gap-3">
-        <div class="flex items-center gap-2">
-            <i data-lucide="graduation-cap" class="w-5 h-5 text-emerald-500"></i>
-            <span class="text-sm font-extrabold text-emerald-700">ÉtudeEnLigne</span>
-        </div>
-
-        <p class="text-xs text-emerald-700/60 text-center">
-            © {{ date('Y') }} ÉtudeEnLigne
-        </p>
-    </div>
+<footer class="mt-14 bg-fo-950 text-emerald-100/75 text-xs">
+ <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 grid gap-6 sm:grid-cols-3">
+  <div><p class="text-base font-extrabold text-white">Étude<span class="text-fo-400">EnLigne</span></p><p class="mt-2"><span class="t-fr">Espace d'apprentissage en ligne</span><span class="t-ar">منصة التعلم عبر الإنترنت</span></p></div>
+  <div class="space-y-1.5"><p class="font-bold text-white"><span class="t-fr">Liens rapides</span><span class="t-ar">روابط سريعة</span></p><a href="#formations" class="block hover:text-white"><span class="t-fr">Mes formations</span><span class="t-ar">تكويناتي</span></a><a href="#certificats" class="block hover:text-white"><span class="t-fr">Certificats</span><span class="t-ar">الشهادات</span></a><a href="{{ route('profile.edit') }}" class="block hover:text-white"><span class="t-fr">Mon profil</span><span class="t-ar">ملفي</span></a></div>
+  <p class="sm:text-end">&copy; {{ date('Y') }} ÉtudeEnLigne. <span class="t-fr">Tous droits réservés.</span><span class="t-ar">جميع الحقوق محفوظة.</span></p>
+ </div>
 </footer>
 
 <script>
-    function setLang(l) {
-        var root = document.documentElement;
-        root.setAttribute('data-lang', l);
-        root.setAttribute('lang', l);
-        root.setAttribute('dir', l === 'ar' ? 'rtl' : 'ltr');
-        document.getElementById('lang-fr').className = 'lang-btn' + (l === 'fr' ? ' on' : '');
-        document.getElementById('lang-ar').className = 'lang-btn' + (l === 'ar' ? ' on' : '');
-        try { localStorage.setItem('etude-lang', l); } catch (e) {}
-    }
-
-    document.addEventListener('DOMContentLoaded', function () {
-        if (window.lucide) { window.lucide.createIcons(); }
-
-        document.getElementById('lang-fr').addEventListener('click', function () { setLang('fr'); });
-        document.getElementById('lang-ar').addEventListener('click', function () { setLang('ar'); });
-
-        var saved = 'fr';
-        try { saved = localStorage.getItem('etude-lang') || 'fr'; } catch (e) {}
-        setLang(saved === 'ar' ? 'ar' : 'fr');
-    });
+document.addEventListener('DOMContentLoaded',()=>{
+ const h=document.documentElement,fr=document.getElementById('lang-fr'),ar=document.getElementById('lang-ar');
+ function setL(l){const a=l==='ar';h.dataset.lang=a?'ar':'fr';h.dir=a?'rtl':'ltr';h.lang=a?'ar':'fr';ar.classList.toggle('on',a);fr.classList.toggle('on',!a);try{localStorage.setItem('etude_lang',a?'ar':'fr')}catch(e){}}
+ let s='fr';try{s=localStorage.getItem('etude_lang')||'fr'}catch(e){}
+ setL(s);fr.onclick=()=>setL('fr');ar.onclick=()=>setL('ar');
+ const cards=document.querySelectorAll('[data-status]'),em=document.getElementById('filterEmpty');
+ document.querySelectorAll('.fb').forEach(b=>b.addEventListener('click',()=>{
+  document.querySelectorAll('.fb').forEach(x=>x.classList.remove('on'));b.classList.add('on');let v=0;
+  cards.forEach(c=>{const ok=b.dataset.filter==='all'||c.dataset.status===b.dataset.filter;c.style.display=ok?'':'none';if(ok)v++});
+  if(em)em.classList.toggle('hidden',v>0);
+ }));
+ if(window.lucide)lucide.createIcons();
+});
 </script>
-
 </body>
 </html>

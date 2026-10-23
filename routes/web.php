@@ -2,15 +2,20 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Artisan;
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ConfirmationController;
+use App\Http\Controllers\QuizController;
+use App\Http\Controllers\CertificateController;
+use App\Http\Controllers\LessonProgressController;
+
 use App\Http\Controllers\Admin\RegistrationController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\FormationController;
 use App\Http\Controllers\Admin\CoursController;
 use App\Http\Controllers\Admin\FormationRequestController;
-use App\Http\Controllers\ConfirmationController;
-use App\Http\Controllers\QuizController;
+use App\Http\Controllers\Admin\CertificateController as AdminCertificateController;
 
 use App\Http\Controllers\SuperAdmin\DashboardController as SuperAdminDashboardController;
 use App\Http\Controllers\SuperAdmin\AdminController as SuperAdminAdminController;
@@ -30,6 +35,18 @@ Route::get('/', function () {
 
 /*
 |--------------------------------------------------------------------------
+| Demande de certificat par l'étudiant
+|--------------------------------------------------------------------------
+*/
+
+Route::post('/formations/{formation}/certificate', [
+    CertificateController::class,
+    'issue'
+])->middleware('auth')->name('certificates.issue');
+
+
+/*
+|--------------------------------------------------------------------------
 | Dashboard étudiant
 |--------------------------------------------------------------------------
 */
@@ -41,9 +58,7 @@ Route::get('/dashboard', function () {
     $allFormations = \App\Models\Formation::with([
         'cours',
         'quizzes.questions'
-    ])
-        ->orderBy('name')
-        ->get();
+    ])->orderBy('name')->get();
 
     $activeFormationIds = $user->formations()
         ->wherePivot('status', 'active')
@@ -69,6 +84,18 @@ Route::get('/dashboard', function () {
 
 /*
 |--------------------------------------------------------------------------
+| Certificat de l'étudiant - téléchargement sécurisé
+|--------------------------------------------------------------------------
+*/
+
+Route::get('/mes-certificats/{certificate}/download', [
+    AdminCertificateController::class,
+    'studentDownload',
+])->middleware('auth')->name('student.certificates.download');
+
+
+/*
+|--------------------------------------------------------------------------
 | Administration classique
 |--------------------------------------------------------------------------
 */
@@ -78,25 +105,45 @@ Route::middleware(['auth', 'admin'])
     ->name('admin.')
     ->group(function () {
 
-        // Tableau de bord Admin
+        // Tableau de bord
         Route::get('/dashboard', [
             DashboardController::class,
             'index'
         ])->name('dashboard');
 
 
-        // Gestion des inscriptions Admin
+        
+    // Marquer la notification du certificat comme lue
+    Route::post('/notifications/{notification}/read', function (
+        \Illuminate\Notifications\DatabaseNotification $notification
+    ) {
+        abort_unless(
+            $notification->notifiable_id === auth()->id()
+            && $notification->notifiable_type === \App\Models\User::class,
+            403
+        );
+
+        $notification->markAsRead();
+
+        return redirect()->route('dashboard');
+    })->name('student.notifications.read');
+
+
+        /*
+        | Inscriptions
+        */
+
         Route::get('/registrations', [
             RegistrationController::class,
             'index'
         ])->name('registrations.index');
 
-        Route::patch('/registrations/{user}/accept', [
+        Route::match(['post', 'patch'], '/registrations/{user}/accept', [
             RegistrationController::class,
             'accept'
         ])->name('registrations.accept');
 
-        Route::patch('/registrations/{user}/reject', [
+        Route::match(['post', 'patch'], '/registrations/{user}/reject', [
             RegistrationController::class,
             'reject'
         ])->name('registrations.reject');
@@ -107,7 +154,10 @@ Route::middleware(['auth', 'admin'])
         ])->name('registrations.destroy');
 
 
-        // Demandes de formations
+        /*
+        | Demandes de formations
+        */
+
         Route::get('/formation-requests', [
             FormationRequestController::class,
             'index'
@@ -124,15 +174,29 @@ Route::middleware(['auth', 'admin'])
         ])->name('formation-requests.reject');
 
 
-        // Gestion des formations
+        /*
+        | Formations
+        */
+
         Route::resource('formations', FormationController::class);
 
 
-        // Gestion des cours
+        /*
+        | Cours
+        */
+
         Route::resource('cours', CoursController::class);
 
+        Route::delete('/cours/{cour}/media/{type}', [
+            CoursController::class,
+            'deleteMedia'
+        ])->name('cours.media.destroy');
 
-        // Quiz - Administration
+
+        /*
+        | Quiz - Administration
+        */
+
         Route::get('/quiz', [
             QuizController::class,
             'index'
@@ -158,12 +222,36 @@ Route::middleware(['auth', 'admin'])
             'storeQuestion'
         ])->name('quiz.question.store');
 
+
+        /*
+        | Certificats - Administration
+        */
+
+        Route::get('/certificates', [
+            AdminCertificateController::class,
+            'index'
+        ])->name('certificates.index');
+
+        // Importer le PDF depuis l'ordinateur
+        Route::post('/certificates/{certificate}/upload', [
+            AdminCertificateController::class,
+            'upload'
+        ])->name('certificates.upload');
+
+        // Voir ou télécharger le PDF
+        Route::get('/certificates/{certificate}/download', [
+            AdminCertificateController::class,
+            'download'
+        ])->name('certificates.download');
+
+        // Activer le certificat après l'import du PDF
+        Route::patch('/certificates/{certificate}/activate', [
+            AdminCertificateController::class,
+            'activate'
+        ])->name('certificates.activate');
+
     });
 
-    Route::delete(
-    '/cours/{cour}/media/{type}',
-    [\App\Http\Controllers\Admin\CoursController::class, 'deleteMedia']
-)->name('admin.cours.media.destroy');
 
 /*
 |--------------------------------------------------------------------------
@@ -176,7 +264,7 @@ Route::middleware(['auth', 'superadmin'])
     ->name('superadmin.')
     ->group(function () {
 
-        // Tableau de bord Super Admin
+        // Tableau de bord
         Route::get('/dashboard', [
             SuperAdminDashboardController::class,
             'index'
@@ -190,7 +278,7 @@ Route::middleware(['auth', 'superadmin'])
         )->except(['show']);
 
 
-        // Gestion des inscriptions Super Admin
+        // Gestion des inscriptions
         Route::get('/inscriptions', [
             SuperAdminRegistrationController::class,
             'index'
@@ -237,18 +325,19 @@ Route::middleware('auth')->group(function () {
         'destroy'
     ])->name('profile.destroy');
 
+
+    // Photo de profil
+    Route::post('/profile/photo', [
+        ProfileController::class,
+        'updatePhoto'
+    ])->name('profile.photo.update');
+
+    Route::delete('/profile/photo', [
+        ProfileController::class,
+        'destroyPhoto'
+    ])->name('profile.photo.destroy');
+
 });
-
-
-
-Route::middleware('auth')->group(function () {
-    Route::post('/profile/photo', [ProfileController::class, 'updatePhoto'])
-        ->name('profile.photo.update');
-
-    Route::delete('/profile/photo', [ProfileController::class, 'destroyPhoto'])
-        ->name('profile.photo.destroy');
-});
-
 
 
 /*
@@ -270,19 +359,23 @@ Route::post('/confirmation-inscription', [
 
 /*
 |--------------------------------------------------------------------------
-| Quiz public
+| Quiz étudiant - accès sécurisé
 |--------------------------------------------------------------------------
 */
 
-Route::get('/quiz/{quiz}', [
-    QuizController::class,
-    'show'
-])->name('quiz.show');
+Route::middleware('auth')->group(function () {
 
-Route::post('/quiz/{quiz}/submit', [
-    QuizController::class,
-    'submit'
-])->name('quiz.submit');
+    Route::get('/quiz/{quiz}', [
+        QuizController::class,
+        'show'
+    ])->name('quiz.show');
+
+    Route::post('/quiz/{quiz}/submit', [
+        QuizController::class,
+        'submit'
+    ])->name('quiz.submit');
+
+});
 
 
 /*
@@ -297,7 +390,6 @@ Route::get('/formations/{formation}/learn', function (
 
     $user = auth()->user();
 
-    // Vérifier que la formation est activée pour cet étudiant
     $studentFormation = $user->formations()
         ->where('formations.id', $formation->id)
         ->first();
@@ -309,7 +401,6 @@ Route::get('/formations/{formation}/learn', function (
         abort(403, 'Vous n’avez pas accès à cette formation.');
     }
 
-    // Charger les cours et les quiz associés à la formation
     $formation->load([
         'cours',
         'quizzes.questions'
@@ -374,6 +465,39 @@ Route::post('/formations/{formation}/request', function (
     );
 
 })->middleware('auth')->name('formations.request');
+
+
+/*
+|--------------------------------------------------------------------------
+| Progression des leçons
+|--------------------------------------------------------------------------
+*/
+
+Route::post(
+    '/formations/{formation}/cours/{cours}/progress',
+    [LessonProgressController::class, 'update']
+)->middleware('auth')->name('lesson-progress.update');
+
+
+/*
+|--------------------------------------------------------------------------
+| Storage
+|--------------------------------------------------------------------------
+*/
+
+Route::get('/fix-storage', function () {
+
+    $link = public_path('storage');
+
+    if (file_exists($link)) {
+        return 'Le lien existe déjà : ' . $link;
+    }
+
+    Artisan::call('storage:link');
+
+    return Artisan::output();
+
+})->middleware('auth');
 
 
 /*

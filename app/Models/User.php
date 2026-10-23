@@ -6,6 +6,7 @@ use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class User extends Authenticatable
 {
@@ -50,5 +51,13 @@ class User extends Authenticatable
             'status',
             'activated_at',
         ])->withTimestamps();
+    }
+
+    /**
+     * Certificats de l'étudiant.
+     */
+    public function certificates(): HasMany
+    {
+        return $this->hasMany(Certificate::class, 'user_id');
     }
 }

@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\Admin;
-
+use App\Models\Certificate;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
@@ -40,15 +40,20 @@ class DashboardController extends Controller
             ->where('status', 'pending')
             ->count();
 
-        // Afficher le dashboard avec toutes les données
-        return view('admin.dashboard', compact(
-            'totalStudents',
-            'pendingStudents',
-            'acceptedStudents',
-            'confirmedStudents',
-            'rejectedStudents',
-            'pendingRegistrations',
-            'pendingFormationRequests'
-        ));
-    }
+
+           // Notifications : demandes de certificats en attente
+$pendingCertificateRequests = Certificate::where('status', 'pending')->count();
+
+// Afficher le dashboard avec toutes les données
+return view('admin.dashboard', compact(
+    'totalStudents',
+    'pendingStudents',
+    'acceptedStudents',
+    'confirmedStudents',
+    'rejectedStudents',
+    'pendingRegistrations',
+    'pendingFormationRequests',
+    'pendingCertificateRequests'
+));
+}
 }

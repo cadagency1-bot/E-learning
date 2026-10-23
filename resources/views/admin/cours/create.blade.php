@@ -874,7 +874,7 @@
                     </p>
                 </div>
 
-                ```html
+                
 <!-- DEUXIÈME VIDÉO -->
 <div class="field">
     <label for="video2">

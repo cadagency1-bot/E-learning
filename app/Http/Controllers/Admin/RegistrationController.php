@@ -63,7 +63,8 @@ class RegistrationController extends Controller
     }
 
     /**
-     * Accepter une inscription.
+     * Accepter une inscription :
+     * génère le code de confirmation et prépare l'envoi sur WhatsApp.
      */
     public function accept(User $user): RedirectResponse
     {
@@ -77,17 +78,26 @@ class RegistrationController extends Controller
             );
         }
 
+        $code = strtoupper(Str::random(6));
+
         $user->update([
             'status' => 'accepted',
-            'confirmation_code' => strtoupper(Str::random(6)),
+            'confirmation_code' => $code,
             'confirmed_at' => null,
         ]);
 
-        return back()->with(
+        $response = back()->with(
             'success',
             'La demande de ' . $user->name .
             ' a été acceptée. Le code de confirmation a été généré.'
         );
+
+        // Lien WhatsApp avec le code déjà écrit dans le message
+        if (!empty($user->whatsapp_phone)) {
+            $response->with('whatsapp_url', $this->whatsappUrl($user, $code));
+        }
+
+        return $response;
     }
 
     /**
@@ -135,5 +145,29 @@ class RegistrationController extends Controller
             'success',
             'L’étudiant a été supprimé avec succès.'
         );
+    }
+
+    /**
+     * Construit le lien WhatsApp contenant le code de confirmation.
+     */
+    private function whatsappUrl(User $user, string $code): string
+    {
+        $phone = preg_replace('/\D+/', '', $user->whatsapp_phone ?? '');
+
+        // Numéros marocains : 0612345678 ou 00212612345678 -> 212612345678
+        if (str_starts_with($phone, '00')) {
+            $phone = substr($phone, 2);
+        } elseif (strlen($phone) === 10 && str_starts_with($phone, '0')) {
+            $phone = '212' . substr($phone, 1);
+        }
+
+        $text = "Bonjour {$user->name},\n\n"
+            . "Votre inscription sur ÉtudeEnLigne a été acceptée ✅\n\n"
+            . "Votre code de confirmation : {$code}\n\n"
+            . "Confirmez votre inscription ici : " . route('confirmation.show') . "\n\n"
+            . "مرحبا {$user->name}، تم قبول تسجيلك في ÉtudeEnLigne ✅\n"
+            . "رمز التأكيد الخاص بك : {$code}";
+
+        return 'https://wa.me/' . $phone . '?text=' . rawurlencode($text);
     }
 }

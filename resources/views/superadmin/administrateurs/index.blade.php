@@ -6,13 +6,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Gestion des administrateurs | ÉtudeEnLigne</title>
+    <link rel="icon" type="image/png" href="{{ asset('images/cad-academy-logo.png') }}">
 
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap"
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
           rel="stylesheet">
 
     {{-- ============ Traductions FR / AR ============ --}}
@@ -20,10 +21,11 @@
         const I18N = {
             fr: {
                 page_title: "Gestion des administrateurs | ÉtudeEnLigne",
-                brand_sub: "Super administration",
+                brand_sub: "Super Administration",
                 menu_main: "Menu principal",
                 nav_dashboard: "Tableau de bord",
-                nav_admins: "Gestion des administrateurs",
+                nav_admins: "Administrateurs",
+                nav_registrations: "Inscriptions",
                 account: "Compte",
                 settings: "Paramètres",
                 logout: "Déconnexion",
@@ -67,7 +69,8 @@
                 brand_sub: "الإدارة العليا",
                 menu_main: "القائمة الرئيسية",
                 nav_dashboard: "لوحة التحكم",
-                nav_admins: "إدارة المسؤولين",
+                nav_admins: "المسؤولون",
+                nav_registrations: "التسجيلات",
                 account: "الحساب",
                 settings: "الإعدادات",
                 logout: "تسجيل الخروج",
@@ -129,16 +132,16 @@
             const dict = I18N[lang];
 
             document.querySelectorAll('[data-i18n]').forEach(function (el) {
-                el.textContent = dict[el.dataset.i18n];
+                if (dict[el.dataset.i18n] !== undefined) el.textContent = dict[el.dataset.i18n];
             });
             document.querySelectorAll('[data-i18n-placeholder]').forEach(function (el) {
-                el.placeholder = dict[el.dataset.i18nPlaceholder];
+                if (dict[el.dataset.i18nPlaceholder] !== undefined) el.placeholder = dict[el.dataset.i18nPlaceholder];
             });
             document.querySelectorAll('[data-i18n-aria]').forEach(function (el) {
-                el.setAttribute('aria-label', dict[el.dataset.i18nAria]);
+                if (dict[el.dataset.i18nAria] !== undefined) el.setAttribute('aria-label', dict[el.dataset.i18nAria]);
             });
             document.querySelectorAll('[data-i18n-title]').forEach(function (el) {
-                el.title = dict[el.dataset.i18nTitle];
+                if (dict[el.dataset.i18nTitle] !== undefined) el.title = dict[el.dataset.i18nTitle];
             });
             document.querySelectorAll('[data-lang]').forEach(function (btn) {
                 btn.setAttribute('aria-pressed', btn.dataset.lang === lang ? 'true' : 'false');
@@ -159,208 +162,253 @@
 
     <style>
         :root {
-            --bg: #f4f6f8;
-            --surface: #ffffff;
-            --border: #e3e8ee;
-            --border-soft: #eef1f5;
-            --text: #0f172a;
-            --text-muted: #5b6678;
-            --text-faint: #8a94a6;
-
-            --primary: #059669;
-            --primary-hover: #047857;
-            --primary-soft: #ecfdf5;
-            --primary-ring: rgba(5, 150, 105, .22);
-
-            --danger: #be123c;
-            --danger-soft: #fff1f2;
-            --warning: #b45309;
-            --warning-soft: #fffbeb;
-
-            --radius: 10px;
+            --bg: #031f17;
+            --surface: #0a3427;
+            --surface-2: #0f4535;
+            --border: #14604a;
+            --text: #ecfdf5;
+            --muted: #8fc7b2;
+            --faint: #5fa38b;
+            --brand: #34d399;
+            --brand-dark: #10b981;
+            --radius: 18px;
         }
 
-        * {
-            box-sizing: border-box;
-        }
+        * { box-sizing: border-box; }
 
         body {
-            font-family: 'IBM Plex Sans', 'IBM Plex Sans Arabic', system-ui, sans-serif;
-            background: var(--bg);
+            font-family: 'Plus Jakarta Sans', 'Cairo', system-ui, sans-serif;
+            background: linear-gradient(160deg, #021710 0%, #05301f 45%, #0a4a36 100%) fixed;
             color: var(--text);
             margin: 0;
             -webkit-font-smoothing: antialiased;
         }
 
-        :focus-visible {
-            outline: 2px solid var(--primary);
-            outline-offset: 2px;
-        }
+        html[dir="rtl"] * { letter-spacing: 0 !important; }
 
-        /* ---------- Sidebar (propriétés logiques : fonctionne en LTR et RTL) ---------- */
+        :focus-visible { outline: 2px solid var(--brand); outline-offset: 2px; }
 
+        .tabular { font-variant-numeric: tabular-nums; }
+
+        /* ---------- SIDEBAR ---------- */
         .sidebar {
-            width: 256px;
-            background: var(--surface);
+            width: 250px;
+            background: linear-gradient(180deg, #06382b 0%, #021c14 100%);
             border-inline-end: 1px solid var(--border);
             position: fixed;
             inset-block: 0;
             inset-inline-start: 0;
             z-index: 40;
-            padding: 24px 16px;
+            padding: 22px 14px 96px;
+            overflow-y: auto;
             display: flex;
             flex-direction: column;
         }
 
-        .main-content {
-            margin-inline-start: 256px;
-            min-height: 100vh;
+        .sidebar::-webkit-scrollbar { width: 0; }
+
+        .brand-link {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 2px 6px 20px;
+            margin-bottom: 18px;
+            border-bottom: 1px solid var(--border);
+            text-decoration: none;
         }
 
-        .nav-section {
-            font-size: 11px;
-            font-weight: 600;
-            letter-spacing: .04em;
-            color: var(--text-faint);
-            padding: 0 12px;
-            margin: 24px 0 8px;
+        .brand-text { flex: 1; min-width: 0; }
+
+        .logo-crop {
+            position: relative;
+            overflow: hidden;
+            background: #f7f7f7;
+            border-radius: 12px;
         }
+
+        .logo-crop img { display: block; max-width: none; }
+
+        .logo-full { width: 100%; max-width: 190px; aspect-ratio: 950 / 400; }
+        .logo-full img { width: 105.263%; margin-left: -2.632%; margin-top: -31.579%; }
+
+        .logo-mark { display: none; width: 44px; aspect-ratio: 415 / 400; flex-shrink: 0; }
+        .logo-mark img { width: 240.964%; margin-left: -6.024%; margin-top: -72.289%; }
+
+        .nav-label { font-size: 11px; color: var(--faint); font-weight: 600; padding: 0 12px; margin-bottom: 8px; }
 
         .nav-link {
             display: flex;
             align-items: center;
             gap: 12px;
-            padding: 10px 12px;
-            margin-bottom: 2px;
-            border-radius: 8px;
-            color: var(--text-muted);
-            font-size: 14px;
-            font-weight: 500;
-            text-decoration: none;
-            transition: background .15s, color .15s;
-        }
-
-        .nav-link:hover {
-            background: var(--bg);
-            color: var(--text);
-        }
-
-        .nav-link.active {
-            background: var(--primary-soft);
-            color: var(--primary-hover);
+            padding: 11px 14px;
+            margin-bottom: 6px;
+            border-radius: 12px;
+            color: var(--muted);
+            font-size: 13px;
             font-weight: 600;
-            box-shadow: inset 3px 0 0 var(--primary);
+            text-decoration: none;
+            transition: background .18s ease, color .18s ease;
         }
 
-        /* ---------- Cartes & tableau ---------- */
+        .nav-link svg { width: 18px; height: 18px; flex-shrink: 0; }
+        .nav-link:hover { background: var(--surface-2); color: var(--text); }
+        .nav-link.active { background: #ffffff; color: #052e22; }
 
+        .sidebar-user {
+            position: absolute;
+            bottom: 0; left: 0; right: 0;
+            padding: 14px;
+            background: #021c14;
+            border-top: 1px solid var(--border);
+        }
+
+        .avatar {
+            width: 42px;
+            height: 42px;
+            border-radius: 999px;
+            background: linear-gradient(135deg, #4ade80, #16a34a);
+            color: #052e16;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            flex-shrink: 0;
+        }
+
+        /* ---------- LAYOUT ---------- */
+        .main-content { margin-inline-start: 250px; min-height: 100vh; }
+
+        .topbar {
+            position: sticky;
+            top: 0;
+            z-index: 30;
+            background: rgba(3, 31, 23, .82);
+            backdrop-filter: saturate(160%) blur(12px);
+            -webkit-backdrop-filter: saturate(160%) blur(12px);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .page-content { max-width: 1440px; margin: 0 auto; }
+
+        /* ---------- CARTES EN DÉGRADÉ ---------- */
+        .g-card {
+            position: relative;
+            overflow: hidden;
+            border-radius: 16px;
+            padding: 18px 20px;
+            color: #fff;
+            min-height: 118px;
+            box-shadow: 0 14px 28px -14px rgba(0, 0, 0, .6);
+            transition: transform .2s ease;
+        }
+
+        .g-card:hover { transform: translateY(-3px); }
+
+        .g-1 { background: linear-gradient(135deg, #065f46 0%, #10b981 100%); }
+        .g-2 { background: linear-gradient(135deg, #0f766e 0%, #2dd4bf 100%); }
+        .g-3 { background: linear-gradient(135deg, #166534 0%, #4ade80 100%); }
+
+        .g-card .g-label { font-size: 12.5px; font-weight: 600; opacity: .92; }
+        .g-card .g-number { font-size: 28px; font-weight: 800; margin-top: 6px; line-height: 1.1; }
+        .g-card .g-text { font-size: 19px; font-weight: 800; margin-top: 8px; line-height: 1.2; }
+        .g-card .g-sub { font-size: 11.5px; opacity: .85; margin-top: 8px; }
+
+        .g-card .g-icon {
+            position: absolute;
+            inset-inline-end: 16px;
+            top: 16px;
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, .18);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* ---------- PANNEAU / TABLEAU ---------- */
         .panel {
-            background: var(--surface);
+            background: linear-gradient(145deg, #0d4132 0%, #08291f 100%);
             border: 1px solid var(--border);
             border-radius: var(--radius);
+            min-width: 0;
         }
 
-        .kpi {
-            padding: 20px 24px;
-        }
+        .table-wrap { width: 100%; overflow-x: auto; }
 
-        .kpi + .kpi {
-            border-top: 1px solid var(--border-soft);
-        }
-
-        @media (min-width: 768px) {
-            .kpi + .kpi {
-                border-top: 0;
-                border-inline-start: 1px solid var(--border-soft);
-            }
-        }
-
-        .table-wrap {
-            width: 100%;
-            overflow-x: auto;
-        }
+        .data-table { width: 100%; border-collapse: collapse; text-align: start; }
 
         .data-table th {
-            padding: 12px 24px;
-            font-size: 12px;
-            font-weight: 600;
-            color: var(--text-muted);
-            background: #f8fafc;
-            border-bottom: 1px solid var(--border);
+            background: var(--surface-2);
+            padding: 13px 24px;
+            font-size: 11.5px;
+            font-weight: 700;
+            color: var(--muted);
             white-space: nowrap;
             text-align: start;
         }
 
-        .data-table th.col-actions {
-            text-align: end;
-        }
+        .data-table th.col-actions { text-align: end; }
 
         .data-table td {
-            padding: 16px 24px;
-            font-size: 14px;
-            color: var(--text-muted);
+            padding: 15px 24px;
+            border-bottom: 1px solid var(--border);
+            font-size: 13px;
+            color: var(--muted);
             vertical-align: middle;
         }
 
-        .data-table tbody tr {
-            border-bottom: 1px solid var(--border-soft);
+        .data-table tbody tr:last-child td { border-bottom: 0; }
+        .data-table tbody tr { transition: background .15s ease; }
+        .data-table tbody tr:hover { background: rgba(255, 255, 255, .03); }
+
+        .ltr-value { direction: ltr; unicode-bidi: isolate; display: inline-block; }
+
+        .badge-role {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 5px 12px;
+            border-radius: 8px;
+            background: rgba(74, 222, 128, .16);
+            color: #4ade80;
+            font-size: 11.5px;
+            font-weight: 700;
         }
 
-        .data-table tbody tr:last-child {
-            border-bottom: 0;
-        }
-
-        .data-table tbody tr:hover {
-            background: #fafbfc;
-        }
-
-        /* ---------- Boutons ---------- */
-
+        /* ---------- BOUTONS ---------- */
         .btn {
             display: inline-flex;
             align-items: center;
             justify-content: center;
             gap: 8px;
-            padding: 10px 16px;
-            border-radius: 8px;
-            font-size: 14px;
-            font-weight: 600;
+            padding: 11px 18px;
+            border-radius: 12px;
+            font-size: 13px;
+            font-weight: 800;
             line-height: 1.2;
             text-decoration: none;
             border: 1px solid transparent;
             cursor: pointer;
-            transition: background .15s, border-color .15s, color .15s;
             font-family: inherit;
+            transition: filter .15s ease, transform .15s ease, background .15s ease, color .15s ease;
         }
 
         .btn-primary {
-            background: var(--primary);
-            color: #fff;
+            background: linear-gradient(135deg, #10b981, #34d399);
+            color: #052e22;
         }
 
-        .btn-primary:hover {
-            background: var(--primary-hover);
-        }
-
-        .btn-dark {
-            background: var(--text);
-            color: #fff;
-        }
-
-        .btn-dark:hover {
-            background: #1e293b;
-        }
+        .btn-primary:hover { filter: brightness(1.08); transform: translateY(-1px); }
 
         .btn-ghost {
-            background: var(--surface);
-            color: var(--text-muted);
+            background: transparent;
+            color: var(--muted);
             border-color: var(--border);
+            font-weight: 700;
         }
 
-        .btn-ghost:hover {
-            background: var(--bg);
-            color: var(--text);
-        }
+        .btn-ghost:hover { background: var(--surface-2); color: var(--text); }
 
         .action-btn {
             display: inline-flex;
@@ -368,247 +416,181 @@
             justify-content: center;
             gap: 6px;
             padding: 7px 12px;
-            border-radius: 8px;
-            font-size: 13px;
-            font-weight: 600;
+            border-radius: 10px;
+            font-size: 12.5px;
+            font-weight: 700;
             text-decoration: none;
-            background: var(--surface);
-            border: 1px solid var(--border);
+            border: 0;
             cursor: pointer;
-            transition: background .15s, border-color .15s, color .15s;
             font-family: inherit;
+            transition: filter .15s ease, transform .15s ease;
         }
 
-        .action-edit {
-            color: var(--warning);
-        }
-
-        .action-edit:hover {
-            background: var(--warning-soft);
-            border-color: #fcd9a1;
-        }
-
-        .action-delete {
-            color: var(--danger);
-        }
-
-        .action-delete:hover {
-            background: var(--danger-soft);
-            border-color: #fecdd3;
-        }
-
-        .badge-role {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            padding: 4px 10px;
-            border-radius: 999px;
-            background: var(--primary-soft);
-            color: var(--primary-hover);
-            font-size: 12px;
-            font-weight: 600;
-        }
+        .action-btn:hover { filter: brightness(1.25); transform: translateY(-1px); }
+        .action-edit { background: rgba(245, 158, 11, .16); color: #fbbf24; }
+        .action-delete { background: rgba(244, 63, 94, .16); color: #fb7185; }
 
         .search-input {
             width: 100%;
             border: 1px solid var(--border);
-            border-radius: 8px;
-            padding-block: 10px;
-            padding-inline-start: 38px;
+            border-radius: 12px;
+            padding-block: 11px;
+            padding-inline-start: 40px;
             padding-inline-end: 14px;
-            font-size: 14px;
+            font-size: 13.5px;
             font-family: inherit;
             color: var(--text);
-            background: var(--surface);
+            background: rgba(2, 23, 16, .55);
             outline: none;
-            transition: border-color .15s, box-shadow .15s;
+            transition: border-color .15s ease, box-shadow .15s ease;
         }
 
-        .search-input::placeholder {
-            color: var(--text-faint);
-        }
+        .search-input::placeholder { color: var(--faint); }
 
         .search-input:focus {
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px var(--primary-ring);
+            border-color: var(--brand);
+            box-shadow: 0 0 0 3px rgba(52, 211, 153, .18);
         }
 
-        /* ---------- Sélecteur de langue ---------- */
-
+        /* ---------- SÉLECTEUR DE LANGUE ---------- */
         .lang-switch {
             display: inline-flex;
             padding: 3px;
             gap: 2px;
             border: 1px solid var(--border);
-            border-radius: 8px;
+            border-radius: 999px;
             background: var(--surface);
         }
 
         .lang-switch button {
-            padding: 5px 12px;
+            padding: 7px 14px;
             border: 0;
-            border-radius: 6px;
+            border-radius: 999px;
             background: transparent;
-            color: var(--text-muted);
-            font-size: 13px;
-            font-weight: 600;
+            color: var(--muted);
+            font-size: 12px;
+            font-weight: 700;
             font-family: inherit;
             cursor: pointer;
-            transition: background .15s, color .15s;
+            transition: all .15s ease;
         }
 
-        .lang-switch button:hover {
-            color: var(--text);
+        .lang-switch button:hover { color: var(--text); }
+        .lang-switch button[aria-pressed="true"] { background: #ffffff; color: #052e22; }
+
+        /* ---------- ALERTES ---------- */
+        .alert { display: flex; gap: 12px; border-radius: 14px; padding: 13px 16px; margin-bottom: 20px; font-size: 13.5px; font-weight: 600; }
+        .alert-success { background: rgba(52, 211, 153, .14); border: 1px solid rgba(52, 211, 153, .4); color: #6ee7b7; }
+        .alert-error { background: rgba(244, 63, 94, .13); border: 1px solid rgba(244, 63, 94, .4); color: #fda4af; }
+
+        .empty-box {
+            width: 56px;
+            height: 56px;
+            margin: 0 auto 14px;
+            border-radius: 18px;
+            background: var(--surface-2);
+            color: var(--brand);
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
-        .lang-switch button[aria-pressed="true"] {
-            background: var(--primary-soft);
-            color: var(--primary-hover);
+        /* ---------- PAGINATION (vue Laravel par défaut) ---------- */
+        .pagination-dark nav * { border-color: var(--border) !important; }
+        .pagination-dark nav a,
+        .pagination-dark nav button,
+        .pagination-dark nav span > span,
+        .pagination-dark nav span[aria-current] > span,
+        .pagination-dark nav span[aria-disabled] > span {
+            background: var(--surface-2) !important;
+            color: var(--text) !important;
         }
+        .pagination-dark nav span[aria-current] > span { background: var(--brand-dark) !important; color: #052e22 !important; }
+        .pagination-dark nav p { color: var(--muted) !important; }
+        .pagination-dark nav svg { color: var(--text); }
 
-        /* ---------- Ajustements RTL (arabe) ---------- */
-
-        html[dir="rtl"] .nav-link.active {
-            box-shadow: inset -3px 0 0 var(--primary);
-        }
-
-        /* L'espacement entre lettres casse la liaison des lettres arabes */
-        html[dir="rtl"] .nav-section {
-            letter-spacing: 0;
-        }
-
-        html[dir="rtl"] body {
-            line-height: 1.6;
-        }
-
-        /* Valeurs techniques toujours lues de gauche à droite */
-        .ltr-value {
-            direction: ltr;
-            unicode-bidi: isolate;
-            display: inline-block;
-        }
-
-        /* ---------- Responsive ---------- */
-
+        /* ---------- RESPONSIVE ---------- */
         @media (max-width: 1023px) {
-            .sidebar {
-                width: 72px;
-                padding: 20px 10px;
-            }
-
-            .sidebar .brand-text,
-            .sidebar .nav-text,
-            .sidebar .nav-section,
-            .sidebar .sidebar-bottom-text {
-                display: none;
-            }
-
-            .sidebar .nav-link {
-                justify-content: center;
-                padding: 12px 8px;
-            }
-
-            .main-content {
-                margin-inline-start: 72px;
-            }
+            .sidebar { width: 72px; padding: 20px 10px 96px; }
+            .sidebar .brand-text, .sidebar .nav-text, .sidebar .nav-label, .sidebar .sidebar-bottom-text { display: none; }
+            .brand-link { justify-content: center; padding: 2px 0 18px; }
+            .logo-mark { display: block; }
+            .sidebar .nav-link { justify-content: center; padding: 12px 8px; }
+            .sidebar-user { padding: 12px 8px; }
+            .sidebar-user > div { justify-content: center; }
+            .main-content { margin-inline-start: 72px; }
         }
 
         @media (max-width: 640px) {
-            .sidebar {
-                display: none;
-            }
-
-            .main-content {
-                margin-inline-start: 0;
-            }
-
-            .page-content {
-                padding: 16px !important;
-            }
-
-            .data-table th,
-            .data-table td {
-                padding-inline: 16px;
-            }
+            .sidebar { display: none; }
+            .main-content { margin-inline-start: 0; }
+            .page-content { padding: 16px !important; }
+            .data-table th, .data-table td { padding-inline: 16px; }
         }
-
-        
     </style>
 </head>
 
 <body>
 
+{{-- SIDEBAR --}}
 <aside class="sidebar">
 
-    <a href="{{ route('superadmin.dashboard') }}"
-       class="flex items-center gap-3 mb-8 px-2 no-underline">
-
-       <div class="logo-crop logo-full">
+    <a href="{{ route('superadmin.dashboard') }}" class="brand-link">
+        <div class="brand-text">
+            <div class="logo-crop logo-full">
                 <img src="{{ asset('images/logo-centre.png') }}" alt="CAD Academy">
             </div>
-            <div class="text-[11px] text-gray-400 mt-2.5 px-0.5" data-i18n="super_admin">Super Administration</div>
+            <div class="text-[11px] mt-2.5 px-0.5" style="color: var(--muted);" data-i18n="brand_sub">Super Administration</div>
         </div>
 
-        <div class="brand-text">
-            <div class="font-bold text-slate-900 text-[15px] leading-tight">
-                ÉtudeEnLigne
-            </div>
-            <div class="text-xs text-slate-500 mt-0.5" data-i18n="brand_sub">
-                Super administration
-            </div>
+        <div class="logo-crop logo-mark">
+            <img src="{{ asset('images/cad-academy-logo.png') }}" alt="CAD Academy">
         </div>
     </a>
 
-    <div class="nav-section" style="margin-top:0" data-i18n="menu_main">
-        Menu principal
-    </div>
+    <div class="nav-label" data-i18n="menu_main">Menu principal</div>
 
     <a href="{{ route('superadmin.dashboard') }}" class="nav-link">
-        <i data-lucide="layout-dashboard" class="w-[18px] h-[18px] shrink-0"></i>
+        <i data-lucide="layout-dashboard"></i>
         <span class="nav-text" data-i18n="nav_dashboard">Tableau de bord</span>
     </a>
 
-    <a href="{{ route('superadmin.administrateurs.index') }}"
-       class="nav-link active">
-        <i data-lucide="shield-check" class="w-[18px] h-[18px] shrink-0"></i>
-        <span class="nav-text" data-i18n="nav_admins">Gestion des administrateurs</span>
+    <a href="{{ route('superadmin.administrateurs.index') }}" class="nav-link active">
+        <i data-lucide="shield-check"></i>
+        <span class="nav-text" data-i18n="nav_admins">Administrateurs</span>
     </a>
 
-    <div class="nav-section" data-i18n="account">
-        Compte
-    </div>
+    <a href="{{ route('superadmin.inscriptions.index') }}" class="nav-link">
+        <i data-lucide="users"></i>
+        <span class="nav-text" data-i18n="nav_registrations">Inscriptions</span>
+    </a>
+
+    <div class="nav-label" style="margin-top: 26px;" data-i18n="account">Compte</div>
 
     <a href="{{ route('profile.edit') }}" class="nav-link">
-        <i data-lucide="settings" class="w-[18px] h-[18px] shrink-0"></i>
+        <i data-lucide="settings"></i>
         <span class="nav-text" data-i18n="settings">Paramètres</span>
     </a>
 
     <form method="POST" action="{{ route('logout') }}">
         @csrf
-
-        <button type="submit"
-                class="nav-link w-full text-start bg-transparent border-0 cursor-pointer"
-                style="font-family:inherit">
-            <i data-lucide="log-out" class="w-[18px] h-[18px] shrink-0"></i>
+        <button type="submit" class="nav-link w-full text-start bg-transparent border-0 cursor-pointer" style="font-family:inherit">
+            <i data-lucide="log-out"></i>
             <span class="nav-text" data-i18n="logout">Déconnexion</span>
         </button>
     </form>
 
-    <div class="mt-auto border-t border-slate-100 pt-4 sidebar-bottom-text">
-        <div class="flex items-center gap-3 px-2">
-
-            <div class="w-9 h-9 rounded-lg bg-emerald-50 text-emerald-700 flex items-center justify-center font-semibold shrink-0">
+    <div class="sidebar-user">
+        <div class="flex items-center gap-3">
+            <div class="avatar !w-9 !h-9 !rounded-xl text-sm">
                 {{ strtoupper(substr(auth()->user()->name ?? 'S', 0, 1)) }}
             </div>
 
-            <div class="min-w-0">
-                <p class="text-sm font-semibold text-slate-800 truncate">
+            <div class="min-w-0 sidebar-bottom-text">
+                <p class="text-xs font-semibold truncate" style="color: var(--text);">
                     {{ auth()->user()->name ?? 'Super Admin' }}
                 </p>
-
-                <p class="text-xs text-slate-500" data-i18n="super_admin_role">
-                    Super administrateur
-                </p>
+                <p class="text-[11px]" style="color: var(--muted);" data-i18n="super_admin_role">Super administrateur</p>
             </div>
         </div>
     </div>
@@ -616,16 +598,17 @@
 </aside>
 
 
+{{-- CONTENU --}}
 <div class="main-content">
 
-    <header class="bg-white border-b border-slate-200 px-5 md:px-8 py-4 flex items-center justify-between gap-4">
+    <header class="topbar px-5 md:px-8 py-4 flex items-center justify-between gap-4">
 
-        <div>
-            <p class="text-xs text-slate-500 mb-0.5" data-i18n="breadcrumb">
+        <div class="min-w-0">
+            <p class="text-xs mb-0.5" style="color: var(--muted);" data-i18n="breadcrumb">
                 ÉtudeEnLigne / Administration
             </p>
 
-            <h1 class="text-lg md:text-xl font-bold text-slate-900" data-i18n="page_h1">
+            <h1 class="text-xl font-extrabold tracking-tight truncate" data-i18n="page_h1">
                 Gestion des administrateurs
             </h1>
         </div>
@@ -639,16 +622,16 @@
             </div>
 
             <div class="hidden sm:block text-end">
-                <p class="text-sm font-semibold text-slate-800">
+                <p class="text-sm font-bold leading-tight">
                     {{ auth()->user()->name ?? 'Super Admin' }}
                 </p>
 
-                <p class="text-xs text-slate-500" data-i18n="super_admin_role">
+                <p class="text-xs" style="color: var(--muted);" data-i18n="super_admin_role">
                     Super administrateur
                 </p>
             </div>
 
-            <div class="w-10 h-10 rounded-lg bg-emerald-600 text-white flex items-center justify-center font-semibold">
+            <div class="avatar">
                 {{ strtoupper(substr(auth()->user()->name ?? 'S', 0, 1)) }}
             </div>
 
@@ -656,26 +639,23 @@
     </header>
 
 
-    <main class="page-content p-5 md:p-8 max-w-[1280px]">
+    <main class="page-content p-5 md:p-8">
 
         {{-- En-tête de la page --}}
-
         <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
 
             <div>
-                <h2 class="text-2xl font-bold text-slate-900">
+                <h2 class="text-2xl font-extrabold">
                     <span data-i18n="hello">Bonjour,</span>
                     {{ auth()->user()->name ?? 'Super Admin' }}
                 </h2>
 
-                <p class="text-sm text-slate-500 mt-1" data-i18n="subtitle">
+                <p class="text-sm mt-1" style="color: var(--muted);" data-i18n="subtitle">
                     Gérez les comptes administrateurs de votre plateforme.
                 </p>
             </div>
 
-            <a href="{{ route('superadmin.administrateurs.create') }}"
-               class="btn btn-primary no-underline">
-
+            <a href="{{ route('superadmin.administrateurs.create') }}" class="btn btn-primary">
                 <i data-lucide="user-plus" class="w-4 h-4"></i>
                 <span data-i18n="add_admin">Ajouter un administrateur</span>
             </a>
@@ -683,31 +663,26 @@
         </div>
 
 
-        {{-- Messages de confirmation (texte fourni par le serveur) --}}
-
+        {{-- Messages (texte fourni par le serveur) --}}
         @if(session('success'))
-            <div role="status" class="mb-5 flex items-center gap-3 px-4 py-3 rounded-lg bg-emerald-50 border border-emerald-200 text-emerald-800">
+            <div role="status" class="alert alert-success">
                 <i data-lucide="check-circle" class="w-5 h-5 shrink-0"></i>
-                <p class="text-sm font-medium">
-                    {{ session('success') }}
-                </p>
+                <p>{{ session('success') }}</p>
             </div>
         @endif
 
         @if(session('error'))
-            <div role="alert" class="mb-5 flex items-center gap-3 px-4 py-3 rounded-lg bg-rose-50 border border-rose-200 text-rose-800">
+            <div role="alert" class="alert alert-error">
                 <i data-lucide="alert-circle" class="w-5 h-5 shrink-0"></i>
-                <p class="text-sm font-medium">
-                    {{ session('error') }}
-                </p>
+                <p>{{ session('error') }}</p>
             </div>
         @endif
 
         @if($errors->any())
-            <div role="alert" class="mb-5 px-4 py-3 rounded-lg bg-rose-50 border border-rose-200 text-rose-800">
-                <p class="font-semibold text-sm mb-2" data-i18n="fix_errors">Veuillez corriger les erreurs suivantes :</p>
+            <div role="alert" class="alert alert-error" style="display:block;">
+                <p class="font-bold mb-2" data-i18n="fix_errors">Veuillez corriger les erreurs suivantes :</p>
 
-                <ul class="list-disc ps-5 text-sm space-y-1">
+                <ul class="list-disc ps-5 space-y-1">
                     @foreach($errors->all() as $error)
                         <li>{{ $error }}</li>
                     @endforeach
@@ -717,87 +692,57 @@
 
 
         {{-- Statistiques --}}
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-5 mb-6">
 
-        <div class="panel grid grid-cols-1 md:grid-cols-3 mb-6">
-
-            <div class="kpi">
-                <div class="flex items-center gap-2 text-sm text-slate-500">
-                    <i data-lucide="shield-check" class="w-4 h-4 text-emerald-600"></i>
-                    <span data-i18n="kpi_total">Total des administrateurs</span>
-                </div>
-
-                <p class="text-3xl font-bold text-slate-900 mt-2 tabular-nums">
-                    {{ $totalAdmins ?? $admins->total() }}
-                </p>
-
-                <p class="text-xs text-slate-400 mt-1" data-i18n="kpi_total_sub">
-                    Comptes administrateurs enregistrés
-                </p>
+            <div class="g-card g-1">
+                <div class="g-icon"><i data-lucide="shield-check" class="w-5 h-5"></i></div>
+                <p class="g-label" data-i18n="kpi_total">Total des administrateurs</p>
+                <p class="g-number tabular">{{ $totalAdmins ?? $admins->total() }}</p>
+                <p class="g-sub" data-i18n="kpi_total_sub">Comptes administrateurs enregistrés</p>
             </div>
 
-
-            <div class="kpi">
-                <div class="flex items-center gap-2 text-sm text-slate-500">
-                    <i data-lucide="user-check" class="w-4 h-4 text-emerald-600"></i>
-                    <span data-i18n="kpi_account">Votre compte</span>
-                </div>
-
-                <p class="text-xl font-bold text-slate-900 mt-3" data-i18n="kpi_account_val">
-                    Super Admin
-                </p>
-
-                <p class="text-xs text-slate-400 mt-2" data-i18n="kpi_account_sub">
-                    Gestion globale de la plateforme
-                </p>
+            <div class="g-card g-2">
+                <div class="g-icon"><i data-lucide="user-check" class="w-5 h-5"></i></div>
+                <p class="g-label" data-i18n="kpi_account">Votre compte</p>
+                <p class="g-text" data-i18n="kpi_account_val">Super Admin</p>
+                <p class="g-sub" data-i18n="kpi_account_sub">Gestion globale de la plateforme</p>
             </div>
 
-
-            <div class="kpi">
-                <div class="flex items-center gap-2 text-sm text-slate-500">
-                    <i data-lucide="list" class="w-4 h-4 text-emerald-600"></i>
-                    <span data-i18n="kpi_shown">Résultats affichés</span>
-                </div>
-
-                <p class="text-3xl font-bold text-slate-900 mt-2 tabular-nums">
-                    {{ $admins->count() }}
-                </p>
-
-                <p class="text-xs text-slate-400 mt-1" data-i18n="kpi_shown_sub">
-                    Administrateurs sur cette page
-                </p>
+            <div class="g-card g-3">
+                <div class="g-icon"><i data-lucide="list" class="w-5 h-5"></i></div>
+                <p class="g-label" data-i18n="kpi_shown">Résultats affichés</p>
+                <p class="g-number tabular">{{ $admins->count() }}</p>
+                <p class="g-sub" data-i18n="kpi_shown_sub">Administrateurs sur cette page</p>
             </div>
 
         </div>
 
 
         {{-- Tableau des administrateurs --}}
-
         <section class="panel overflow-hidden">
 
-            <div class="px-5 md:px-6 py-4 border-b border-slate-200">
+            <div class="px-5 md:px-6 py-5" style="border-bottom: 1px solid var(--border);">
 
                 <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
 
                     <div>
-                        <h3 class="font-semibold text-slate-900" data-i18n="list_title">
-                            Liste des administrateurs
-                        </h3>
+                        <h3 class="font-extrabold" data-i18n="list_title">Liste des administrateurs</h3>
 
-                        <p class="text-xs text-slate-500 mt-0.5" data-i18n="list_sub">
+                        <p class="text-xs mt-1" style="color: var(--muted);" data-i18n="list_sub">
                             Consultez et gérez les comptes existants.
                         </p>
                     </div>
 
 
-                    {{-- Formulaire de recherche --}}
-
+                    {{-- Recherche --}}
                     <form method="GET"
                           action="{{ route('superadmin.administrateurs.index') }}"
                           class="flex flex-col sm:flex-row gap-2">
 
                         <div class="relative">
                             <i data-lucide="search"
-                               class="w-4 h-4 text-slate-400 absolute start-3 top-1/2 -translate-y-1/2 pointer-events-none"></i>
+                               class="w-4 h-4 absolute start-3 top-1/2 -translate-y-1/2 pointer-events-none"
+                               style="color: var(--faint);"></i>
 
                             <input
                                 type="text"
@@ -811,13 +756,13 @@
                             >
                         </div>
 
-                        <button type="submit" class="btn btn-dark" data-i18n="search_btn">
+                        <button type="submit" class="btn btn-primary" data-i18n="search_btn">
                             Rechercher
                         </button>
 
                         @if(request('search'))
                             <a href="{{ route('superadmin.administrateurs.index') }}"
-                               class="btn btn-ghost no-underline"
+                               class="btn btn-ghost"
                                data-i18n="reset">
                                 Réinitialiser
                             </a>
@@ -834,7 +779,6 @@
                 <table class="data-table w-full">
 
                     <thead>
-
                         <tr>
                             <th data-i18n="th_admin">Administrateur</th>
                             <th data-i18n="th_email">Adresse email</th>
@@ -842,9 +786,7 @@
                             <th data-i18n="th_date">Date de création</th>
                             <th class="col-actions" data-i18n="th_actions">Actions</th>
                         </tr>
-
                     </thead>
-
 
                     <tbody>
 
@@ -853,71 +795,56 @@
                             <tr>
 
                                 {{-- Nom --}}
-
                                 <td class="whitespace-nowrap">
-
                                     <div class="flex items-center gap-3">
 
-                                        <div class="w-9 h-9 rounded-lg bg-emerald-50 text-emerald-700 flex items-center justify-center font-semibold shrink-0">
+                                        <div class="w-10 h-10 rounded-xl flex items-center justify-center font-bold shrink-0"
+                                             style="background: rgba(74,222,128,.14); color:#4ade80;">
                                             {{ strtoupper(substr($admin->name ?? '?', 0, 1)) }}
                                         </div>
 
                                         <div>
-                                            <p class="text-sm font-semibold text-slate-900">
+                                            <p class="text-sm font-bold" style="color: var(--text);">
                                                 {{ $admin->name }}
                                             </p>
 
-                                            <p class="text-xs text-slate-400 mt-0.5">
+                                            <p class="text-xs mt-0.5" style="color: var(--faint);">
                                                 <span data-i18n="id_label">ID :</span> {{ $admin->id }}
                                             </p>
                                         </div>
 
                                     </div>
-
                                 </td>
 
-
                                 {{-- Email --}}
-
                                 <td class="whitespace-nowrap">
                                     <span class="ltr-value">{{ $admin->email }}</span>
                                 </td>
 
-
                                 {{-- Rôle --}}
-
                                 <td class="whitespace-nowrap">
-
                                     <span class="badge-role">
                                         <i data-lucide="shield-check" class="w-3.5 h-3.5"></i>
                                         <span data-i18n="role_admin">Administrateur</span>
                                     </span>
-
                                 </td>
 
-
                                 {{-- Date --}}
-
-                                <td class="whitespace-nowrap tabular-nums">
+                                <td class="whitespace-nowrap tabular">
                                     <span class="ltr-value">{{ $admin->created_at?->format('d/m/Y') ?? '—' }}</span>
                                 </td>
 
-
                                 {{-- Actions --}}
-
                                 <td>
-
                                     <div class="flex items-center justify-end gap-2">
 
                                         <a href="{{ route('superadmin.administrateurs.edit', $admin) }}"
                                            class="action-btn action-edit"
                                            title="Modifier"
                                            data-i18n-title="edit">
-
                                             <i data-lucide="pencil" class="w-4 h-4"></i>
                                             <span data-i18n="edit">Modifier</span>
                                         </a>
-
 
                                         <form
                                             method="POST"
@@ -939,7 +866,6 @@
                                         </form>
 
                                     </div>
-
                                 </td>
 
                             </tr>
@@ -949,15 +875,15 @@
                             <tr>
                                 <td colspan="5" class="px-5 py-14 text-center">
 
-                                    <div class="w-14 h-14 mx-auto rounded-xl bg-slate-50 text-slate-400 flex items-center justify-center mb-4">
+                                    <div class="empty-box">
                                         <i data-lucide="users" class="w-7 h-7"></i>
                                     </div>
 
-                                    <h4 class="font-semibold text-slate-800" data-i18n="empty_title">
+                                    <h4 class="font-bold" style="color: var(--text);" data-i18n="empty_title">
                                         Aucun administrateur trouvé
                                     </h4>
 
-                                    <p class="text-sm text-slate-500 mt-1">
+                                    <p class="text-sm mt-1" style="color: var(--muted);">
                                         @if(request('search'))
                                             <span data-i18n="empty_search">Essayez un autre nom ou une autre adresse email.</span>
                                         @else
@@ -967,8 +893,7 @@
 
                                     @if(!request('search'))
                                         <a href="{{ route('superadmin.administrateurs.create') }}"
-                                           class="btn btn-primary no-underline mt-5">
-
+                                           class="btn btn-primary mt-5">
                                             <i data-lucide="user-plus" class="w-4 h-4"></i>
                                             <span data-i18n="add_admin">Ajouter un administrateur</span>
                                         </a>
@@ -987,13 +912,10 @@
 
 
             {{-- Pagination --}}
-
             @if($admins->hasPages())
 
-                <div class="px-5 md:px-6 py-4 border-t border-slate-200" dir="ltr">
-
+                <div class="pagination-dark px-5 md:px-6 py-4" style="border-top: 1px solid var(--border);" dir="ltr">
                     {{ $admins->links() }}
-
                 </div>
 
             @endif
@@ -1001,7 +923,7 @@
         </section>
 
 
-        <footer class="text-center text-xs text-slate-400 mt-8 pb-3">
+        <footer class="text-center text-xs mt-8 pb-3" style="color: var(--faint);">
             © {{ date('Y') }} <span data-i18n="rights">ÉtudeEnLigne. Tous droits réservés.</span>
         </footer>
 
