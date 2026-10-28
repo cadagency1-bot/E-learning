@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Administration | ÉtudeEnLigne</title>
+    <title>Administration | Cad Academy</title>
 
     <script>
         try {
@@ -112,7 +112,7 @@
                 <i data-lucide="graduation-cap" class="h-5 w-5"></i>
             </span>
             <span class="leading-tight">
-                <span class="block text-lg font-extrabold tracking-tight text-white">Étude<span class="text-forest-300">EnLigne</span></span>
+                <span class="block text-lg font-extrabold tracking-tight text-white">Cad<span class="text-forest-300">Academy</span></span>
                 <span class="block text-[10px] font-semibold tracking-wide text-forest-200" data-i18n="admin_brand">ADMINISTRATION · الإدارة</span>
             </span>
         </a>

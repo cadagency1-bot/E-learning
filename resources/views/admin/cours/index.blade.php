@@ -1,12 +1,12 @@
-
+﻿
 <!DOCTYPE html>
 <html lang="fr" dir="ltr">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Gestion des cours | ÉtudeEnLigne</title>
+<link rel="icon" type="image/png" href="{{ asset('images/logo-centre.png') }}">
+    <title>Gestion des cours | cad acadmey</title>
 
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
@@ -689,7 +689,7 @@
             </div>
 
             <div>
-                <div class="brand-name">Étude<span>EnLigne</span></div>
+                <div class="brand-name">Cad<span>Acadmey</span></div>
                 <div class="brand-subtitle" data-i18n="admin">ADMINISTRATION</div>
             </div>
         </a>

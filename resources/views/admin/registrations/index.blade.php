@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inscriptions | ÉtudeEnLigne</title>
-
+<link rel="icon" type="image/png" href="{{ asset('images/logo-centre.png') }}">
     <!-- Applique la langue enregistrée avant l'affichage (même clé que le tableau de bord) -->
     <script>
         try {

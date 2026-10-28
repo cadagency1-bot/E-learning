@@ -1,0 +1,454 @@
+
+<!DOCTYPE html>
+<html lang="fr" dir="ltr" data-lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mes formations - cad acadmey</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap"
+          rel="stylesheet">
+
+    <style>
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Plus Jakarta Sans', 'IBM Plex Sans Arabic', sans-serif;
+            background: #f6f8f7;
+            color: #14281f;
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        html[dir="rtl"] body {
+            font-family: 'IBM Plex Sans Arabic', 'Plus Jakarta Sans', sans-serif;
+            line-height: 1.8;
+        }
+
+        :focus-visible {
+            outline: 3px solid #1f8a5b;
+            outline-offset: 2px;
+            border-radius: 8px;
+        }
+
+        html[data-lang="fr"] .t-ar,
+        html[data-lang="ar"] .t-fr {
+            display: none !important;
+        }
+
+        .lb {
+            padding: 4px 12px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 700;
+            color: #3d5a4d;
+            background: transparent;
+            cursor: pointer;
+        }
+
+        .lb.on {
+            background: #0f5a3c;
+            color: #fff;
+        }
+
+        .fb {
+            padding: 7px 16px;
+            border-radius: 999px;
+            font-size: 13px;
+            font-weight: 600;
+            color: #3d5a4d;
+            background: #fff;
+            border: 1px solid #d5e2da;
+            cursor: pointer;
+            transition: background 0.15s ease, color 0.15s ease;
+        }
+
+        .fb.on {
+            background: #0f5a3c;
+            color: #fff;
+            border-color: #0f5a3c;
+        }
+
+        .btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            width: 100%;
+            padding: 11px 16px;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 700;
+            text-decoration: none;
+            cursor: pointer;
+            transition: background 0.15s ease, border-color 0.15s ease;
+        }
+
+        .b-main {
+            background: #0f5a3c;
+            color: #fff;
+            border: 1px solid #0f5a3c;
+        }
+
+        .b-main:hover {
+            background: #17734c;
+        }
+
+        .b-soft {
+            background: #eef6f1;
+            color: #0f5a3c;
+            border: 1px solid #b0d6c0;
+        }
+
+        .b-soft:hover {
+            background: #d7ebdf;
+        }
+
+        .b-cert {
+            background: #fff;
+            color: #0f5a3c;
+            border: 1px solid #0f5a3c;
+        }
+
+        .b-cert:hover {
+            background: #eef6f1;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                transition: none !important;
+            }
+        }
+    </style>
+</head>
+
+<body>
+@php
+    $student = auth()->user();
+
+    $sfs = $student
+        ? $student->formations()->get()->keyBy('id')
+        : collect();
+
+    $certs = $student
+        ? $student->certificates()
+            ->whereIn('status', ['active', 'approved'])
+            ->get()
+            ->keyBy('formation_id')
+        : collect();
+@endphp
+
+<div class="max-w-6xl mx-auto px-4 sm:px-6 py-6">
+
+    {{-- Barre de navigation --}}
+    <div class="flex items-center justify-between gap-3 mb-8">
+        <span class="text-base font-extrabold text-emerald-900">
+            Étude<span class="text-emerald-600">EnLigne</span>
+        </span>
+
+        <div class="flex items-center gap-2">
+            <div class="flex rounded-lg bg-white p-1 border border-emerald-100">
+                <button type="button" id="lang-fr" class="lb">FR</button>
+                <button type="button" id="lang-ar" class="lb">عربي</button>
+            </div>
+
+            <form action="{{ route('logout') }}" method="POST">
+                @csrf
+                <button type="submit" class="fb">
+                    <span class="t-fr">Déconnexion</span>
+                    <span class="t-ar">تسجيل الخروج</span>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    {{-- Messages --}}
+    @foreach(['formation_message', 'certificate_message'] as $k)
+        @if(session($k))
+            <div class="mb-4 rounded-xl border border-emerald-200 bg-emerald-50 p-4 text-sm font-medium text-emerald-900">
+                {{ session($k) }}
+            </div>
+        @endif
+    @endforeach
+
+    @if(session('error'))
+        <div class="mb-4 rounded-xl border border-rose-200 bg-rose-50 p-4 text-sm font-medium text-rose-800">
+            {{ session('error') }}
+        </div>
+    @endif
+
+    <h1 class="text-2xl sm:text-3xl font-extrabold text-emerald-950 mb-5">
+        <span class="t-fr">Mes formations</span>
+        <span class="t-ar">تكويناتي</span>
+    </h1>
+
+    @if(isset($allFormations) && $allFormations->count() > 0)
+
+        {{-- Filtres --}}
+        <div class="flex flex-wrap gap-2 mb-6" role="group"
+             aria-label="Filtres des formations">
+
+            <button type="button" class="fb on" data-filter="all">
+                <span class="t-fr">Toutes</span>
+                <span class="t-ar">الكل</span>
+            </button>
+
+            <button type="button" class="fb" data-filter="active">
+                <span class="t-fr">Actives</span>
+                <span class="t-ar">مفعّلة</span>
+            </button>
+
+            <button type="button" class="fb" data-filter="pending">
+                <span class="t-fr">En attente</span>
+                <span class="t-ar">قيد الانتظار</span>
+            </button>
+
+            <button type="button" class="fb" data-filter="locked">
+                <span class="t-fr">Verrouillées</span>
+                <span class="t-ar">مقفلة</span>
+            </button>
+        </div>
+
+        {{-- Cartes des formations --}}
+        <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
+
+            @foreach($allFormations as $formation)
+                @php
+                    $sf = $sfs->get($formation->id);
+
+                    $st = $sf
+                        ? ($sf->pivot->status ?? 'locked')
+                        : 'locked';
+
+                    $isA = $st === 'active';
+                    $isP = $st === 'pending';
+                    $isR = $st === 'rejected';
+
+                    $fk = $isA
+                        ? 'active'
+                        : ($isP ? 'pending' : 'locked');
+
+                    $nc = $formation->cours->count();
+
+                    $nq = ($formation->quizzes ?? collect())->count();
+
+                    $certificate = $certs->get($formation->id);
+                @endphp
+
+                <article
+                    class="flex flex-col bg-white rounded-2xl border border-emerald-100 p-5"
+                    data-status="{{ $fk }}">
+
+                    <div class="flex items-start justify-between gap-3 mb-3">
+                        <div class="min-w-0">
+                            <p class="text-xs font-semibold text-emerald-700">
+                                {{ $formation->category ?: 'Formation' }}
+                            </p>
+
+                            <h2 class="text-lg font-bold text-emerald-950 leading-snug">
+                                {{ $formation->name }}
+                            </h2>
+                        </div>
+
+                        <span class="shrink-0 rounded-md px-2.5 py-1 text-xs font-bold
+                            {{ $isA
+                                ? 'bg-emerald-600 text-white'
+                                : ($isP
+                                    ? 'bg-amber-200 text-amber-950'
+                                    : 'bg-slate-200 text-slate-700') }}">
+
+                            @if($isA)
+                                <span class="t-fr">Activée</span>
+                                <span class="t-ar">مفعّلة</span>
+                            @elseif($isP)
+                                <span class="t-fr">En attente</span>
+                                <span class="t-ar">قيد الانتظار</span>
+                            @else
+                                <span class="t-fr">Verrouillée</span>
+                                <span class="t-ar">مقفلة</span>
+                            @endif
+                        </span>
+                    </div>
+
+                    <p class="text-sm text-slate-600 mb-3 line-clamp-2">
+                        {{ $formation->description ?: 'Accédez aux cours et documents pour progresser.' }}
+                    </p>
+
+                    <p class="text-sm text-slate-500 mb-5">
+                        {{ $nc }}
+                        <span class="t-fr">cours</span>
+                        <span class="t-ar">دروس</span>
+
+                        &nbsp;•&nbsp;
+
+                        {{ $nq }}
+                        <span class="t-fr">quiz</span>
+                        <span class="t-ar">اختبارات</span>
+
+                        @if(!empty($formation->duration))
+                            &nbsp;•&nbsp;{{ $formation->duration }}
+                        @endif
+                    </p>
+
+                    <div class="mt-auto space-y-2">
+
+                        @if($isA)
+
+                            {{-- Accès à la formation --}}
+                            <a href="{{ route('formations.learn', $formation) }}"
+                               class="btn b-main">
+                                <span class="t-fr">Commencer la formation</span>
+                                <span class="t-ar">ابدأ التكوين</span>
+                            </a>
+
+                            {{-- TÉLÉCHARGEMENT DU CERTIFICAT --}}
+                            @if($certificate && !empty($certificate->file_path))
+
+                                <a href="{{ route('student.certificates.download', $certificate->id) }}"
+                                   class="btn b-cert">
+
+                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                         width="18" height="18"
+                                         viewBox="0 0 24 24"
+                                         fill="none" stroke="currentColor"
+                                         stroke-width="2" stroke-linecap="round"
+                                         stroke-linejoin="round"
+                                         aria-hidden="true">
+                                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                                        <polyline points="7 10 12 15 17 10"/>
+                                        <line x1="12" y1="15" x2="12" y2="3"/>
+                                    </svg>
+
+                                    <span class="t-fr">Télécharger le certificat</span>
+                                    <span class="t-ar">تحميل الشهادة</span>
+                                </a>
+
+                            @endif
+
+                        @elseif($isP)
+
+                            <p class="rounded-xl border border-amber-200 bg-amber-50 p-3 text-sm font-semibold text-amber-900">
+                                <span class="t-fr">Demande en attente de validation.</span>
+                                <span class="t-ar">الطلب قيد المراجعة.</span>
+                            </p>
+
+                        @else
+
+                            @if($isR)
+                                <p class="text-xs font-bold text-rose-700">
+                                    <span class="t-fr">Demande refusée : vous pouvez la renvoyer.</span>
+                                    <span class="t-ar">تم رفض الطلب: يمكنك إعادة إرساله.</span>
+                                </p>
+                            @endif
+
+                            <form action="{{ route('formations.request', $formation) }}"
+                                  method="POST">
+                                @csrf
+
+                                <button type="submit" class="btn b-soft">
+                                    @if($isR)
+                                        <span class="t-fr">Demander à nouveau</span>
+                                        <span class="t-ar">إعادة الطلب</span>
+                                    @else
+                                        <span class="t-fr">Demander l'accès</span>
+                                        <span class="t-ar">طلب الوصول</span>
+                                    @endif
+                                </button>
+                            </form>
+
+                        @endif
+
+                    </div>
+                </article>
+            @endforeach
+
+        </div>
+
+        <p id="filterEmpty"
+           class="hidden text-center text-sm text-slate-500 py-8">
+            <span class="t-fr">Aucune formation dans cette catégorie.</span>
+            <span class="t-ar">لا توجد تكوينات في هذه الفئة.</span>
+        </p>
+
+    @else
+
+        <p class="text-center text-slate-500 py-12">
+            <span class="t-fr">Aucune formation disponible pour le moment.</span>
+            <span class="t-ar">لا توجد تكوينات متاحة حاليا.</span>
+        </p>
+
+    @endif
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const html = document.documentElement;
+    const fr = document.getElementById('lang-fr');
+    const ar = document.getElementById('lang-ar');
+
+    function setLanguage(language) {
+        const isArabic = language === 'ar';
+
+        html.dataset.lang = isArabic ? 'ar' : 'fr';
+        html.dir = isArabic ? 'rtl' : 'ltr';
+        html.lang = isArabic ? 'ar' : 'fr';
+
+        ar.classList.toggle('on', isArabic);
+        fr.classList.toggle('on', !isArabic);
+
+        try {
+            localStorage.setItem('etude_lang', isArabic ? 'ar' : 'fr');
+        } catch (error) {
+            // La langue fonctionne même si localStorage est indisponible.
+        }
+    }
+
+    let savedLanguage = 'fr';
+
+    try {
+        savedLanguage = localStorage.getItem('etude_lang') || 'fr';
+    } catch (error) {}
+
+    setLanguage(savedLanguage);
+
+    fr.addEventListener('click', () => setLanguage('fr'));
+    ar.addEventListener('click', () => setLanguage('ar'));
+
+    const cards = document.querySelectorAll('[data-status]');
+    const emptyMessage = document.getElementById('filterEmpty');
+    const filterButtons = document.querySelectorAll('[data-filter]');
+
+    filterButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            filterButtons.forEach(item => item.classList.remove('on'));
+            button.classList.add('on');
+
+            let visibleCount = 0;
+
+            cards.forEach(card => {
+                const filter = button.dataset.filter;
+
+                const matches =
+                    filter === 'all' ||
+                    card.dataset.status === filter;
+
+                card.style.display = matches ? '' : 'none';
+
+                if (matches) visibleCount++;
+            });
+
+            if (emptyMessage) {
+                emptyMessage.classList.toggle('hidden', visibleCount > 0);
+            }
+        });
+    });
+});
+</script>
+
+</body>
+</html>

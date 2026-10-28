@@ -1,12 +1,12 @@
-
+﻿
 <!DOCTYPE html>
 <html lang="fr" dir="ltr">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Modifier un cours | ÉtudeEnLigne</title>
-
+    <title>Modifier un cours | cad acadmey</title>
+<link rel="icon" type="image/png" href="{{ asset('images/logo-centre.png') }}">
     <script src="https://cdn.tailwindcss.com"></script>
 
     <style>

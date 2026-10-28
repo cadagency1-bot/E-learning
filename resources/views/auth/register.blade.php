@@ -1,11 +1,11 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="fr">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Créer un compte - ÉtudeEnLigne</title>
-
+<link rel="icon" type="image/png" href="{{ asset('images/logo-centre.png') }}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -596,15 +596,14 @@
                 <span class="tile t7"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="m8.5 8 1.5 1.5L13 6.5"/><path d="M8.5 14l1.5 1.5L13 12.5"/><path d="M15 9h1M15 15h1"/></svg></span>
             </div>
 
-            <a href="{{ route('home') }}" class="logo">
-                <span class="logo-mark" aria-hidden="true">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M22 10 12 5 2 10l10 5 10-5z" />
-                        <path d="M6 12v5c0 1.2 2.7 3 6 3s6-1.8 6-3v-5" />
-                    </svg>
-                </span>
-                ÉtudeEnLigne
-            </a>
+<a href="{{ route('home') }}" class="logo">
+    <img
+        src="{{ asset('images/logo-centre.png') }}"
+        alt="CAD Academy"
+        style="width: 42px; height: 42px; object-fit: contain; flex-shrink: 0;"
+    >
+    <span>CAD Academy</span>
+</a>
 
             <div>
                 <h2 class="aside-title">
@@ -663,7 +662,7 @@
             <main class="content">
 
                 <header class="head">
-                    <h1 class="title">Créer un compte ÉtudeEnLigne</h1>
+                    <h1 class="title">Créer un compte Cad Academy</h1>
                     <p class="subtitle">
                         Inscrivez-vous pour commencer votre parcours de formation
                         <span class="subtitle-ar ar" dir="rtl" lang="ar">أنشئ حسابك وابدأ رحلتك التعليمية</span>
@@ -902,7 +901,7 @@
 
             <!-- FOOTER -->
             <footer class="footer">
-                © {{ date('Y') }} ÉtudeEnLigne — Tous droits réservés
+                © {{ date('Y') }} Cad Academy — Tous droits réservés
             </footer>
 
         </div>

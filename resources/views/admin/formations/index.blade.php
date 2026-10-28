@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Formations | ÉtudeEnLigne</title>
+    <title>Formations | cad acadmey</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -218,7 +218,7 @@
     <div class="topbar">
         <a href="{{ route('admin.dashboard') }}" class="brand">
             <span class="brand-icon"><i data-lucide="graduation-cap"></i></span>
-            <span>ÉtudeEnLigne</span>
+            <span>cad acadmey</span>
         </a>
 
         <div class="topbar-actions">

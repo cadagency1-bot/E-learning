@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Modifier un administrateur | ÉtudeEnLigne</title>
+    <title>Modifier un administrateur | cad acadmey</title>
     <link rel="icon" type="image/png" href="{{ asset('images/cad-academy-logo.png') }}">
 
     <script src="https://cdn.tailwindcss.com"></script>
@@ -436,7 +436,7 @@
         </div>
 
         <p class="mt-8 text-center text-xs" style="color: var(--faint);">
-            © {{ date('Y') }} ÉtudeEnLigne — Espace Super Admin
+            © {{ date('Y') }} cad academy— Espace Super Admin
         </p>
 
     </main>

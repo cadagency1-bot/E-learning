@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Demandes de formations | ÉtudeEnLigne</title>
+    <title>Demandes de formations | cad acadmey</title>
 
     <!-- Applique la langue enregistrée avant l'affichage (même clé que le tableau de bord) -->
     <script>
@@ -172,7 +172,7 @@
     <div class="topbar">
         <a href="{{ route('admin.dashboard') }}" class="brand">
             <span class="brand-icon"><i data-lucide="graduation-cap"></i></span>
-            <span>ÉtudeEnLigne</span>
+            <span>CAd Acadmey</span>
         </a>
 
         <div class="topbar-actions">

@@ -30,40 +30,25 @@ class LessonProgressController extends Controller
             ->wherePivot('status', 'active')
             ->exists();
 
-        abort_unless(
-            $hasAccess,
-            403,
-            'Accès à cette formation refusé.'
-        );
+        abort_unless($hasAccess, 403, 'Accès à cette formation refusé.');
 
         // Vérifier que le cours appartient à la formation.
         $courseBelongsToFormation = $formation->cours()
             ->where('cours.id', $cours->id)
             ->exists();
 
-        abort_unless(
-            $courseBelongsToFormation,
-            404,
-            'Cours introuvable dans cette formation.'
-        );
+        abort_unless($courseBelongsToFormation, 404, 'Cours introuvable dans cette formation.');
 
         // Enregistrer ou retirer la progression.
-        DB::transaction(function () use (
-            $validated,
-            $user,
-            $formation,
-            $cours
-        ) {
+        DB::transaction(function () use ($validated, $user, $formation, $cours) {
             if ($validated['completed']) {
                 LessonProgress::updateOrCreate(
                     [
-                        'user_id' => $user->id,
+                        'user_id'      => $user->id,
                         'formation_id' => $formation->id,
-                        'cours_id' => $cours->id,
+                        'cours_id'     => $cours->id,
                     ],
-                    [
-                        'completed_at' => now(),
-                    ]
+                    ['completed_at' => now()]
                 );
             } else {
                 LessonProgress::query()
@@ -74,7 +59,7 @@ class LessonProgressController extends Controller
             }
         });
 
-        // Récupérer les vrais cours de la formation.
+        // Cours réels de la formation.
         $lessonIds = $formation->cours()
             ->pluck('cours.id')
             ->map(fn ($id) => (int) $id)
@@ -82,7 +67,7 @@ class LessonProgressController extends Controller
 
         $totalLessons = $lessonIds->count();
 
-        // Récupérer les identifiants des cours réellement terminés.
+        // Cours réellement terminés (base de données).
         $completedIds = LessonProgress::query()
             ->where('user_id', $user->id)
             ->where('formation_id', $formation->id)
@@ -94,29 +79,21 @@ class LessonProgressController extends Controller
             ->values();
 
         $completedCount = $completedIds->count();
-
         $certificateRequestPending = false;
 
-        // La vérification est basée sur la base de données.
-        $allLessonsCompleted = (
-            $totalLessons > 0
-            && $completedCount >= $totalLessons
-        );
+        $allLessonsCompleted = $totalLessons > 0 && $completedCount >= $totalLessons;
 
         if ($allLessonsCompleted) {
+            // Même règle que la page Learn : seuls les quiz qui contiennent
+            // des questions comptent. Chaque quiz doit être réussi (>= 80 %).
             $quizzes = $formation->quizzes()
                 ->withCount('questions')
+                ->having('questions_count', '>', 0)
                 ->get();
 
             $allQuizzesPassed = true;
 
             foreach ($quizzes as $quiz) {
-                // Un quiz sans questions ne valide pas la formation.
-                if ($quiz->questions_count === 0) {
-                    $allQuizzesPassed = false;
-                    break;
-                }
-
                 $passed = QuizAttempt::query()
                     ->where('user_id', $user->id)
                     ->where('quiz_id', $quiz->id)
@@ -130,11 +107,12 @@ class LessonProgressController extends Controller
                 }
             }
 
-            // Créer la demande uniquement si les conditions sont remplies.
+            // La demande est créée uniquement si toutes les conditions sont remplies.
+            // L'activation du certificat reste manuelle (administrateur).
             if ($allQuizzesPassed) {
                 $certificate = Certificate::firstOrCreate(
                     [
-                        'user_id' => $user->id,
+                        'user_id'      => $user->id,
                         'formation_id' => $formation->id,
                     ],
                     [
@@ -143,36 +121,27 @@ class LessonProgressController extends Controller
                             . $user->id . '-'
                             . Str::upper(Str::random(8)),
                         'name_on_certificate' => $user->name,
-                        'status' => 'pending',
-                        'issued_at' => now(),
+                        'status'       => 'pending',
+                        'issued_at'    => now(),
                         'activated_at' => null,
                     ]
                 );
 
-                $certificateRequestPending =
-                    $certificate->status === 'pending';
+                $certificateRequestPending = $certificate->status === 'pending';
             }
         }
 
         return response()->json([
-            'success' => true,
-            'completed' => (bool) $validated['completed'],
-
-            // Informations de progression.
+            'success'       => true,
+            'completed'     => (bool) $validated['completed'],
             'completed_count' => $completedCount,
-            'total_lessons' => $totalLessons,
-            'completed_ids' => $completedIds,
-
+            'total_lessons'   => $totalLessons,
+            'completed_ids'   => $completedIds,
             'progress_percentage' => $totalLessons > 0
-                ? (int) round(
-                    ($completedCount / $totalLessons) * 100
-                )
+                ? (int) round(($completedCount / $totalLessons) * 100)
                 : 0,
-
-            // Informations concernant la demande de certificat.
-            'all_lessons_completed' => $allLessonsCompleted,
+            'all_lessons_completed'       => $allLessonsCompleted,
             'certificate_request_pending' => $certificateRequestPending,
-
             'message' => $validated['completed']
                 ? 'Progression enregistrée.'
                 : 'Progression mise à jour.',

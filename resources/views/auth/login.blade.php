@@ -1,11 +1,11 @@
-<!DOCTYPE html>
-<html lang="fr">
+﻿<!DOCTYPE html>
+<html lang="fr" dir="ltr">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Connexion - ÉtudeEnLigne</title>
-
+    <title>Connexion - CAD Academy</title>
+<link rel="icon" type="image/png" href="{{ asset('images/logo-centre.png') }}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -46,6 +46,30 @@
         }
 
         .ar { font-family: 'Noto Sans Arabic', var(--font); line-height: 1.7; }
+        .fr { display: inline; }
+        body.lang-fr .ar { display: none !important; }
+        body.lang-ar .fr { display: none !important; }
+        body.lang-ar .ar { display: inline !important; }
+        body.lang-ar .aside-title-ar,
+        body.lang-ar .features .ar,
+        body.lang-ar .subtitle-ar,
+        body.lang-ar .confirmation-title .ar,
+        body.lang-ar .confirmation-text .ar,
+        body.lang-ar .register-ar { display: block !important; }
+        body.lang-ar { font-family: 'Noto Sans Arabic', var(--font); }
+        body.lang-ar .main, body.lang-ar .aside { direction: rtl; }
+        body.lang-ar .title { letter-spacing: 0; }
+
+        .language-toggle {
+            display: inline-flex; align-items: center; justify-content: center;
+            min-height: 40px; padding: 8px 14px; border: 1px solid var(--emerald-border);
+            border-radius: 10px; background: var(--surface); color: var(--green-800);
+            font: 700 13px/1.2 var(--font); cursor: pointer;
+            transition: background-color .2s ease, color .2s ease, border-color .2s ease;
+            white-space: nowrap;
+        }
+        .language-toggle:hover { background: var(--emerald-soft); border-color: var(--emerald); }
+        body.lang-ar .language-toggle { font-family: 'Noto Sans Arabic', var(--font); }
 
         :focus-visible { outline: 3px solid rgba(16, 185, 129, 0.45); outline-offset: 2px; }
 
@@ -265,7 +289,8 @@
             height: 72px;
             display: flex;
             align-items: center;
-            justify-content: flex-end;
+            justify-content: space-between;
+            gap: 12px;
         }
 
         .topbar .logo { display: none; color: var(--green-900); }
@@ -368,7 +393,7 @@
         .input {
             width: 100%;
             height: 50px;
-            padding: 0 14px 0 44px;
+            padding-inline: 44px 14px;
             border: 1px solid var(--line-strong);
             border-radius: 12px;
             background: var(--surface);
@@ -545,7 +570,7 @@
     </style>
 </head>
 
-<body>
+<body class="lang-fr">
 
     <div class="layout">
 
@@ -568,12 +593,12 @@
                         <path d="M6 12v5c0 1.2 2.7 3 6 3s6-1.8 6-3v-5" />
                     </svg>
                 </span>
-                ÉtudeEnLigne
+                CAD Academy
             </a>
 
             <div>
                 <h2 class="aside-title">
-                    Apprenez à votre rythme, où que vous soyez.
+                    <span class="fr">Apprenez à votre rythme, où que vous soyez.</span>
                     <span class="aside-title-ar ar" dir="rtl" lang="ar">تعلّم بالوتيرة التي تناسبك، من أي مكان</span>
                 </h2>
 
@@ -586,7 +611,7 @@
                             </svg>
                         </span>
                         <span>
-                            Cours en vidéo
+                            <span class="fr">Cours en vidéo</span>
                             <span class="ar" dir="rtl" lang="ar">دروس بالفيديو</span>
                         </span>
                     </li>
@@ -599,7 +624,7 @@
                             </svg>
                         </span>
                         <span>
-                            Supports PDF
+                            <span class="fr">Supports PDF</span>
                             <span class="ar" dir="rtl" lang="ar">ملفات PDF</span>
                         </span>
                     </li>
@@ -611,20 +636,21 @@
                             </svg>
                         </span>
                         <span>
-                            Quiz pour tester vos acquis
+                            <span class="fr">Quiz pour tester vos acquis</span>
                             <span class="ar" dir="rtl" lang="ar">اختبارات لتقييم مستواك</span>
                         </span>
                     </li>
                 </ul>
             </div>
 
-            <div class="aside-foot">Votre espace de formation en ligne</div>
+            <div class="aside-foot"><span class="fr">Votre espace de formation en ligne</span><span class="ar" dir="rtl" lang="ar">فضاؤك للتكوين عبر الإنترنت</span></div>
         </aside>
 
         <!-- ZONE DE CONNEXION -->
         <div class="main">
 
             <nav class="topbar" aria-label="Navigation principale">
+                <button type="button" class="language-toggle" id="language-toggle" aria-label="Changer de langue">العربية</button>
                 <a href="{{ route('home') }}" class="logo">
                     <span class="logo-mark" aria-hidden="true">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -632,11 +658,11 @@
                             <path d="M6 12v5c0 1.2 2.7 3 6 3s6-1.8 6-3v-5" />
                         </svg>
                     </span>
-                    ÉtudeEnLigne
+                    CAD Academy
                 </a>
 
                 <a href="{{ route('home') }}" class="home-link">
-                    Accueil
+                    <span class="fr">Accueil</span>
                     <span class="ar" dir="rtl" lang="ar">الرئيسية</span>
                 </a>
             </nav>
@@ -644,9 +670,9 @@
             <main class="content">
 
                 <header class="head">
-                    <h1 class="title">Bienvenue sur ÉtudeEnLigne</h1>
+                    <h1 class="title"><span class="fr">Bienvenue sur Cad Academy</span><span class="ar" dir="rtl" lang="ar">مرحباً بك في كاد أكاديمي</span></h1>
                     <p class="subtitle">
-                        Connectez-vous pour accéder à votre espace de formation
+                        <span class="fr">Connectez-vous pour accéder à votre espace de formation</span>
                         <span class="subtitle-ar ar" dir="rtl" lang="ar">سجّل الدخول للوصول إلى فضاء التكوين الخاص بك</span>
                     </p>
                 </header>
@@ -659,8 +685,8 @@
                             <path d="m8.5 12.5 2.5 2.5 4.5-5" />
                         </svg>
                         <div>
-                            <div class="message-title">Inscription envoyée avec succès</div>
-                            <div class="message-body">{{ session('success') }}</div>
+                            <div class="message-title"><span class="fr">Inscription envoyée avec succès</span><span class="ar" dir="rtl" lang="ar">تم إرسال طلب التسجيل بنجاح</span></div>
+                            <div class="message-body"><span class="fr">{{ session('success') }}</span><span class="ar" dir="rtl" lang="ar">تمت العملية بنجاح.</span></div>
                         </div>
                     </div>
                 @endif
@@ -675,10 +701,10 @@
                         </svg>
                         <div>
                             <div class="message-title">
-                                Attention
+                                <span class="fr">Attention</span>
                                 <span class="ar" dir="rtl" lang="ar">تنبيه</span>
                             </div>
-                            <div class="message-body">{{ session('error') }}</div>
+                            <div class="message-body"><span class="fr">{{ session('error') }}</span><span class="ar" dir="rtl" lang="ar">وقع خطأ. المرجو المحاولة مرة أخرى.</span></div>
                         </div>
                     </div>
                 @endif
@@ -690,8 +716,7 @@
                     <!-- EMAIL -->
                     <div class="form-group">
                         <div class="label-row">
-                            <label for="email" class="label">Adresse email</label>
-                            <span class="label-ar ar" dir="rtl" lang="ar" aria-hidden="true">البريد الإلكتروني</span>
+                            <label for="email" class="label"><span class="fr">Adresse email</span><span class="ar" dir="rtl" lang="ar">البريد الإلكتروني</span></label>
                         </div>
                         <div class="field">
                             <svg class="field-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -712,15 +737,14 @@
                             >
                         </div>
                         @if ($errors->get('email'))
-                            <div class="input-error" id="email-error" role="alert">{{ $errors->first('email') }}</div>
+                            <div class="input-error" id="email-error" role="alert"><span class="fr">{{ $errors->first('email') }}</span><span class="ar" dir="rtl" lang="ar">يرجى إدخال بريد إلكتروني صحيح.</span></div>
                         @endif
                     </div>
 
                     <!-- MOT DE PASSE -->
                     <div class="form-group">
                         <div class="label-row">
-                            <label for="password" class="label">Mot de passe</label>
-                            <span class="label-ar ar" dir="rtl" lang="ar" aria-hidden="true">كلمة المرور</span>
+                            <label for="password" class="label"><span class="fr">Mot de passe</span><span class="ar" dir="rtl" lang="ar">كلمة المرور</span></label>
                         </div>
                         <div class="field">
                             <svg class="field-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -732,14 +756,14 @@
                                 type="password"
                                 name="password"
                                 class="input @if ($errors->get('password')) is-invalid @endif"
-                                placeholder="Votre mot de passe"
+                                placeholder="Votre mot de passe" data-fr-placeholder="Votre mot de passe" data-ar-placeholder="أدخل كلمة المرور"
                                 required
                                 autocomplete="current-password"
                                 @if ($errors->get('password')) aria-invalid="true" aria-describedby="password-error" @endif
                             >
                         </div>
                         @if ($errors->get('password'))
-                            <div class="input-error" id="password-error" role="alert">{{ $errors->first('password') }}</div>
+                            <div class="input-error" id="password-error" role="alert"><span class="fr">{{ $errors->first('password') }}</span><span class="ar" dir="rtl" lang="ar">يرجى التحقق من كلمة المرور.</span></div>
                         @endif
                     </div>
 
@@ -747,14 +771,14 @@
                     <div class="remember">
                         <input id="remember" type="checkbox" name="remember">
                         <label for="remember">
-                            Se souvenir de moi
+                            <span class="fr">Se souvenir de moi</span>
                             <span class="ar" dir="rtl" lang="ar">تذكرني</span>
                         </label>
                     </div>
 
                     <!-- BOUTON -->
                     <button type="submit" class="submit-button">
-                        Se connecter
+                        <span class="fr">Se connecter</span>
                         <span class="ar" dir="rtl" lang="ar">تسجيل الدخول</span>
                     </button>
 
@@ -763,7 +787,7 @@
                 <!-- MOT DE PASSE OUBLIÉ -->
                 @if (Route::has('password.request'))
                     <a href="{{ route('password.request') }}" class="forgot">
-                        Mot de passe oublié ?
+                        <span class="fr">Mot de passe oublié ?</span>
                         <span class="ar" dir="rtl" lang="ar">هل نسيت كلمة المرور؟</span>
                     </a>
                 @endif
@@ -772,17 +796,17 @@
                 @if (session('show_confirmation'))
                     <div class="confirmation-box">
                         <div class="confirmation-title">
-                            Vous avez reçu votre code par WhatsApp ?
+                            <span class="fr">Vous avez reçu votre code par WhatsApp ?</span>
                             <span class="ar" dir="rtl" lang="ar">توصلت بكود التأكيد عبر واتساب؟</span>
                         </div>
 
                         <div class="confirmation-text">
-                            Si votre inscription a été acceptée, utilisez le code reçu pour confirmer votre compte.
+                            <span class="fr">Si votre inscription a été acceptée, utilisez le code reçu pour confirmer votre compte.</span>
                             <span class="ar" dir="rtl" lang="ar">إذا تمت الموافقة على تسجيلك، أدخل الكود الذي توصلت به لتأكيد حسابك.</span>
                         </div>
 
                         <a href="{{ route('confirmation.show') }}" class="confirmation-button">
-                            Confirmer mon inscription
+                            <span class="fr">Confirmer mon inscription</span>
                             <span class="ar" dir="rtl" lang="ar">تأكيد التسجيل</span>
                         </a>
                     </div>
@@ -790,11 +814,11 @@
 
                 <!-- LIEN D'INSCRIPTION -->
                 <div class="register">
-                    Vous n'avez pas encore de compte ?
+                    <span class="fr">Vous n'avez pas encore de compte ?</span>
                     <span class="register-ar ar" dir="rtl" lang="ar">مازال ما عندكش حساب؟</span>
 
                     <a href="{{ route('register') }}" class="register-link">
-                        Créer un compte
+                        <span class="fr">Créer un compte</span>
                         <span class="ar" dir="rtl" lang="ar">إنشاء حساب</span>
                     </a>
                 </div>
@@ -803,11 +827,45 @@
 
             <!-- FOOTER -->
             <footer class="footer">
-                © {{ date('Y') }} ÉtudeEnLigne — Tous droits réservés
+                <span class="fr">© {{ date('Y') }} Cad Acadmy — Tous droits réservés</span>
+                <span class="ar" dir="rtl" lang="ar">© {{ date('Y') }} كاد أكاديمي — جميع الحقوق محفوظة</span>
             </footer>
 
         </div>
     </div>
+
+
+    <script>
+        (() => {
+            const html = document.documentElement;
+            const body = document.body;
+            const button = document.getElementById('language-toggle');
+            const password = document.getElementById('password');
+            const title = document.querySelector('title');
+
+            function setLanguage(language) {
+                const arabic = language === 'ar';
+                html.lang = arabic ? 'ar' : 'fr';
+                html.dir = arabic ? 'rtl' : 'ltr';
+                body.classList.toggle('lang-ar', arabic);
+                body.classList.toggle('lang-fr', !arabic);
+                button.textContent = arabic ? 'Français' : 'العربية';
+                button.setAttribute('aria-label', arabic ? 'Passer en français' : 'التبديل إلى العربية');
+                if (password) {
+                    password.placeholder = arabic ? password.dataset.arPlaceholder : password.dataset.frPlaceholder;
+                }
+                if (title) title.textContent = arabic ? 'تسجيل الدخول - CAD Academy' : 'Connexion - CAD Academy';
+                try { localStorage.setItem('cad-academy-language', language); } catch (e) {}
+            }
+
+            let initialLanguage = 'fr';
+            try { initialLanguage = localStorage.getItem('cad-academy-language') || 'fr'; } catch (e) {}
+            setLanguage(initialLanguage === 'ar' ? 'ar' : 'fr');
+            button.addEventListener('click', () => {
+                setLanguage(body.classList.contains('lang-ar') ? 'fr' : 'ar');
+            });
+        })();
+    </script>
 
 </body>
 
