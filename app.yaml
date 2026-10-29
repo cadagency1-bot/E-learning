@@ -1,0 +1,4 @@
+kind: wasmer.io/App.v0
+name: e-learning
+owner: cadagency1-bot
+package: .

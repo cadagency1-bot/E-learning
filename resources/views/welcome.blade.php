@@ -1,10 +1,12 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="fr" dir="ltr">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="color-scheme" content="light dark">
+    <link rel="icon" type="image/png" href="{{ asset('images/logo-centre.png') }}">
+
 
     <title>CAD Academy | Formations en ligne</title>
 
