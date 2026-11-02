@@ -13,17 +13,25 @@ class User extends Authenticatable
     /** @use HasFactory<UserFactory> */
     use HasFactory, Notifiable;
 
-    protected $fillable = [
-        'name',
-        'email',
-        'whatsapp_phone',
-        'password',
-        'role',
-        'status',
-        'confirmation_code',
-        'confirmed_at',
-    ];
+ protected $fillable = [
+    'name',
+    'email',
+    'whatsapp_phone',
+    'password',
+    'role',
+    'status',
+    'confirmation_code',
+    'confirmed_at',
+    'photo',
+    'cin_recto',
+    'cin_verso',
+    'profile_photo_path',
 
+
+    // CV
+    'cv_path',
+    'cv_uploaded_at',
+];
     protected $hidden = [
         'password',
         'remember_token',
@@ -36,6 +44,7 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'confirmed_at' => 'datetime',
             'password' => 'hashed',
+            'cv_uploaded_at' => 'datetime',
         ];
     }
 

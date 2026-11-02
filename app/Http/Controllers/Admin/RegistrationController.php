@@ -6,11 +6,22 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\View\View;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class RegistrationController extends Controller
 {
+    /**
+     * Documents stockés sur le disque local privé.
+     */
+    private const DOCUMENTS = [
+        'photo',
+        'cin_recto',
+        'cin_verso',
+    ];
+
     /**
      * Afficher les inscriptions et les demandes de formations.
      */
@@ -23,10 +34,10 @@ class RegistrationController extends Controller
                 'rejected',
                 'confirmed',
             ])
+            ->with('formations')
             ->latest()
             ->get();
 
-        // Demandes de formations des étudiants
         $formationRequests = DB::table('user_formations')
             ->join(
                 'users',
@@ -50,7 +61,11 @@ class RegistrationController extends Controller
                 'user_formations.created_at',
                 'users.name as user_name',
                 'users.email as user_email',
+                'users.whatsapp_phone as user_phone',
                 'users.status as student_status',
+                'users.photo as user_photo',
+                'users.cin_recto as user_cin_recto',
+                'users.cin_verso as user_cin_verso',
                 'formations.name as formation_name'
             )
             ->orderByDesc('user_formations.created_at')
@@ -63,14 +78,58 @@ class RegistrationController extends Controller
     }
 
     /**
-     * Accepter une inscription :
-     * génère le code de confirmation et prépare l'envoi sur WhatsApp.
+     * Afficher une pièce jointe privée :
+     * photo, CIN recto ou CIN verso.
+     */
+    public function document(User $user, string $type): StreamedResponse
+    {
+        abort_unless(
+            $user->role === 'student'
+            && in_array($type, self::DOCUMENTS, true),
+            404
+        );
+
+        $path = $user->{$type};
+
+        abort_if(
+            empty($path)
+            || !Storage::disk('local')->exists($path),
+            404
+        );
+
+        return Storage::disk('local')->response($path);
+    }
+
+    /**
+     * Télécharger le CV privé d'un étudiant.
+     */
+    public function cv(User $user): StreamedResponse
+    {
+        abort_unless($user->role === 'student', 404);
+
+        $path = $user->cv_path;
+
+        abort_if(
+            empty($path)
+            || !Storage::disk('local')->exists($path),
+            404
+        );
+
+        return Storage::disk('local')->download(
+            $path,
+            'CV-' . Str::slug($user->name) . '.pdf',
+            ['Content-Type' => 'application/pdf']
+        );
+    }
+
+    /**
+     * Accepter une inscription.
      */
     public function accept(User $user): RedirectResponse
     {
         if (
-            $user->role !== 'student' ||
-            $user->status !== 'pending'
+            $user->role !== 'student'
+            || $user->status !== 'pending'
         ) {
             return back()->with(
                 'error',
@@ -86,15 +145,19 @@ class RegistrationController extends Controller
             'confirmed_at' => null,
         ]);
 
-        $response = back()->with(
-            'success',
-            'La demande de ' . $user->name .
-            ' a été acceptée. Le code de confirmation a été généré.'
-        );
+        $response = back()
+            ->with(
+                'success',
+                'La demande de ' . $user->name .
+                ' a été acceptée. Le code de confirmation a été généré.'
+            )
+            ->with('show_confirmation', true);
 
-        // Lien WhatsApp avec le code déjà écrit dans le message
         if (!empty($user->whatsapp_phone)) {
-            $response->with('whatsapp_url', $this->whatsappUrl($user, $code));
+            $response->with(
+                'whatsapp_url',
+                $this->whatsappUrl($user, $code)
+            );
         }
 
         return $response;
@@ -106,8 +169,8 @@ class RegistrationController extends Controller
     public function reject(User $user): RedirectResponse
     {
         if (
-            $user->role !== 'student' ||
-            $user->status !== 'pending'
+            $user->role !== 'student'
+            || $user->status !== 'pending'
         ) {
             return back()->with(
                 'error',
@@ -128,7 +191,7 @@ class RegistrationController extends Controller
     }
 
     /**
-     * Supprimer uniquement un compte étudiant.
+     * Supprimer un compte étudiant et ses documents privés.
      */
     public function destroy(User $user): RedirectResponse
     {
@@ -137,6 +200,18 @@ class RegistrationController extends Controller
                 'error',
                 'Seuls les comptes étudiants peuvent être supprimés ici.'
             );
+        }
+
+        // Supprimer la photo et les deux faces de la CIN.
+        foreach (self::DOCUMENTS as $field) {
+            if (!empty($user->{$field})) {
+                Storage::disk('local')->delete($user->{$field});
+            }
+        }
+
+        // Supprimer également le CV privé.
+        if (!empty($user->cv_path)) {
+            Storage::disk('local')->delete($user->cv_path);
         }
 
         $user->delete();
@@ -148,25 +223,29 @@ class RegistrationController extends Controller
     }
 
     /**
-     * Construit le lien WhatsApp contenant le code de confirmation.
+     * Construire le lien WhatsApp contenant le code de confirmation.
      */
     private function whatsappUrl(User $user, string $code): string
     {
         $phone = preg_replace('/\D+/', '', $user->whatsapp_phone ?? '');
 
-        // Numéros marocains : 0612345678 ou 00212612345678 -> 212612345678
+        // Numéros marocains : 0612345678 ou 00212612345678.
         if (str_starts_with($phone, '00')) {
             $phone = substr($phone, 2);
-        } elseif (strlen($phone) === 10 && str_starts_with($phone, '0')) {
+        } elseif (
+            strlen($phone) === 10
+            && str_starts_with($phone, '0')
+        ) {
             $phone = '212' . substr($phone, 1);
         }
 
         $text = "Bonjour {$user->name},\n\n"
-            . "Votre inscription sur ÉtudeEnLigne a été acceptée ✅\n\n"
-            . "Votre code de confirmation : {$code}\n\n"
-            . "Confirmez votre inscription ici : " . route('confirmation.show') . "\n\n"
-            . "مرحبا {$user->name}، تم قبول تسجيلك في ÉtudeEnLigne ✅\n"
-            . "رمز التأكيد الخاص بك : {$code}";
+            . "Votre inscription sur CAD Academy a été acceptée ✅\n\n"
+            . "Votre numéro WhatsApp : {$user->whatsapp_phone}\n"
+            . "Votre code de connexion : {$code}\n\n"
+            . "Connectez-vous ici : " . route('login') . "\n\n"
+            . "مرحبا {$user->name}، تم قبول تسجيلك في CAD Academy ✅\n"
+            . "رمز الدخول الخاص بك : {$code}";
 
         return 'https://wa.me/' . $phone . '?text=' . rawurlencode($text);
     }

@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Résultat du quiz | ÉtudeEnLigne</title>
+    <link rel="icon" type="image/png" href="{{ asset('images/logo-centre.png') }}">
+    <title>Résultat du quiz | CAD ACADEMY</title>
 
     <script>
         try {
@@ -21,17 +22,16 @@
 
     <style>
         :root {
-            --emerald: #10B981;
-            --emerald-600: #059669;
-            --emerald-700: #047857;
-            --emerald-50: #ECFDF5;
-            --emerald-100: #D1FAE5;
-            --dark: #064E3B;
-            --darker: #053D2F;
-            --bg: #F2F6F4;
-            --border: #E3E9E6;
-            --text: #1F2937;
-            --muted: #6B7280;
+            --r: #d71920;
+            --rd: #a80f15;
+            --soft: #fff1f1;
+            --soft2: #ffe3e4;
+            --line: #f3d6d8;
+            --ink: #3a2a2c;
+            --head: #1f1415;
+            --muted: #7a6a6c;
+            --bg: #fbf7f7;
+            --grey: #cdb8ba;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -39,7 +39,7 @@
         body {
             font-family: 'Plus Jakarta Sans', Arial, sans-serif;
             background: var(--bg);
-            color: var(--text);
+            color: var(--ink);
             font-size: 14px;
             min-height: 100vh;
             -webkit-font-smoothing: antialiased;
@@ -48,104 +48,119 @@
 
         svg.lucide, i[data-lucide] { width: 16px; height: 16px; flex-shrink: 0; }
         [dir="rtl"] .flip svg { transform: scaleX(-1); }
+        :focus-visible { outline: 3px solid var(--r); outline-offset: 2px; border-radius: 10px; }
 
         .wrap { max-width: 1000px; margin: 0 auto; padding: 0 20px; }
 
-        /* ================= BANDEAU ================= */
-        .topband {
-            background:
-                radial-gradient(620px 260px at 85% -20%, rgba(16, 185, 129, .38), transparent 70%),
-                linear-gradient(135deg, var(--darker), var(--dark));
-            color: #fff;
-        }
-        .nav { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 14px 0; }
-        .brand { display: flex; align-items: center; gap: 10px; color: #fff; text-decoration: none; font-size: 17px; font-weight: 800; }
-        .brand-icon { width: 36px; height: 36px; border-radius: 10px; background: var(--emerald); display: grid; place-items: center; box-shadow: 0 6px 16px rgba(16, 185, 129, .4); }
-        .brand-icon svg { width: 19px; height: 19px; }
+        /* ================= BARRE BLANCHE + LOGO ================= */
+        .navbar { background: rgba(255, 255, 255, .96); backdrop-filter: blur(10px); border-bottom: 1px solid var(--line); position: sticky; top: 0; z-index: 30; }
+        .nav { height: 68px; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+        .brand { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+        .brand img { width: 34px; height: 34px; object-fit: contain; }
+        .brand span { font-weight: 800; font-size: 17px; letter-spacing: .14em; color: var(--r); text-transform: uppercase; white-space: nowrap; }
         .nav-actions { display: flex; align-items: center; gap: 8px; }
 
-        .lang-switch { display: inline-flex; gap: 2px; background: rgba(255, 255, 255, .1); border: 1px solid rgba(255, 255, 255, .15); border-radius: 10px; padding: 3px; }
-        .lang-switch button { border: none; background: transparent; color: #A7F3D0; padding: 6px 12px; border-radius: 7px; font-family: inherit; font-size: 12.5px; font-weight: 700; cursor: pointer; transition: all .15s; }
-        .lang-switch button.active { background: #fff; color: var(--dark); }
+        .lang-switch { display: inline-flex; gap: 2px; background: var(--soft); border: 1px solid var(--line); border-radius: 999px; padding: 3px; }
+        .lang-switch button { border: none; background: transparent; color: var(--muted); padding: 6px 13px; border-radius: 999px; font-family: inherit; font-size: 12.5px; font-weight: 800; cursor: pointer; transition: all .15s; }
+        .lang-switch button.active { background: var(--r); color: #fff; }
 
-        .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 10px 16px; border-radius: 10px; font-family: inherit; font-size: 13px; font-weight: 700; text-decoration: none; cursor: pointer; border: 1px solid transparent; transition: all .15s ease; }
-        .btn-ghost { background: rgba(255, 255, 255, .1); color: #fff; border-color: rgba(255, 255, 255, .18); }
-        .btn-ghost:hover { background: rgba(255, 255, 255, .18); }
-        .btn-primary { background: var(--emerald-600); color: #fff; box-shadow: 0 6px 16px rgba(5, 150, 105, .3); }
-        .btn-primary:hover { background: var(--dark); }
-        .btn-light { background: #fff; color: var(--emerald-700); border-color: var(--border); }
-        .btn-light:hover { background: var(--emerald-50); border-color: var(--emerald-100); }
+        .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 11px 20px; border-radius: 12px; font-family: inherit; font-size: 13px; font-weight: 700; text-decoration: none; cursor: pointer; border: 1.5px solid transparent; transition: all .15s ease; }
+        .btn:hover { transform: translateY(-1px); }
+        .btn-ghost { background: #fff; color: var(--r); border-color: var(--r); }
+        .btn-ghost:hover { background: var(--soft); }
+        .btn-primary { background: var(--r); color: #fff; border-color: var(--r); box-shadow: 0 10px 20px -10px rgba(215, 25, 32, .8); }
+        .btn-primary:hover { background: var(--rd); border-color: var(--rd); }
+        .btn-light { background: #fff; color: var(--r); border-color: var(--r); }
+        .btn-light:hover { background: var(--soft); }
 
-        /* ---------- Héros score ---------- */
-        .hero { display: grid; grid-template-columns: auto 1fr; gap: 30px; align-items: center; padding: 14px 0 84px; }
-        .ring-wrap { position: relative; width: 176px; height: 176px; }
+        /* ================= BANDEAU ROUGE + SCORE ================= */
+        .topband {
+            position: relative; overflow: hidden; color: #fff;
+            background:
+                radial-gradient(560px 240px at 85% -10%, rgba(255, 255, 255, .18), transparent 70%),
+                linear-gradient(135deg, var(--r) 0%, var(--rd) 100%);
+            border-radius: 0 0 40px 40px;
+        }
+        .topband::after { content: ""; position: absolute; inset-inline-start: -80px; bottom: -100px; width: 260px; height: 260px; border-radius: 50%; background: rgba(255, 255, 255, .07); }
+
+        .hero { position: relative; z-index: 1; display: grid; grid-template-columns: auto 1fr; gap: 34px; align-items: center; padding: 34px 0 96px; }
+
+        .ring-wrap { position: relative; width: 188px; height: 188px; border-radius: 50%; background: rgba(255, 255, 255, .1); box-shadow: 0 0 0 10px rgba(255, 255, 255, .08); }
         .ring-wrap svg { width: 100%; height: 100%; transform: rotate(-90deg); }
         .ring-fill { transition: stroke-dashoffset 1.4s cubic-bezier(.2, .8, .2, 1); }
         .ring-center { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; direction: ltr; }
-        .ring-pct { font-size: 38px; font-weight: 800; line-height: 1; }
-        .ring-pct small { font-size: 20px; color: #6EE7B7; }
-        .ring-frac { margin-top: 6px; font-size: 13px; font-weight: 700; color: #A7F3D0; }
+        .ring-pct { font-size: 42px; font-weight: 800; line-height: 1; }
+        .ring-pct small { font-size: 20px; opacity: .8; }
+        .ring-frac { margin-top: 6px; font-size: 13px; font-weight: 700; color: #ffe3e4; }
 
-        .hero-eyebrow { display: inline-flex; align-items: center; gap: 7px; padding: 5px 12px; border-radius: 999px; background: rgba(255, 255, 255, .1); border: 1px solid rgba(255, 255, 255, .16); color: #A7F3D0; font-size: 12px; font-weight: 700; }
-        .hero h1 { margin-top: 12px; font-size: clamp(1.3rem, 3vw, 1.9rem); font-weight: 800; line-height: 1.25; overflow-wrap: anywhere; }
-        .verdict { display: flex; align-items: center; gap: 10px; margin-top: 14px; }
-        .verdict-icon { width: 38px; height: 38px; border-radius: 11px; display: grid; place-items: center; background: rgba(255, 255, 255, .14); }
-        .verdict-icon svg { width: 19px; height: 19px; }
-        .verdict h2 { font-size: 16px; font-weight: 800; }
-        .verdict p { font-size: 13px; color: #BFE9D6; margin-top: 2px; }
+        .hero-eyebrow { display: inline-flex; align-items: center; gap: 7px; padding: 5px 13px; border-radius: 999px; background: rgba(255, 255, 255, .16); border: 1px solid rgba(255, 255, 255, .28); color: #fff; font-size: 12px; font-weight: 700; }
+        .hero h1 { margin-top: 12px; font-size: clamp(1.4rem, 3.2vw, 2rem); font-weight: 800; line-height: 1.25; overflow-wrap: anywhere; }
+
+        .verdict { display: flex; align-items: center; gap: 12px; margin-top: 16px; }
+        .verdict-icon { width: 44px; height: 44px; border-radius: 14px; display: grid; place-items: center; background: #fff; color: var(--r); box-shadow: 0 10px 20px -10px rgba(0, 0, 0, .5); }
+        .verdict-icon svg { width: 22px; height: 22px; }
+        .verdict h2 { font-size: 17px; font-weight: 800; }
+        .verdict p { font-size: 13px; color: #ffe3e4; margin-top: 2px; }
+
+        .pass-pill { display: inline-flex; align-items: center; gap: 7px; margin-top: 16px; padding: 7px 15px; border-radius: 999px; font-size: 12.5px; font-weight: 800; }
+        .pass-pill.is-pass { background: #fff; color: var(--r); }
+        .pass-pill.is-fail { background: transparent; color: #fff; border: 1.5px dashed rgba(255, 255, 255, .8); }
 
         /* ================= CORPS ================= */
-        .body { margin-top: -50px; padding-bottom: 40px; }
+        .body { margin-top: -56px; padding-bottom: 40px; position: relative; z-index: 2; }
 
-        .stats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
-        .stat { background: #fff; border: 1px solid var(--border); border-radius: 14px; padding: 14px 16px; display: flex; align-items: center; gap: 12px; box-shadow: 0 4px 18px rgba(15, 59, 45, .06); }
-        .stat-icon { width: 40px; height: 40px; border-radius: 11px; display: grid; place-items: center; flex-shrink: 0; }
-        .stat-icon svg { width: 20px; height: 20px; }
-        .ic-total { background: #EFF6FF; color: #2563EB; }
-        .ic-ok { background: var(--emerald-50); color: var(--emerald-600); }
-        .ic-ko { background: #FEF2F2; color: #DC2626; }
-        .ic-none { background: #FFFBEB; color: #D97706; }
-        .stat strong { display: block; font-size: 22px; font-weight: 800; line-height: 1.1; color: var(--darker); }
+        .stats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; }
+        .stat { background: #fff; border: 1px solid var(--line); border-radius: 20px; padding: 16px 18px; display: flex; align-items: center; gap: 13px; box-shadow: 0 18px 40px -28px rgba(168, 15, 21, .45); transition: transform .2s, border-color .2s; }
+        .stat:hover { transform: translateY(-3px); border-color: var(--r); }
+        .stat-icon { width: 44px; height: 44px; border-radius: 14px; display: grid; place-items: center; flex-shrink: 0; }
+        .stat-icon svg { width: 21px; height: 21px; }
+        .ic-total { background: var(--soft); color: var(--r); }
+        .ic-ok { background: var(--r); color: #fff; box-shadow: 0 10px 18px -10px rgba(215, 25, 32, .9); }
+        .ic-ko { background: var(--head); color: #fff; }
+        .ic-none { background: #f4eeee; color: var(--muted); }
+        .stat strong { display: block; font-size: 24px; font-weight: 800; line-height: 1.1; color: var(--head); }
         .stat span { font-size: 12px; color: var(--muted); }
 
         /* ---------- Révision ---------- */
-        .panel { margin-top: 18px; background: #fff; border: 1px solid var(--border); border-radius: 16px; box-shadow: 0 4px 18px rgba(15, 59, 45, .05); overflow: hidden; }
-        .panel-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; padding: 16px 20px; border-bottom: 1px solid #F1F5F4; }
-        .panel-head h3 { display: flex; align-items: center; gap: 9px; font-size: 16px; font-weight: 800; color: var(--darker); }
-        .panel-head h3 svg { color: var(--emerald-600); width: 18px; height: 18px; }
+        .panel { margin-top: 20px; background: #fff; border: 1px solid var(--line); border-radius: 22px; box-shadow: 0 18px 40px -28px rgba(168, 15, 21, .4); overflow: hidden; }
+        .panel-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; padding: 18px 22px; border-bottom: 1px solid var(--line); background: linear-gradient(135deg, #fff, var(--soft)); }
+        .panel-head h3 { display: flex; align-items: center; gap: 10px; font-size: 16px; font-weight: 800; color: var(--head); }
+        .panel-head h3 svg { color: var(--r); width: 19px; height: 19px; }
 
-        .tabs { display: inline-flex; gap: 4px; background: #F1F5F4; padding: 3px; border-radius: 10px; }
-        .tab { border: none; background: transparent; padding: 7px 13px; border-radius: 8px; font-family: inherit; font-size: 12.5px; font-weight: 700; color: var(--muted); cursor: pointer; transition: all .15s; }
-        .tab.active { background: #fff; color: var(--emerald-700); box-shadow: 0 1px 4px rgba(15, 59, 45, .1); }
+        .tabs { display: inline-flex; gap: 4px; background: var(--soft2); padding: 4px; border-radius: 13px; }
+        .tab { border: none; background: transparent; padding: 8px 15px; border-radius: 10px; font-family: inherit; font-size: 12.5px; font-weight: 700; color: var(--rd); cursor: pointer; transition: all .15s; }
+        .tab:hover { background: rgba(255, 255, 255, .6); }
+        .tab.active { background: var(--r); color: #fff; box-shadow: 0 8px 14px -8px rgba(215, 25, 32, .9); }
 
         .review-list { display: grid; }
-        .review { display: flex; gap: 14px; padding: 16px 20px; border-top: 1px solid #F1F5F4; border-inline-start: 4px solid transparent; }
+        .review { display: flex; gap: 14px; padding: 18px 22px; border-top: 1px solid var(--line); border-inline-start: 5px solid transparent; }
         .review:first-child { border-top: none; }
-        .review-ok { border-inline-start-color: var(--emerald); }
-        .review-ko { border-inline-start-color: #EF4444; }
-        .review-none { border-inline-start-color: #F59E0B; }
-        .review-num { width: 32px; height: 32px; border-radius: 10px; flex-shrink: 0; display: grid; place-items: center; font-size: 13px; font-weight: 800; color: #fff; }
-        .num-ok { background: var(--emerald-600); }
-        .num-ko { background: #EF4444; }
-        .num-none { background: #F59E0B; }
+        .review-ok { border-inline-start-color: var(--r); }
+        .review-ko { border-inline-start-color: var(--head); }
+        .review-none { border-inline-start-color: var(--grey); }
+        .review-num { width: 34px; height: 34px; border-radius: 11px; flex-shrink: 0; display: grid; place-items: center; font-size: 13px; font-weight: 800; color: #fff; }
+        .num-ok { background: var(--r); }
+        .num-ko { background: var(--head); }
+        .num-none { background: var(--grey); }
         .review-main { flex: 1; min-width: 0; }
-        .review-q { font-size: 14.5px; font-weight: 800; color: var(--darker); line-height: 1.5; overflow-wrap: anywhere; }
-        .review-answers { margin-top: 10px; display: grid; gap: 7px; }
-        .answer-line { display: flex; align-items: flex-start; gap: 9px; padding: 9px 12px; border-radius: 10px; font-size: 13px; overflow-wrap: anywhere; line-height: 1.5; }
+        .review-q { font-size: 14.5px; font-weight: 800; color: var(--head); line-height: 1.5; overflow-wrap: anywhere; }
+        .review-answers { margin-top: 11px; display: grid; gap: 8px; }
+        .answer-line { display: flex; align-items: flex-start; gap: 10px; padding: 10px 14px; border-radius: 12px; font-size: 13px; overflow-wrap: anywhere; line-height: 1.5; }
         .answer-line svg { width: 16px; height: 16px; margin-top: 2px; }
         .answer-line b { font-weight: 800; }
-        .al-ok { background: var(--emerald-50); color: #065F46; }
-        .al-ok svg { color: var(--emerald-600); }
-        .al-ko { background: #FEF2F2; color: #B91C1C; }
-        .al-ko svg { color: #EF4444; }
-        .al-none { background: #FFFBEB; color: #B45309; }
-        .al-none svg { color: #F59E0B; }
-        .al-correct { background: #fff; color: #065F46; border: 1px solid var(--emerald-100); }
-        .al-correct svg { color: var(--emerald-600); }
+        .al-ok { background: var(--soft); color: var(--rd); }
+        .al-ok svg { color: var(--r); }
+        .al-ko { background: #f4eeee; color: var(--head); }
+        .al-ko svg { color: var(--head); }
+        .al-none { background: #f8f3f3; color: var(--muted); border: 1px dashed var(--grey); }
+        .al-none svg { color: var(--muted); }
+        .al-correct { background: #fff; color: var(--rd); border: 1.5px solid var(--r); }
+        .al-correct svg { color: var(--r); }
 
-        .actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 22px; }
+        .actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; margin-top: 26px; }
 
-        .footer { padding: 6px 0 26px; text-align: center; font-size: 12px; color: #94A3B8; }
+        .footer { padding: 6px 0 26px; text-align: center; font-size: 12px; color: var(--muted); }
+        .footer b { color: var(--r); letter-spacing: .1em; }
 
         /* ---------- Ballons ---------- */
         #balloons { position: fixed; inset: 0; overflow: hidden; pointer-events: none; z-index: 40; direction: ltr; }
@@ -158,7 +173,7 @@
             animation: sway var(--sway) ease-in-out infinite alternate; transform-origin: 50% 120%;
         }
         .balloon-body::before { content: ""; position: absolute; left: 50%; bottom: -5px; width: 8px; height: 7px; background: var(--color); transform: translateX(-50%); clip-path: polygon(50% 0, 0 100%, 100% 100%); }
-        .balloon-body::after { content: ""; position: absolute; left: 50%; top: 100%; width: 1px; height: 30px; background: rgba(22, 67, 43, .35); transform: translateX(-50%); }
+        .balloon-body::after { content: ""; position: absolute; left: 50%; top: 100%; width: 1px; height: 30px; background: rgba(120, 20, 25, .35); transform: translateX(-50%); }
         @keyframes rise { from { transform: translateY(0); } to { transform: translateY(calc(-100vh - 160px)); } }
         @keyframes sway { from { transform: rotate(-5deg) translateX(-5px); } to { transform: rotate(5deg) translateX(5px); } }
         .pop-bit { position: fixed; border-radius: 9999px; pointer-events: none; z-index: 60; }
@@ -170,8 +185,9 @@
         @media (max-width: 640px) {
             .wrap { padding: 0 12px; }
             .btn-back span { display: none; }
-            .hero { grid-template-columns: 1fr; justify-items: center; text-align: center; gap: 16px; padding-bottom: 76px; }
-            .ring-wrap { width: 150px; height: 150px; }
+            .brand span { font-size: 15px; }
+            .hero { grid-template-columns: 1fr; justify-items: center; text-align: center; gap: 18px; padding-bottom: 84px; }
+            .ring-wrap { width: 160px; height: 160px; }
             .verdict { justify-content: center; text-align: start; }
             .review { padding: 14px; }
             .actions .btn { flex: 1 1 100%; }
@@ -213,41 +229,46 @@
         } else {
             $verdictKey = 'low'; $verdictIcon = 'book-open';
         }
+
+        $isPassed = $percentage >= 80;
     @endphp
 
     <div id="balloons" aria-hidden="true"></div>
     <canvas id="confetti" aria-hidden="true"></canvas>
 
-    <!-- ================= BANDEAU ================= -->
+    <!-- ================= BARRE + LOGO ================= -->
+    <div class="navbar">
+        <div class="wrap nav">
+            <a href="{{ route('dashboard') }}" class="brand">
+                <img src="{{ asset('images/logo-centre.png') }}" alt="" onerror="this.style.display='none'">
+                <span>CAD ACADEMY</span>
+            </a>
+
+            <div class="nav-actions">
+                <div class="lang-switch" role="group" aria-label="Langue / اللغة">
+                    <button type="button" data-lang-btn="fr" class="active">FR</button>
+                    <button type="button" data-lang-btn="ar">العربية</button>
+                </div>
+
+                <a href="{{ route('dashboard') }}" class="btn btn-ghost btn-back flip">
+                    <i data-lucide="arrow-left"></i>
+                    <span data-i18n="back">Retour</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= BANDEAU SCORE ================= -->
     <header class="topband">
         <div class="wrap">
-
-            <div class="nav">
-                <a href="{{ route('dashboard') }}" class="brand">
-                    <span class="brand-icon"><i data-lucide="graduation-cap"></i></span>
-                    <span>ÉtudeEnLigne</span>
-                </a>
-
-                <div class="nav-actions">
-                    <div class="lang-switch" role="group" aria-label="Langue / اللغة">
-                        <button type="button" data-lang-btn="fr" class="active">FR</button>
-                        <button type="button" data-lang-btn="ar">العربية</button>
-                    </div>
-
-                    <a href="{{ route('dashboard') }}" class="btn btn-ghost btn-back flip">
-                        <i data-lucide="arrow-left"></i>
-                        <span data-i18n="back">Retour</span>
-                    </a>
-                </div>
-            </div>
 
             <div class="hero">
 
                 <div class="ring-wrap">
                     <svg viewBox="0 0 120 120">
-                        <circle cx="60" cy="60" r="54" fill="none" stroke="rgba(255,255,255,.14)" stroke-width="10"></circle>
+                        <circle cx="60" cy="60" r="54" fill="none" stroke="rgba(255,255,255,.22)" stroke-width="10"></circle>
                         <circle id="ring" class="ring-fill" cx="60" cy="60" r="54"
-                                fill="none" stroke="#34D399" stroke-width="10" stroke-linecap="round"
+                                fill="none" stroke="#ffffff" stroke-width="10" stroke-linecap="round"
                                 stroke-dasharray="339.292" stroke-dashoffset="339.292"></circle>
                     </svg>
 
@@ -272,6 +293,11 @@
                             <p data-i18n="{{ $verdictKey }}_text">Vous avez très bien réussi ce quiz.</p>
                         </div>
                     </div>
+
+                    <span class="pass-pill {{ $isPassed ? 'is-pass' : 'is-fail' }}">
+                        <i data-lucide="{{ $isPassed ? 'badge-check' : 'target' }}"></i>
+                        <span data-i18n="{{ $isPassed ? 'passed' : 'not_passed' }}">{{ $isPassed ? 'Quiz réussi' : 'Il faut 80 % pour réussir' }}</span>
+                    </span>
                 </div>
 
             </div>
@@ -438,7 +464,7 @@
     </main>
 
     <div class="footer">
-        <span dir="ltr">© {{ date('Y') }} ÉtudeEnLigne</span> ·
+        <span dir="ltr">© {{ date('Y') }} <b>CAD ACADEMY</b></span> ·
         <span data-i18n="rights">Tous droits réservés</span>
     </div>
 
@@ -454,6 +480,8 @@
                 good_text: "Continuez à apprendre pour améliorer votre résultat.",
                 low_title: "Continuez vos efforts !",
                 low_text: "Révisez le cours et réessayez.",
+                passed: "Quiz réussi",
+                not_passed: "Il faut 80 % pour réussir",
                 questions: "Questions",
                 correct_answers: "Réponses correctes",
                 wrong_answers: "Réponses fausses",
@@ -480,6 +508,8 @@
                 good_text: "استمر في التعلم لتحسين نتيجتك.",
                 low_title: "واصل مجهودك!",
                 low_text: "راجع الدرس وحاول مرة أخرى.",
+                passed: "اختبار ناجح",
+                not_passed: "يجب الحصول على 80% للنجاح",
                 questions: "الأسئلة",
                 correct_answers: "إجابات صحيحة",
                 wrong_answers: "إجابات خاطئة",
@@ -504,7 +534,7 @@
 
             document.documentElement.lang = language;
             document.documentElement.dir = language === 'ar' ? 'rtl' : 'ltr';
-            document.title = (language === 'ar' ? 'نتيجة الاختبار' : 'Résultat du quiz') + ' | ÉtudeEnLigne';
+            document.title = (language === 'ar' ? 'نتيجة الاختبار' : 'Résultat du quiz') + ' | CAD ACADEMY';
 
             document.querySelectorAll('[data-lang-btn]').forEach(function (btn) {
                 btn.classList.toggle('active', btn.dataset.langBtn === language);
@@ -634,8 +664,8 @@
                 balloon.remove();
             }
 
-            /* ---------- Ballons ---------- */
-            var colors = ['#10B981', '#6FCB8D', '#A8E0B8', '#F7C948', '#FF8FAB', '#FFFFFF', '#59C9D6'];
+            /* ---------- Ballons (palette rouge / blanc) ---------- */
+            var colors = ['#d71920', '#ff5a61', '#ffb3b6', '#a80f15', '#ffffff', '#f7c948'];
 
             function launchBalloons(n) {
                 var wrap = document.getElementById('balloons');
@@ -678,7 +708,7 @@
             resize();
 
             function confetti(count) {
-                var cols = ['#10B981', '#A8E0B8', '#F7C948', '#FF8FAB', '#59C9D6', '#FFFFFF'];
+                var cols = ['#d71920', '#ff5a61', '#ffb3b6', '#a80f15', '#f7c948', '#ffffff'];
 
                 for (var i = 0; i < count; i++) {
                     var fromLeft = i % 2 === 0;

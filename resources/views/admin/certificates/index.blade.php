@@ -1,109 +1,290 @@
+
 <!DOCTYPE html>
 <html lang="fr" dir="ltr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Certificats | ÉtudeEnLigne</title>
+
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
+
     <style>
-        html[dir=rtl] body{font-family:'IBM Plex Sans Arabic',system-ui,sans-serif}
-        html[dir=rtl] .flip{display:inline-block;transform:scaleX(-1)}
-        .lb{padding:6px 16px;border-radius:999px;font-size:12.5px;font-weight:700;color:#475569;transition:.2s}
-        .lb.on{background:#047857;color:#fff}
+        :root {
+            --red: #DC2626;
+            --red-dark: #B91C1C;
+            --red-light: #FEF2F2;
+            --red-soft: #FEE2E2;
+            --white: #FFFFFF;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: var(--white);
+            color: var(--red-dark);
+        }
+
+        html[dir="rtl"] body {
+            font-family: 'IBM Plex Sans Arabic', sans-serif;
+        }
+
+        html[dir="rtl"] .flip {
+            display: inline-block;
+            transform: scaleX(-1);
+        }
+
+        .lb {
+            padding: 8px 18px;
+            border-radius: 999px;
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--red-dark);
+            background: var(--white);
+            transition: .2s;
+            cursor: pointer;
+        }
+
+        .lb:hover,
+        .lb.on {
+            background: var(--red);
+            color: var(--white);
+        }
+
+        .page-title {
+            color: var(--red-dark);
+        }
+
+        .main-card {
+            border: 1px solid var(--red-soft);
+            background: var(--white);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 8px 25px rgba(220, 38, 38, .07);
+        }
+
+        .table-head {
+            background: var(--red);
+            color: var(--white);
+        }
+
+        .table-row {
+            border-bottom: 1px solid var(--red-soft);
+            transition: background .2s;
+        }
+
+        .table-row:hover {
+            background: var(--red-light);
+        }
+
+        .status-active {
+            background: var(--red);
+            color: var(--white);
+        }
+
+        .status-pending {
+            background: var(--red-light);
+            color: var(--red-dark);
+            border: 1px solid var(--red-soft);
+        }
+
+        .btn-red {
+            background: var(--red);
+            color: var(--white);
+            transition: .2s;
+        }
+
+        .btn-red:hover {
+            background: var(--red-dark);
+        }
+
+        .btn-outline {
+            border: 1px solid var(--red);
+            color: var(--red);
+            background: var(--white);
+            transition: .2s;
+        }
+
+        .btn-outline:hover {
+            background: var(--red-light);
+        }
+
+        .file-input {
+            width: 100%;
+            border: 1px solid var(--red-soft);
+            background: var(--white);
+            color: var(--red-dark);
+            border-radius: 10px;
+            padding: 9px;
+            font-size: 12px;
+        }
+
+        .file-input::file-selector-button {
+            background: var(--red-light);
+            color: var(--red-dark);
+            border: 1px solid var(--red-soft);
+            border-radius: 7px;
+            padding: 6px 10px;
+            margin-inline-end: 8px;
+            cursor: pointer;
+        }
+
+        .message {
+            background: var(--red-light);
+            color: var(--red-dark);
+            border: 1px solid var(--red-soft);
+            border-radius: 12px;
+            padding: 14px 18px;
+            margin-bottom: 18px;
+        }
+
+        .pagination-area nav {
+            display: flex;
+            justify-content: center;
+        }
+
+        .pagination-area nav div:first-child {
+            color: var(--red-dark);
+        }
+
+        .pagination-area nav span,
+        .pagination-area nav a {
+            color: var(--red-dark) !important;
+            border-color: var(--red-soft) !important;
+        }
+
+        .pagination-area nav a:hover {
+            background: var(--red-light) !important;
+        }
+
+        .pagination-area nav span[aria-current="page"] span {
+            background: var(--red) !important;
+            color: var(--white) !important;
+            border-color: var(--red) !important;
+        }
+
+        .pagination-area svg {
+            fill: var(--red-dark);
+        }
+
+        input:focus {
+            outline: 2px solid var(--red);
+            outline-offset: 1px;
+        }
+
+        @media(max-width: 640px) {
+            .page-header {
+                align-items: flex-start;
+            }
+        }
     </style>
 </head>
 
-<body class="min-h-screen bg-slate-50 text-slate-800">
+<body class="min-h-screen">
 
 <div class="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
 
     {{-- En-tête --}}
-    <div class="mb-8 flex flex-wrap items-center justify-between gap-4">
+    <div class="page-header mb-8 flex flex-wrap items-center justify-between gap-5">
+
         <div>
-            <div class="mb-3 flex flex-wrap items-center gap-4">
+            <div class="mb-4 flex flex-wrap items-center gap-4">
+
                 <a href="{{ route('admin.dashboard') }}"
-                   class="inline-flex items-center gap-2 text-sm text-emerald-700 hover:underline">
-                    <span class="flip">←</span> <span data-i18n="back">Retour au tableau de bord</span>
+                   class="inline-flex items-center gap-2 text-sm font-semibold"
+                   style="color:var(--red-dark)">
+                    <span class="flip">←</span>
+                    <span data-i18n="back">Retour au tableau de bord</span>
                 </a>
 
                 {{-- Sélecteur de langue --}}
-                <div class="flex rounded-full bg-slate-200 p-1">
+                <div class="flex rounded-full border p-1"
+                     style="background:var(--red-light);border-color:var(--red-soft)">
                     <button type="button" id="lang-fr" class="lb" aria-label="Français">FR</button>
                     <button type="button" id="lang-ar" class="lb" aria-label="العربية">عربي</button>
                 </div>
             </div>
 
-            <h1 class="text-2xl font-bold sm:text-3xl" data-i18n="title">
+            <h1 class="page-title text-2xl font-bold sm:text-3xl" data-i18n="title">
                 Gestion des certificats
             </h1>
 
-            <p class="mt-2 text-sm text-slate-500" data-i18n="subtitle">
+            <p class="mt-2 text-sm font-medium" style="color:var(--red-dark)" data-i18n="subtitle">
                 Importez le certificat PDF de l'étudiant, puis activez-le pour le rendre disponible.
             </p>
         </div>
 
-        <div class="rounded-2xl border border-amber-200 bg-amber-50 px-5 py-4">
-            <p class="text-sm text-amber-800" data-i18n="pending_count">Demandes en attente</p>
-            <p class="mt-1 text-2xl font-bold text-amber-900">
+        {{-- Compteur --}}
+        <div class="rounded-2xl border px-6 py-4"
+             style="background:var(--red-light);border-color:var(--red-soft)">
+            <p class="text-sm font-semibold" style="color:var(--red-dark)" data-i18n="pending_count">
+                Demandes en attente
+            </p>
+
+            <p class="mt-1 text-3xl font-bold" style="color:var(--red)">
                 {{ $pendingCount }}
             </p>
         </div>
+
     </div>
 
     {{-- Messages --}}
     @if (session('success'))
-        <div class="mb-5 rounded-xl border border-emerald-200 bg-emerald-50 p-4 text-emerald-800">
-            {{ session('success') }}
+        <div class="message">
+            <span class="font-bold">✓ </span>{{ session('success') }}
         </div>
     @endif
 
     @if (session('info'))
-        <div class="mb-5 rounded-xl border border-sky-200 bg-sky-50 p-4 text-sky-800">
-            {{ session('info') }}
+        <div class="message">
+            <span class="font-bold">ⓘ </span>{{ session('info') }}
         </div>
     @endif
 
     @if (session('error'))
-        <div class="mb-5 rounded-xl border border-red-200 bg-red-50 p-4 text-red-700">
-            {{ session('error') }}
+        <div class="message">
+            <span class="font-bold">! </span>{{ session('error') }}
         </div>
     @endif
 
     @if ($errors->any())
-        <div class="mb-5 rounded-xl border border-red-200 bg-red-50 p-4 text-red-700">
-            {{ $errors->first() }}
+        <div class="message">
+            <span class="font-bold">! </span>{{ $errors->first() }}
         </div>
     @endif
 
     {{-- Tableau --}}
-    <div class="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+    <div class="main-card">
 
         <div class="overflow-x-auto">
             <table class="w-full min-w-[1200px] text-start text-sm">
 
-                <thead class="bg-slate-100 text-slate-600">
+                <thead class="table-head">
                     <tr>
-                        <th class="px-5 py-4 text-start font-semibold" data-i18n="th_student">Étudiant</th>
-                        <th class="px-5 py-4 text-start font-semibold" data-i18n="th_name">Nom sur le certificat</th>
-                        <th class="px-5 py-4 text-start font-semibold" data-i18n="th_formation">Formation</th>
-                        <th class="px-5 py-4 text-start font-semibold" data-i18n="th_number">N° du certificat</th>
-                        <th class="px-5 py-4 text-start font-semibold" data-i18n="th_status">Statut</th>
-                        <th class="px-5 py-4 text-start font-semibold" data-i18n="th_date">Date</th>
-                        <th class="px-5 py-4 text-start font-semibold" data-i18n="th_pdf">Certificat PDF</th>
-                        <th class="px-5 py-4 text-start font-semibold" data-i18n="th_actions">Actions</th>
+                        <th class="px-5 py-4 text-start font-bold" data-i18n="th_student">Étudiant</th>
+                        <th class="px-5 py-4 text-start font-bold" data-i18n="th_name">Nom sur le certificat</th>
+                        <th class="px-5 py-4 text-start font-bold" data-i18n="th_formation">Formation</th>
+                        <th class="px-5 py-4 text-start font-bold" data-i18n="th_number">N° du certificat</th>
+                        <th class="px-5 py-4 text-start font-bold" data-i18n="th_status">Statut</th>
+                        <th class="px-5 py-4 text-start font-bold" data-i18n="th_date">Date</th>
+                        <th class="px-5 py-4 text-start font-bold" data-i18n="th_pdf">Certificat PDF</th>
+                        <th class="px-5 py-4 text-start font-bold" data-i18n="th_actions">Actions</th>
                     </tr>
                 </thead>
 
-                <tbody class="divide-y divide-slate-100">
+                <tbody>
 
                     @forelse ($certificates as $certificate)
 
-                        <tr class="align-top hover:bg-slate-50">
+                        <tr class="table-row align-top">
 
                             {{-- Étudiant --}}
                             <td class="px-5 py-4">
-                                <div class="font-semibold text-slate-800">
+                                <div class="font-bold" style="color:var(--red-dark)">
                                     @if ($certificate->user)
                                         {{ $certificate->user->name }}
                                     @else
@@ -111,18 +292,21 @@
                                     @endif
                                 </div>
 
-                                <div class="mt-1 text-xs text-slate-500" dir="ltr" style="unicode-bidi:plaintext">
+                                <div class="mt-1 text-xs font-medium"
+                                     style="color:var(--red)"
+                                     dir="ltr"
+                                     class="email-text">
                                     {{ $certificate->user->email ?? '' }}
                                 </div>
                             </td>
 
-                            {{-- Nom du certificat --}}
-                            <td class="px-5 py-4 font-medium">
+                            {{-- Nom sur le certificat --}}
+                            <td class="px-5 py-4 font-semibold" style="color:var(--red-dark)">
                                 {{ $certificate->name_on_certificate }}
                             </td>
 
                             {{-- Formation --}}
-                            <td class="px-5 py-4">
+                            <td class="px-5 py-4 font-medium" style="color:var(--red-dark)">
                                 @if ($certificate->formation)
                                     {{ $certificate->formation->name }}
                                 @else
@@ -131,25 +315,31 @@
                             </td>
 
                             {{-- Numéro --}}
-                            <td class="px-5 py-4 font-mono text-xs" dir="ltr" style="unicode-bidi:plaintext">
+                            <td class="px-5 py-4 font-mono text-xs font-semibold"
+                                style="color:var(--red-dark)"
+                                dir="ltr">
                                 {{ $certificate->certificate_number }}
                             </td>
 
                             {{-- Statut --}}
                             <td class="px-5 py-4">
                                 @if ($certificate->status === 'active')
-                                    <span class="inline-flex rounded-full bg-emerald-100 px-3 py-1 text-xs font-semibold text-emerald-700" data-i18n="status_active">
+                                    <span class="status-active inline-flex rounded-full px-3 py-1 text-xs font-bold"
+                                          data-i18n="status_active">
                                         Activé
                                     </span>
                                 @else
-                                    <span class="inline-flex rounded-full bg-amber-100 px-3 py-1 text-xs font-semibold text-amber-800" data-i18n="status_pending">
+                                    <span class="status-pending inline-flex rounded-full px-3 py-1 text-xs font-bold"
+                                          data-i18n="status_pending">
                                         En attente
                                     </span>
                                 @endif
                             </td>
 
                             {{-- Date --}}
-                            <td class="px-5 py-4 text-slate-500" dir="ltr" style="unicode-bidi:plaintext">
+                            <td class="px-5 py-4 text-xs font-semibold"
+                                style="color:var(--red-dark)"
+                                dir="ltr">
                                 {{ $certificate->created_at?->format('d/m/Y H:i') ?? '—' }}
                             </td>
 
@@ -169,12 +359,12 @@
                                         name="certificate_file"
                                         accept=".pdf,application/pdf"
                                         required
-                                        class="block w-full rounded-lg border border-slate-300 bg-white p-2 text-xs"
+                                        class="file-input"
                                     >
 
                                     <button
                                         type="submit"
-                                        class="rounded-xl bg-blue-600 px-3 py-2 font-semibold text-white transition hover:bg-blue-700"
+                                        class="btn-red rounded-xl px-3 py-2 font-bold"
                                         data-i18n="upload_pdf"
                                     >
                                         Importer le PDF
@@ -182,17 +372,25 @@
                                 </form>
 
                                 @if ($certificate->file_path)
+
                                     <a
                                         href="{{ route('admin.certificates.download', $certificate) }}"
                                         target="_blank"
-                                        class="mt-3 inline-flex items-center gap-2 text-sm font-semibold text-blue-700 hover:underline"
+                                        class="mt-3 inline-flex items-center gap-2 text-sm font-bold hover:underline"
+                                        style="color:var(--red)"
                                     >
-                                        ↓ <span data-i18n="view_pdf">Voir / Télécharger PDF</span>
+                                        ↓
+                                        <span data-i18n="view_pdf">Voir / Télécharger PDF</span>
                                     </a>
+
                                 @else
-                                    <p class="mt-3 text-xs text-slate-500" data-i18n="no_pdf">
+
+                                    <p class="mt-3 text-xs font-medium"
+                                       style="color:var(--red-dark)"
+                                       data-i18n="no_pdf">
                                         Aucun PDF importé
                                     </p>
+
                                 @endif
 
                             </td>
@@ -203,6 +401,7 @@
                                 @if ($certificate->status !== 'active')
 
                                     @if ($certificate->file_path)
+
                                         <form
                                             action="{{ route('admin.certificates.activate', $certificate) }}"
                                             method="POST"
@@ -213,23 +412,31 @@
 
                                             <button
                                                 type="submit"
-                                                class="rounded-xl bg-emerald-600 px-4 py-2 font-semibold text-white transition hover:bg-emerald-700"
+                                                class="btn-red rounded-xl px-4 py-2 font-bold"
                                                 data-i18n="activate"
                                             >
                                                 Activer
                                             </button>
                                         </form>
+
                                     @else
-                                        <span class="inline-block max-w-[150px] text-xs text-amber-700" data-i18n="import_first">
+
+                                        <span class="inline-block max-w-[150px] text-xs font-semibold"
+                                              style="color:var(--red-dark)"
+                                              data-i18n="import_first">
                                             Importez le PDF avant l'activation.
                                         </span>
+
                                     @endif
 
                                 @else
 
-                                    <div class="text-xs font-semibold text-emerald-700">
+                                    <div class="text-xs font-bold" style="color:var(--red)">
                                         <span data-i18n="activated_on">Activé le</span>
-                                        <span dir="ltr" style="unicode-bidi:plaintext">{{ $certificate->activated_at?->format('d/m/Y') ?? '—' }}</span>
+
+                                        <span dir="ltr">
+                                            {{ $certificate->activated_at?->format('d/m/Y') ?? '—' }}
+                                        </span>
                                     </div>
 
                                 @endif
@@ -241,14 +448,32 @@
                     @empty
 
                         <tr>
-                            <td colspan="8" class="px-5 py-12 text-center">
-                                <p class="font-semibold text-slate-700" data-i18n="empty_title">
+                            <td colspan="8" class="px-5 py-14 text-center">
+
+                                <div class="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full"
+                                     style="background:var(--red-light);color:var(--red)">
+                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                         width="28" height="28"
+                                         viewBox="0 0 24 24"
+                                         fill="none"
+                                         stroke="currentColor"
+                                         stroke-width="1.8">
+                                        <path d="M7 3h7l5 5v13H7z"/>
+                                        <path d="M14 3v5h5"/>
+                                        <path d="M10 13h6M10 17h6"/>
+                                    </svg>
+                                </div>
+
+                                <p class="font-bold" style="color:var(--red-dark)" data-i18n="empty_title">
                                     Aucune demande de certificat
                                 </p>
 
-                                <p class="mt-2 text-sm text-slate-500" data-i18n="empty_text">
+                                <p class="mt-2 text-sm font-medium"
+                                   style="color:var(--red)"
+                                   data-i18n="empty_text">
                                     Les demandes apparaîtront ici lorsque les étudiants rempliront les conditions.
                                 </p>
+
                             </td>
                         </tr>
 
@@ -260,7 +485,8 @@
 
         {{-- Pagination --}}
         @if ($certificates->hasPages())
-            <div class="border-t border-slate-100 px-5 py-4">
+            <div class="pagination-area border-t px-5 py-4"
+                 style="border-color:var(--red-soft)">
                 {{ $certificates->links() }}
             </div>
         @endif
@@ -298,6 +524,7 @@ const I18N = {
         empty_text: 'Les demandes apparaîtront ici lorsque les étudiants rempliront les conditions.',
         confirm_activate: 'Voulez-vous activer ce certificat ?'
     },
+
     ar: {
         back: 'العودة إلى لوحة التحكم',
         title: 'تدبير الشهادات',
@@ -327,27 +554,52 @@ const I18N = {
     }
 };
 
+const LANGUAGE_KEY = 'etudierenligne_admin_language';
+
 let lang = 'fr';
-try { lang = localStorage.getItem('admin-lang') === 'ar' ? 'ar' : 'fr'; } catch (e) {}
 
-window.T = function (key) { return (I18N[lang] && I18N[lang][key]) || I18N.fr[key] || key; };
+try {
+    lang = localStorage.getItem(LANGUAGE_KEY) === 'ar' ? 'ar' : 'fr';
+} catch (e) {
+    lang = 'fr';
+}
 
-function setLang(l) {
-    lang = l;
-    try { localStorage.setItem('admin-lang', l); } catch (e) {}
-    document.documentElement.lang = l;
-    document.documentElement.dir = l === 'ar' ? 'rtl' : 'ltr';
-    document.querySelectorAll('[data-i18n]').forEach(function (el) {
-        var v = I18N[l][el.dataset.i18n];
-        if (v) el.textContent = v;
+window.T = function (key) {
+    return (I18N[lang] && I18N[lang][key]) || I18N.fr[key] || key;
+};
+
+function setLang(language) {
+    lang = language;
+
+    try {
+        localStorage.setItem(LANGUAGE_KEY, language);
+    } catch (e) {}
+
+    document.documentElement.lang = language;
+    document.documentElement.dir = language === 'ar' ? 'rtl' : 'ltr';
+
+    document.querySelectorAll('[data-i18n]').forEach(function (element) {
+        const value = I18N[language][element.dataset.i18n];
+
+        if (value) {
+            element.textContent = value;
+        }
     });
-    document.getElementById('lang-fr').classList.toggle('on', l === 'fr');
-    document.getElementById('lang-ar').classList.toggle('on', l === 'ar');
+
+    document.getElementById('lang-fr').classList.toggle('on', language === 'fr');
+    document.getElementById('lang-ar').classList.toggle('on', language === 'ar');
 }
 
 document.addEventListener('DOMContentLoaded', function () {
-    document.getElementById('lang-fr').addEventListener('click', function () { setLang('fr'); });
-    document.getElementById('lang-ar').addEventListener('click', function () { setLang('ar'); });
+
+    document.getElementById('lang-fr').addEventListener('click', function () {
+        setLang('fr');
+    });
+
+    document.getElementById('lang-ar').addEventListener('click', function () {
+        setLang('ar');
+    });
+
     setLang(lang);
 });
 </script>

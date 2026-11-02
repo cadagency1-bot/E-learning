@@ -23,9 +23,9 @@ class ConfirmationController extends Controller
     public function confirm(Request $request): RedirectResponse
     {
         $request->validate([
-            'email' => [
+            'whatsapp_phone' => [
                 'required',
-                'email',
+                'string',
             ],
 
             'confirmation_code' => [
@@ -34,17 +34,15 @@ class ConfirmationController extends Controller
                 'size:6',
             ],
         ], [
-            'email.required' => 'Veuillez entrer votre adresse email.',
-            'email.email' => 'Veuillez entrer une adresse email valide.',
+            'whatsapp_phone.required' => 'Veuillez entrer votre numéro WhatsApp.',
             'confirmation_code.required' => 'Veuillez entrer votre code de confirmation.',
             'confirmation_code.size' => 'Le code doit contenir 6 caractères.',
         ]);
 
-        $email = strtolower(trim($request->email));
-
+        $phone = trim($request->whatsapp_phone);
         $code = strtoupper(trim($request->confirmation_code));
 
-        $user = User::where('email', $email)
+        $user = User::where('whatsapp_phone', $phone)
             ->where('role', 'student')
             ->where('status', 'accepted')
             ->where('confirmation_code', $code)
@@ -55,7 +53,7 @@ class ConfirmationController extends Controller
                 ->withInput()
                 ->withErrors([
                     'confirmation_code' =>
-                        'Email ou code de confirmation incorrect.'
+                        'Numéro WhatsApp ou code de confirmation incorrect.'
                 ]);
         }
 

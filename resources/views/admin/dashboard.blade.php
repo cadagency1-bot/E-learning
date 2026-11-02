@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="fr" dir="ltr">
 <head>
     <meta charset="UTF-8">
@@ -29,12 +29,12 @@
                         arabic: ['Tajawal', 'sans-serif']
                     },
                     colors: {
-                        page: '#eef3f1',
-                        forest: {
-                            50: '#eef5f2', 100: '#d9ebe4', 200: '#b5d7ca',
-                            300: '#86bba8', 400: '#4f9a80', 500: '#2b7a5f',
-                            600: '#1d6149', 700: '#154c3a', 800: '#0f3b2d',
-                            900: '#0a2e23', 950: '#061c15'
+                        page: '#fbf5f5',
+                        brand: {
+                            50: '#fff1f1', 100: '#ffe0e0', 200: '#fcc5c5',
+                            300: '#f59a9a', 400: '#ea5a5a', 500: '#d62828',
+                            600: '#bd1f1f', 700: '#a01818', 800: '#7f1212',
+                            900: '#5e0d0d', 950: '#3b0707'
                         }
                     }
                 }
@@ -44,36 +44,36 @@
 
     <style>
         * { box-sizing: border-box; }
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background: #eef3f1; -webkit-font-smoothing: antialiased; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background: #fbf5f5; -webkit-font-smoothing: antialiased; }
         html[lang="ar"] body { font-family: 'Tajawal', sans-serif; }
         button, a { -webkit-tap-highlight-color: transparent; }
-        :focus-visible { outline: 2px solid #2b7a5f; outline-offset: 2px; }
+        :focus-visible { outline: 2px solid #d62828; outline-offset: 2px; }
 
         .sidebar {
             position: fixed; inset-block: 0; inset-inline-start: 0; z-index: 60;
             width: 272px; max-width: 86vw; display: flex; flex-direction: column;
-            overflow-y: auto; background: #154c3a; color: #fff; visibility: hidden;
+            overflow-y: auto; background: #a01818; color: #fff; visibility: hidden;
             transform: translateX(-100%); transition: transform .25s ease, visibility 0s linear .25s;
         }
         [dir="rtl"] .sidebar { transform: translateX(100%); }
         .sidebar.open, [dir="rtl"] .sidebar.open {
             visibility: visible; transform: none; transition: transform .25s ease, visibility 0s;
         }
-        .logo-block { background: #0f3b2d; border-end-end-radius: 28px; }
+        .logo-block { background: #ffffff; border-end-end-radius: 28px; }
         .side-link {
             display: flex; align-items: center; gap: 12px; margin-inline-start: 16px;
             padding: 11px 16px; border-start-start-radius: 16px; border-end-start-radius: 16px;
-            font-size: 14px; font-weight: 600; color: #cfe6dd; transition: background-color .2s, color .2s;
+            font-size: 14px; font-weight: 600; color: #ffe0e0; transition: background-color .2s, color .2s;
         }
-        .side-link:hover { background: rgba(255,255,255,.08); color: #fff; }
-        .side-link[aria-current="page"] { background: #eef3f1; color: #0f3b2d; font-weight: 800; }
-        .panel { background: #fff; border-radius: 20px; box-shadow: 0 1px 2px rgba(15,59,45,.06); }
+        .side-link:hover { background: rgba(255,255,255,.12); color: #fff; }
+        .side-link[aria-current="page"] { background: #fbf5f5; color: #a01818; font-weight: 800; }
+        .panel { background: #fff; border-radius: 20px; box-shadow: 0 1px 2px rgba(127,18,18,.08); }
         .icon-tile {
             display: flex; align-items: center; justify-content: center; width: 40px; height: 40px;
-            flex-shrink: 0; border-radius: 12px; border: 1px solid #cfe5db; background: #e6f1ec; color: #154c3a;
+            flex-shrink: 0; border-radius: 12px; border: 1px solid #fcc5c5; background: #ffe9e9; color: #a01818;
         }
         .module-card { transition: box-shadow .2s ease, transform .2s ease; }
-        .module-card:hover { box-shadow: 0 14px 28px -16px rgba(15,59,45,.45); transform: translateY(-2px); }
+        .module-card:hover { box-shadow: 0 14px 28px -16px rgba(160,24,24,.5); transform: translateY(-2px); }
         .arrow-icon { transition: transform .2s ease; }
         .group:hover .arrow-icon { transform: translateX(2px); }
         [dir="rtl"] .arrow-icon { transform: scaleX(-1); }
@@ -103,21 +103,21 @@
     $certificatesLength = $notificationCount > 0 ? $donutCircumference * ($pendingCertificates / $notificationCount) : 0;
 @endphp
 
-<div id="sidebarOverlay" class="fixed inset-0 z-50 hidden bg-forest-950/50 lg:hidden" onclick="closeSidebar()"></div>
+<div id="sidebarOverlay" class="fixed inset-0 z-50 hidden bg-brand-950/50 lg:hidden" onclick="closeSidebar()"></div>
 
 <aside id="sidebar" class="sidebar" aria-label="Navigation">
     <div class="logo-block flex h-20 shrink-0 items-center justify-between gap-3 px-5">
         <a href="{{ route('admin.dashboard') }}" class="flex items-center gap-2.5">
-            <span class="flex h-10 w-10 items-center justify-center rounded-xl bg-forest-500 text-white">
+            <span class="flex h-10 w-10 items-center justify-center rounded-xl bg-brand-500 text-white">
                 <i data-lucide="graduation-cap" class="h-5 w-5"></i>
             </span>
             <span class="leading-tight">
-                <span class="block text-lg font-extrabold tracking-tight text-white">Cad<span class="text-forest-300">Academy</span></span>
-                <span class="block text-[10px] font-semibold tracking-wide text-forest-200" data-i18n="admin_brand">ADMINISTRATION · الإدارة</span>
+                <span class="block text-lg font-extrabold tracking-tight text-slate-900">Cad <span class="text-brand-500">Academy</span></span>
+                <span class="block text-[10px] font-semibold tracking-wide text-slate-500" data-i18n="admin_brand">ADMINISTRATION · الإدارة</span>
             </span>
         </a>
         <button type="button" onclick="closeSidebar()" aria-label="Fermer le menu" data-i18n-aria="aria_menu_close"
-            class="flex h-9 w-9 items-center justify-center rounded-lg text-forest-200 transition hover:bg-white/10 hover:text-white lg:hidden">
+            class="flex h-9 w-9 items-center justify-center rounded-lg text-brand-700 transition hover:bg-brand-50 lg:hidden">
             <i data-lucide="x" class="h-5 w-5"></i>
         </button>
     </div>
@@ -129,29 +129,29 @@
         <a href="{{ route('admin.quiz.index') }}" class="side-link"><i data-lucide="clipboard-check" class="h-[18px] w-[18px]"></i><span data-i18n="quizzes">Quiz</span></a>
         <a href="{{ route('admin.registrations.index') }}" class="side-link">
             <i data-lucide="users" class="h-[18px] w-[18px]"></i><span data-i18n="registrations">Inscriptions</span>
-            @if($pendingRegistrations > 0)<span class="ms-auto min-w-[22px] rounded-full bg-orange-400 px-1.5 text-center text-[11px] font-extrabold leading-[22px] text-forest-950">{{ $pendingRegistrations }}</span>@endif
+            @if($pendingRegistrations > 0)<span class="ms-auto min-w-[22px] rounded-full bg-white px-1.5 text-center text-[11px] font-extrabold leading-[22px] text-brand-800">{{ $pendingRegistrations }}</span>@endif
         </a>
         <a href="{{ route('admin.formation-requests.index') }}" class="side-link">
             <i data-lucide="clipboard-list" class="h-[18px] w-[18px]"></i><span data-i18n="nav_requests">Demandes</span>
-            @if($pendingFormationRequests > 0)<span class="ms-auto min-w-[22px] rounded-full bg-forest-300 px-1.5 text-center text-[11px] font-extrabold leading-[22px] text-forest-950">{{ $pendingFormationRequests }}</span>@endif
+            @if($pendingFormationRequests > 0)<span class="ms-auto min-w-[22px] rounded-full bg-brand-200 px-1.5 text-center text-[11px] font-extrabold leading-[22px] text-brand-900">{{ $pendingFormationRequests }}</span>@endif
         </a>
         <a href="{{ route('admin.certificates.index') }}" class="side-link">
             <i data-lucide="award" class="h-[18px] w-[18px]"></i><span data-i18n="certificates">Certificats</span>
-            @if($pendingCertificates > 0)<span class="ms-auto min-w-[22px] rounded-full bg-amber-300 px-1.5 text-center text-[11px] font-extrabold leading-[22px] text-forest-950">{{ $pendingCertificates }}</span>@endif
+            @if($pendingCertificates > 0)<span class="ms-auto min-w-[22px] rounded-full bg-brand-400 px-1.5 text-center text-[11px] font-extrabold leading-[22px] text-white">{{ $pendingCertificates }}</span>@endif
         </a>
     </nav>
 
     <div class="shrink-0 space-y-3 p-4">
         <div class="flex items-center gap-3 rounded-2xl bg-white/10 p-3">
-            <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-forest-100 text-sm font-extrabold text-forest-800">{{ $adminInitial }}</span>
+            <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white text-sm font-extrabold text-brand-700">{{ $adminInitial }}</span>
             <div class="min-w-0 leading-tight">
                 <p class="truncate text-sm font-bold text-white">{{ $adminName }}</p>
-                <p class="mt-0.5 text-xs text-forest-200" data-i18n="admin_role">Administrateur</p>
+                <p class="mt-0.5 text-xs text-brand-200" data-i18n="admin_role">Administrateur</p>
             </div>
         </div>
         <form method="POST" action="{{ route('logout') }}">
             @csrf
-            <button type="submit" class="flex w-full items-center gap-3 rounded-xl px-4 py-2.5 text-sm font-semibold text-forest-100 transition hover:bg-white/10 hover:text-white">
+            <button type="submit" class="flex w-full items-center gap-3 rounded-xl px-4 py-2.5 text-sm font-semibold text-brand-100 transition hover:bg-white/10 hover:text-white">
                 <i data-lucide="log-out" class="h-[18px] w-[18px]"></i><span data-i18n="logout">Déconnexion</span>
             </button>
         </form>
@@ -159,24 +159,24 @@
 </aside>
 
 <div class="lg:ps-[272px]">
-    <header class="sticky top-0 z-40 flex h-16 items-center justify-between gap-3 border-b border-forest-100 bg-page px-4 sm:px-6 lg:px-8">
+    <header class="sticky top-0 z-40 flex h-16 items-center justify-between gap-3 border-b border-brand-100 bg-page px-4 sm:px-6 lg:px-8">
         <div class="flex min-w-0 items-center gap-3">
             <button id="sidebarButton" type="button" onclick="openSidebar()" aria-label="Ouvrir le menu" data-i18n-aria="aria_menu_open" aria-expanded="false" aria-controls="sidebar"
-                class="flex h-9 w-9 items-center justify-center rounded-lg bg-white text-forest-700 shadow-sm transition hover:bg-forest-50 lg:hidden">
+                class="flex h-9 w-9 items-center justify-center rounded-lg bg-white text-brand-700 shadow-sm transition hover:bg-brand-50 lg:hidden">
                 <i data-lucide="menu" class="h-5 w-5"></i>
             </button>
-            <h1 class="truncate text-base font-extrabold text-forest-900 sm:text-lg" data-i18n="dashboard">Tableau de bord</h1>
+            <h1 class="truncate text-base font-extrabold text-slate-900 sm:text-lg" data-i18n="dashboard">Tableau de bord</h1>
         </div>
 
         <div class="flex items-center gap-2">
             <div class="relative shrink-0">
                 <button id="notificationButton" type="button" onclick="toggleNotifications()" aria-label="Notifications" data-i18n-aria="aria_notifications" aria-expanded="false" aria-controls="notificationPanel"
-                    class="relative flex h-9 w-9 items-center justify-center rounded-lg bg-white text-forest-700 shadow-sm transition hover:bg-forest-50">
+                    class="relative flex h-9 w-9 items-center justify-center rounded-lg bg-white text-brand-700 shadow-sm transition hover:bg-brand-50">
                     <i data-lucide="bell" class="h-[18px] w-[18px]"></i>
-                    @if($notificationCount > 0)<span class="absolute -end-1.5 -top-1.5 flex h-[18px] min-w-[18px] items-center justify-center rounded-full border-2 border-page bg-red-500 px-1 text-[10px] font-extrabold text-white">{{ $notificationCount > 99 ? '99+' : $notificationCount }}</span>@endif
+                    @if($notificationCount > 0)<span class="absolute -end-1.5 -top-1.5 flex h-[18px] min-w-[18px] items-center justify-center rounded-full border-2 border-white bg-brand-500 px-1 text-[10px] font-extrabold text-white">{{ $notificationCount > 99 ? '99+' : $notificationCount }}</span>@endif
                 </button>
 
-                <div id="notificationPanel" class="fixed inset-x-3 top-[68px] z-[100] hidden overflow-hidden rounded-2xl border border-forest-100 bg-white shadow-xl sm:absolute sm:inset-x-auto sm:end-0 sm:top-full sm:mt-2 sm:w-[360px]">
+                <div id="notificationPanel" class="fixed inset-x-3 top-[68px] z-[100] hidden overflow-hidden rounded-2xl border border-brand-100 bg-white shadow-xl sm:absolute sm:inset-x-auto sm:end-0 sm:top-full sm:mt-2 sm:w-[360px]">
                     <div class="flex items-start gap-3 border-b border-slate-100 px-4 py-3.5">
                         <span class="icon-tile !h-9 !w-9"><i data-lucide="bell-ring" class="h-[18px] w-[18px]"></i></span>
                         <div class="min-w-0">
@@ -187,39 +187,39 @@
                     <div class="p-2">
                         @if($notificationCount === 0)
                             <div class="flex flex-col items-center px-4 pb-3 pt-5 text-center">
-                                <span class="flex h-10 w-10 items-center justify-center rounded-full bg-forest-50 text-forest-500"><i data-lucide="check-check" class="h-5 w-5"></i></span>
+                                <span class="flex h-10 w-10 items-center justify-center rounded-full bg-brand-50 text-brand-500"><i data-lucide="check-check" class="h-5 w-5"></i></span>
                                 <p class="mt-3 text-sm font-bold text-slate-700" data-i18n="notifications_clear">Tout est à jour</p>
                                 <p class="mt-1 text-xs text-slate-400" data-i18n="notifications_empty">Aucune nouvelle demande pour le moment.</p>
                             </div>
                         @endif
-                        <a href="{{ route('admin.registrations.index') }}" class="group flex items-center gap-3 rounded-xl p-3 transition hover:bg-slate-50">
-                            <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-orange-50 text-orange-600"><i data-lucide="users" class="h-5 w-5"></i></span>
+                        <a href="{{ route('admin.registrations.index') }}" class="group flex items-center gap-3 rounded-xl p-3 transition hover:bg-brand-50">
+                            <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-brand-100 text-brand-700"><i data-lucide="users" class="h-5 w-5"></i></span>
                             <div class="min-w-0 flex-1"><p class="truncate text-sm font-bold text-slate-700" data-i18n="notification_registrations">Inscriptions en attente</p><p class="mt-0.5 text-xs text-slate-400" data-i18n="notification_view">Cliquer pour consulter</p></div>
-                            <span class="min-w-[28px] rounded-full px-2 py-0.5 text-center text-xs font-extrabold {{ $pendingRegistrations > 0 ? 'bg-orange-100 text-orange-700' : 'bg-slate-100 text-slate-400' }}">{{ $pendingRegistrations }}</span>
+                            <span class="min-w-[28px] rounded-full px-2 py-0.5 text-center text-xs font-extrabold {{ $pendingRegistrations > 0 ? 'bg-brand-700 text-white' : 'bg-slate-100 text-slate-400' }}">{{ $pendingRegistrations }}</span>
                             <i data-lucide="chevron-right" class="arrow-icon h-4 w-4 shrink-0 text-slate-300"></i>
                         </a>
-                        <a href="{{ route('admin.formation-requests.index') }}" class="group flex items-center gap-3 rounded-xl p-3 transition hover:bg-slate-50">
-                            <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-forest-50 text-forest-600"><i data-lucide="clipboard-list" class="h-5 w-5"></i></span>
+                        <a href="{{ route('admin.formation-requests.index') }}" class="group flex items-center gap-3 rounded-xl p-3 transition hover:bg-brand-50">
+                            <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-brand-50 text-brand-600"><i data-lucide="clipboard-list" class="h-5 w-5"></i></span>
                             <div class="min-w-0 flex-1"><p class="truncate text-sm font-bold text-slate-700" data-i18n="notification_requests">Demandes de formation</p><p class="mt-0.5 text-xs text-slate-400" data-i18n="notification_view">Cliquer pour consulter</p></div>
-                            <span class="min-w-[28px] rounded-full px-2 py-0.5 text-center text-xs font-extrabold {{ $pendingFormationRequests > 0 ? 'bg-forest-100 text-forest-700' : 'bg-slate-100 text-slate-400' }}">{{ $pendingFormationRequests }}</span>
+                            <span class="min-w-[28px] rounded-full px-2 py-0.5 text-center text-xs font-extrabold {{ $pendingFormationRequests > 0 ? 'bg-brand-500 text-white' : 'bg-slate-100 text-slate-400' }}">{{ $pendingFormationRequests }}</span>
                             <i data-lucide="chevron-right" class="arrow-icon h-4 w-4 shrink-0 text-slate-300"></i>
                         </a>
-                        <a href="{{ route('admin.certificates.index') }}" class="group flex items-center gap-3 rounded-xl p-3 transition hover:bg-slate-50">
-                            <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-amber-50 text-amber-600"><i data-lucide="award" class="h-5 w-5"></i></span>
+                        <a href="{{ route('admin.certificates.index') }}" class="group flex items-center gap-3 rounded-xl p-3 transition hover:bg-brand-50">
+                            <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-brand-200 text-brand-800"><i data-lucide="award" class="h-5 w-5"></i></span>
                             <div class="min-w-0 flex-1"><p class="truncate text-sm font-bold text-slate-700" data-i18n="notification_certificates">Demandes de certificats</p><p class="mt-0.5 text-xs text-slate-400" data-i18n="notification_view">Cliquer pour consulter</p></div>
-                            <span class="min-w-[28px] rounded-full px-2 py-0.5 text-center text-xs font-extrabold {{ $pendingCertificates > 0 ? 'bg-amber-100 text-amber-700' : 'bg-slate-100 text-slate-400' }}">{{ $pendingCertificates }}</span>
+                            <span class="min-w-[28px] rounded-full px-2 py-0.5 text-center text-xs font-extrabold {{ $pendingCertificates > 0 ? 'bg-brand-300 text-brand-900' : 'bg-slate-100 text-slate-400' }}">{{ $pendingCertificates }}</span>
                             <i data-lucide="chevron-right" class="arrow-icon h-4 w-4 shrink-0 text-slate-300"></i>
                         </a>
                     </div>
                 </div>
             </div>
 
-            <button id="languageButton" type="button" onclick="toggleLanguage()" class="inline-flex h-9 items-center gap-1.5 rounded-lg bg-white px-2.5 text-xs font-bold text-forest-700 shadow-sm transition hover:bg-forest-50 sm:px-3 sm:text-[13px]">
+            <button id="languageButton" type="button" onclick="toggleLanguage()" class="inline-flex h-9 items-center gap-1.5 rounded-lg bg-white px-2.5 text-xs font-bold text-brand-700 shadow-sm transition hover:bg-brand-50 sm:px-3 sm:text-[13px]">
                 <i data-lucide="languages" class="hidden h-4 w-4 sm:block"></i><span id="languageLabel">العربية</span>
             </button>
 
             <div class="hidden items-center gap-2.5 rounded-xl bg-white py-1.5 pe-3 ps-1.5 shadow-sm md:flex">
-                <span class="flex h-8 w-8 items-center justify-center rounded-full bg-forest-700 text-sm font-extrabold text-white">{{ $adminInitial }}</span>
+                <span class="flex h-8 w-8 items-center justify-center rounded-full bg-brand-600 text-sm font-extrabold text-white">{{ $adminInitial }}</span>
                 <div class="min-w-0 leading-tight"><p class="max-w-[140px] truncate text-[13px] font-bold text-slate-800">{{ $adminName }}</p><p class="text-[11px] text-slate-400" data-i18n="admin_role">Administrateur</p></div>
             </div>
         </div>
@@ -229,22 +229,22 @@
         <section class="panel relative overflow-hidden p-5 sm:p-7">
             <div class="flex items-center justify-between gap-6">
                 <div class="min-w-0 max-w-xl">
-                    <span class="inline-flex items-center gap-1.5 rounded-full bg-forest-50 px-2.5 py-1 text-[11px] font-bold text-forest-700"><i data-lucide="shield-check" class="h-3.5 w-3.5"></i><span data-i18n="welcome_badge">ESPACE ADMINISTRATEUR</span></span>
-                    <h2 class="mt-3 text-2xl font-extrabold tracking-tight text-forest-900 sm:text-3xl"><span data-i18n="welcome_title">Bienvenue,</span> <span class="text-forest-500">{{ $adminName }}</span></h2>
+                    <span class="inline-flex items-center gap-1.5 rounded-full bg-brand-50 px-2.5 py-1 text-[11px] font-bold text-brand-700"><i data-lucide="shield-check" class="h-3.5 w-3.5"></i><span data-i18n="welcome_badge">ESPACE ADMINISTRATEUR</span></span>
+                    <h2 class="mt-3 text-2xl font-extrabold tracking-tight text-slate-900 sm:text-3xl"><span data-i18n="welcome_title">Bienvenue,</span> <span class="text-brand-500">{{ $adminName }}</span></h2>
                     <p class="mt-2 text-sm leading-6 text-slate-500" data-i18n="welcome_description">Pilotez votre plateforme de formation depuis un espace simple, moderne et centralisé.</p>
                     <div class="mt-5 flex flex-wrap items-center gap-2.5">
-                        <a href="{{ route('admin.formations.index') }}" class="group inline-flex items-center gap-2 rounded-xl bg-forest-700 px-4 py-2.5 text-sm font-bold text-white transition hover:bg-forest-800"><i data-lucide="book-open" class="h-4 w-4"></i><span data-i18n="manage_formations">Gérer les formations</span><i data-lucide="arrow-right" class="arrow-icon h-4 w-4"></i></a>
-                        <a href="{{ route('admin.registrations.index') }}" class="inline-flex items-center gap-2 rounded-xl border border-forest-200 bg-white px-4 py-2.5 text-sm font-bold text-forest-700 transition hover:bg-forest-50"><i data-lucide="users" class="h-4 w-4"></i><span data-i18n="view_registrations">Voir les inscriptions</span></a>
+                        <a href="{{ route('admin.formations.index') }}" class="group inline-flex items-center gap-2 rounded-xl bg-brand-600 px-4 py-2.5 text-sm font-bold text-white transition hover:bg-brand-700"><i data-lucide="book-open" class="h-4 w-4"></i><span data-i18n="manage_formations">Gérer les formations</span><i data-lucide="arrow-right" class="arrow-icon h-4 w-4"></i></a>
+                        <a href="{{ route('admin.registrations.index') }}" class="inline-flex items-center gap-2 rounded-xl border border-brand-200 bg-white px-4 py-2.5 text-sm font-bold text-brand-700 transition hover:bg-brand-50"><i data-lucide="users" class="h-4 w-4"></i><span data-i18n="view_registrations">Voir les inscriptions</span></a>
                     </div>
                 </div>
                 <svg class="hidden h-40 w-auto shrink-0 sm:block lg:h-44" viewBox="0 0 260 170" fill="none" aria-hidden="true">
-                    <rect x="14" y="132" width="232" height="8" rx="4" fill="#154c3a"/><rect x="40" y="140" width="8" height="26" rx="3" fill="#154c3a"/><rect x="212" y="140" width="8" height="26" rx="3" fill="#154c3a"/>
-                    <rect x="80" y="48" width="108" height="70" rx="8" fill="#0f3b2d"/><rect x="87" y="55" width="94" height="56" rx="4" fill="#d9ebe4"/>
-                    <rect x="97" y="88" width="10" height="16" rx="2" fill="#86bba8"/><rect x="113" y="78" width="10" height="26" rx="2" fill="#4f9a80"/><rect x="129" y="68" width="10" height="36" rx="2" fill="#2b7a5f"/><rect x="145" y="82" width="10" height="22" rx="2" fill="#4f9a80"/><rect x="161" y="72" width="10" height="32" rx="2" fill="#154c3a"/>
-                    <rect x="126" y="118" width="16" height="9" fill="#0f3b2d"/><rect x="108" y="126" width="52" height="6" rx="3" fill="#0f3b2d"/>
-                    <rect x="22" y="122" width="46" height="10" rx="2" fill="#154c3a"/><rect x="28" y="112" width="36" height="10" rx="2" fill="#2b7a5f"/><rect x="25" y="102" width="40" height="10" rx="2" fill="#86bba8"/>
-                    <rect x="206" y="112" width="20" height="20" rx="4" fill="#154c3a"/><ellipse cx="210" cy="100" rx="6" ry="13" transform="rotate(-20 210 100)" fill="#2b7a5f"/><ellipse cx="222" cy="98" rx="6" ry="14" transform="rotate(20 222 98)" fill="#4f9a80"/><ellipse cx="216" cy="94" rx="5" ry="13" fill="#1d6149"/>
-                    <path d="M134 10 168 25 134 40 100 25Z" fill="#154c3a"/><path d="M116 33v10c0 4 8 8 18 8s18-4 18-8V33l-18 8Z" fill="#2b7a5f"/><path d="M168 25v14" stroke="#86bba8" stroke-width="2" stroke-linecap="round"/><circle cx="168" cy="42" r="3" fill="#86bba8"/><circle cx="62" cy="52" r="3" fill="#86bba8"/><circle cx="206" cy="48" r="2.5" fill="#4f9a80"/><circle cx="224" cy="70" r="2" fill="#b5d7ca"/>
+                    <rect x="14" y="132" width="232" height="8" rx="4" fill="#a01818"/><rect x="40" y="140" width="8" height="26" rx="3" fill="#a01818"/><rect x="212" y="140" width="8" height="26" rx="3" fill="#a01818"/>
+                    <rect x="80" y="48" width="108" height="70" rx="8" fill="#7f1212"/><rect x="87" y="55" width="94" height="56" rx="4" fill="#ffe0e0"/>
+                    <rect x="97" y="88" width="10" height="16" rx="2" fill="#f59a9a"/><rect x="113" y="78" width="10" height="26" rx="2" fill="#ea5a5a"/><rect x="129" y="68" width="10" height="36" rx="2" fill="#d62828"/><rect x="145" y="82" width="10" height="22" rx="2" fill="#ea5a5a"/><rect x="161" y="72" width="10" height="32" rx="2" fill="#a01818"/>
+                    <rect x="126" y="118" width="16" height="9" fill="#7f1212"/><rect x="108" y="126" width="52" height="6" rx="3" fill="#7f1212"/>
+                    <rect x="22" y="122" width="46" height="10" rx="2" fill="#a01818"/><rect x="28" y="112" width="36" height="10" rx="2" fill="#d62828"/><rect x="25" y="102" width="40" height="10" rx="2" fill="#f59a9a"/>
+                    <rect x="206" y="112" width="20" height="20" rx="4" fill="#a01818"/><ellipse cx="210" cy="100" rx="6" ry="13" transform="rotate(-20 210 100)" fill="#d62828"/><ellipse cx="222" cy="98" rx="6" ry="14" transform="rotate(20 222 98)" fill="#ea5a5a"/><ellipse cx="216" cy="94" rx="5" ry="13" fill="#bd1f1f"/>
+                    <path d="M134 10 168 25 134 40 100 25Z" fill="#a01818"/><path d="M116 33v10c0 4 8 8 18 8s18-4 18-8V33l-18 8Z" fill="#d62828"/><path d="M168 25v14" stroke="#f59a9a" stroke-width="2" stroke-linecap="round"/><circle cx="168" cy="42" r="3" fill="#f59a9a"/><circle cx="62" cy="52" r="3" fill="#f59a9a"/><circle cx="206" cy="48" r="2.5" fill="#ea5a5a"/><circle cx="224" cy="70" r="2" fill="#fcc5c5"/>
                 </svg>
             </div>
         </section>
@@ -252,47 +252,47 @@
         <div class="grid gap-5 xl:grid-cols-[minmax(0,1fr)_340px]">
             <section>
                 <div class="mb-3 flex items-end justify-between gap-3">
-                    <div class="min-w-0"><h3 class="text-base font-extrabold text-forest-900" data-i18n="quick_access">Accès rapide</h3><p class="mt-0.5 text-sm text-slate-500" data-i18n="quick_description">Retrouvez tous les outils de gestion de votre plateforme.</p></div>
-                    <span class="hidden shrink-0 items-center gap-1.5 rounded-full bg-white px-3 py-1.5 text-xs font-semibold text-slate-500 shadow-sm sm:inline-flex"><i data-lucide="lock" class="h-3.5 w-3.5 text-forest-500"></i><span data-i18n="secure_admin">Espace sécurisé</span></span>
+                    <div class="min-w-0"><h3 class="text-base font-extrabold text-slate-900" data-i18n="quick_access">Accès rapide</h3><p class="mt-0.5 text-sm text-slate-500" data-i18n="quick_description">Retrouvez tous les outils de gestion de votre plateforme.</p></div>
+                    <span class="hidden shrink-0 items-center gap-1.5 rounded-full bg-white px-3 py-1.5 text-xs font-semibold text-slate-500 shadow-sm sm:inline-flex"><i data-lucide="lock" class="h-3.5 w-3.5 text-brand-500"></i><span data-i18n="secure_admin">Espace sécurisé</span></span>
                 </div>
 
                 <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 2xl:grid-cols-3">
-                    <a href="{{ route('admin.formations.index') }}" class="module-card panel group flex h-full flex-col p-5"><span class="icon-tile"><i data-lucide="book-open" class="h-5 w-5"></i></span><h4 class="mt-4 text-base font-extrabold text-slate-900" data-i18n="formations">Formations</h4><p class="mt-1.5 text-sm leading-6 text-slate-500" data-i18n="formations_desc">Créez, modifiez et organisez les formations proposées aux étudiants.</p><div class="mt-auto flex items-center justify-between pt-5 text-sm font-bold text-forest-700"><span data-i18n="manage">Gérer</span><i data-lucide="arrow-right" class="arrow-icon h-4 w-4"></i></div></a>
+                    <a href="{{ route('admin.formations.index') }}" class="module-card panel group flex h-full flex-col p-5"><span class="icon-tile"><i data-lucide="book-open" class="h-5 w-5"></i></span><h4 class="mt-4 text-base font-extrabold text-slate-900" data-i18n="formations">Formations</h4><p class="mt-1.5 text-sm leading-6 text-slate-500" data-i18n="formations_desc">Créez, modifiez et organisez les formations proposées aux étudiants.</p><div class="mt-auto flex items-center justify-between pt-5 text-sm font-bold text-brand-600"><span data-i18n="manage">Gérer</span><i data-lucide="arrow-right" class="arrow-icon h-4 w-4"></i></div></a>
 
-                    <a href="{{ route('admin.cours.index') }}" class="module-card panel group flex h-full flex-col p-5"><span class="icon-tile"><i data-lucide="file-text" class="h-5 w-5"></i></span><h4 class="mt-4 text-base font-extrabold text-slate-900" data-i18n="courses">Cours</h4><p class="mt-1.5 text-sm leading-6 text-slate-500" data-i18n="courses_desc">Gérez les leçons, les documents et les ressources pédagogiques.</p><div class="mt-auto flex items-center justify-between pt-5 text-sm font-bold text-forest-700"><span data-i18n="manage">Gérer</span><i data-lucide="arrow-right" class="arrow-icon h-4 w-4"></i></div></a>
+                    <a href="{{ route('admin.cours.index') }}" class="module-card panel group flex h-full flex-col p-5"><span class="icon-tile"><i data-lucide="file-text" class="h-5 w-5"></i></span><h4 class="mt-4 text-base font-extrabold text-slate-900" data-i18n="courses">Cours</h4><p class="mt-1.5 text-sm leading-6 text-slate-500" data-i18n="courses_desc">Gérez les leçons, les documents et les ressources pédagogiques.</p><div class="mt-auto flex items-center justify-between pt-5 text-sm font-bold text-brand-600"><span data-i18n="manage">Gérer</span><i data-lucide="arrow-right" class="arrow-icon h-4 w-4"></i></div></a>
 
-                    <a href="{{ route('admin.quiz.index') }}" class="module-card panel group flex h-full flex-col p-5"><span class="icon-tile"><i data-lucide="clipboard-check" class="h-5 w-5"></i></span><h4 class="mt-4 text-base font-extrabold text-slate-900" data-i18n="quizzes">Quiz</h4><p class="mt-1.5 text-sm leading-6 text-slate-500" data-i18n="quizzes_desc">Préparez des évaluations et gérez les questions des quiz.</p><div class="mt-auto flex items-center justify-between pt-5 text-sm font-bold text-forest-700"><span data-i18n="manage">Gérer</span><i data-lucide="arrow-right" class="arrow-icon h-4 w-4"></i></div></a>
+                    <a href="{{ route('admin.quiz.index') }}" class="module-card panel group flex h-full flex-col p-5"><span class="icon-tile"><i data-lucide="clipboard-check" class="h-5 w-5"></i></span><h4 class="mt-4 text-base font-extrabold text-slate-900" data-i18n="quizzes">Quiz</h4><p class="mt-1.5 text-sm leading-6 text-slate-500" data-i18n="quizzes_desc">Préparez des évaluations et gérez les questions des quiz.</p><div class="mt-auto flex items-center justify-between pt-5 text-sm font-bold text-brand-600"><span data-i18n="manage">Gérer</span><i data-lucide="arrow-right" class="arrow-icon h-4 w-4"></i></div></a>
 
-                    <a href="{{ route('admin.registrations.index') }}" class="module-card panel group flex h-full flex-col p-5"><div class="flex items-start justify-between gap-3"><span class="icon-tile"><i data-lucide="users" class="h-5 w-5"></i></span>@if($pendingRegistrations > 0)<span class="inline-flex items-center gap-1.5 rounded-full bg-orange-50 px-2.5 py-1 text-xs font-bold text-orange-700"><span class="tabular-nums">{{ $pendingRegistrations }}</span><span data-i18n="pending">en attente</span></span>@endif</div><h4 class="mt-4 text-base font-extrabold text-slate-900" data-i18n="registrations">Inscriptions</h4><p class="mt-1.5 text-sm leading-6 text-slate-500" data-i18n="registrations_desc">Consultez les étudiants et gérez leurs inscriptions.</p><div class="mt-auto flex items-center justify-between pt-5 text-sm font-bold text-forest-700"><span data-i18n="manage">Gérer</span><i data-lucide="arrow-right" class="arrow-icon h-4 w-4"></i></div></a>
+                    <a href="{{ route('admin.registrations.index') }}" class="module-card panel group flex h-full flex-col p-5"><div class="flex items-start justify-between gap-3"><span class="icon-tile"><i data-lucide="users" class="h-5 w-5"></i></span>@if($pendingRegistrations > 0)<span class="inline-flex items-center gap-1.5 rounded-full bg-brand-700 px-2.5 py-1 text-xs font-bold text-white"><span class="tabular-nums">{{ $pendingRegistrations }}</span><span data-i18n="pending">en attente</span></span>@endif</div><h4 class="mt-4 text-base font-extrabold text-slate-900" data-i18n="registrations">Inscriptions</h4><p class="mt-1.5 text-sm leading-6 text-slate-500" data-i18n="registrations_desc">Consultez les étudiants et gérez leurs inscriptions.</p><div class="mt-auto flex items-center justify-between pt-5 text-sm font-bold text-brand-600"><span data-i18n="manage">Gérer</span><i data-lucide="arrow-right" class="arrow-icon h-4 w-4"></i></div></a>
 
-                    <a href="{{ route('admin.formation-requests.index') }}" class="module-card panel group flex h-full flex-col p-5"><div class="flex items-start justify-between gap-3"><span class="icon-tile"><i data-lucide="clipboard-list" class="h-5 w-5"></i></span>@if($pendingFormationRequests > 0)<span class="inline-flex items-center gap-1.5 rounded-full bg-forest-50 px-2.5 py-1 text-xs font-bold text-forest-700"><span class="tabular-nums">{{ $pendingFormationRequests }}</span><span data-i18n="pending">en attente</span></span>@endif</div><h4 class="mt-4 text-base font-extrabold text-slate-900" data-i18n="requests">Demandes de formations</h4><p class="mt-1.5 text-sm leading-6 text-slate-500" data-i18n="requests_desc">Consultez les demandes et gérez l'accès aux formations.</p><div class="mt-auto flex items-center justify-between pt-5 text-sm font-bold text-forest-700"><span data-i18n="manage">Gérer</span><i data-lucide="arrow-right" class="arrow-icon h-4 w-4"></i></div></a>
+                    <a href="{{ route('admin.formation-requests.index') }}" class="module-card panel group flex h-full flex-col p-5"><div class="flex items-start justify-between gap-3"><span class="icon-tile"><i data-lucide="clipboard-list" class="h-5 w-5"></i></span>@if($pendingFormationRequests > 0)<span class="inline-flex items-center gap-1.5 rounded-full bg-brand-500 px-2.5 py-1 text-xs font-bold text-white"><span class="tabular-nums">{{ $pendingFormationRequests }}</span><span data-i18n="pending">en attente</span></span>@endif</div><h4 class="mt-4 text-base font-extrabold text-slate-900" data-i18n="requests">Demandes de formations</h4><p class="mt-1.5 text-sm leading-6 text-slate-500" data-i18n="requests_desc">Consultez les demandes et gérez l'accès aux formations.</p><div class="mt-auto flex items-center justify-between pt-5 text-sm font-bold text-brand-600"><span data-i18n="manage">Gérer</span><i data-lucide="arrow-right" class="arrow-icon h-4 w-4"></i></div></a>
 
-                    <a href="{{ route('admin.certificates.index') }}" class="module-card panel group flex h-full flex-col p-5"><div class="flex items-start justify-between gap-3"><span class="icon-tile"><i data-lucide="award" class="h-5 w-5"></i></span>@if($pendingCertificates > 0)<span class="inline-flex items-center gap-1.5 rounded-full bg-amber-50 px-2.5 py-1 text-xs font-bold text-amber-700"><span class="tabular-nums">{{ $pendingCertificates }}</span><span data-i18n="pending">en attente</span></span>@endif</div><h4 class="mt-4 text-base font-extrabold text-slate-900" data-i18n="certificates">Certificats</h4><p class="mt-1.5 text-sm leading-6 text-slate-500" data-i18n="certificates_desc">Consultez les demandes de certificats et gérez leur activation.</p><div class="mt-auto flex items-center justify-between pt-5 text-sm font-bold text-forest-700"><span data-i18n="manage">Gérer</span><i data-lucide="arrow-right" class="arrow-icon h-4 w-4"></i></div></a>
+                    <a href="{{ route('admin.certificates.index') }}" class="module-card panel group flex h-full flex-col p-5"><div class="flex items-start justify-between gap-3"><span class="icon-tile"><i data-lucide="award" class="h-5 w-5"></i></span>@if($pendingCertificates > 0)<span class="inline-flex items-center gap-1.5 rounded-full bg-brand-200 px-2.5 py-1 text-xs font-bold text-brand-900"><span class="tabular-nums">{{ $pendingCertificates }}</span><span data-i18n="pending">en attente</span></span>@endif</div><h4 class="mt-4 text-base font-extrabold text-slate-900" data-i18n="certificates">Certificats</h4><p class="mt-1.5 text-sm leading-6 text-slate-500" data-i18n="certificates_desc">Consultez les demandes de certificats et gérez leur activation.</p><div class="mt-auto flex items-center justify-between pt-5 text-sm font-bold text-brand-600"><span data-i18n="manage">Gérer</span><i data-lucide="arrow-right" class="arrow-icon h-4 w-4"></i></div></a>
 
-                    <div class="panel flex h-full flex-col p-5"><span class="icon-tile"><i data-lucide="shield-check" class="h-5 w-5"></i></span><h4 class="mt-4 text-base font-extrabold text-slate-900" data-i18n="security_title">Sécurité du compte</h4><p class="mt-1.5 text-sm leading-6 text-slate-500" data-i18n="account_desc">Vous êtes connecté à l'espace de gestion de la plateforme.</p><div class="mt-auto pt-5"><span class="inline-flex items-center gap-2 rounded-full bg-forest-50 px-3 py-1.5 text-xs font-bold text-forest-700"><span class="h-2 w-2 rounded-full bg-forest-400"></span><span data-i18n="account_active">Compte administrateur actif</span></span></div></div>
+                    <div class="panel flex h-full flex-col p-5"><span class="icon-tile"><i data-lucide="shield-check" class="h-5 w-5"></i></span><h4 class="mt-4 text-base font-extrabold text-slate-900" data-i18n="security_title">Sécurité du compte</h4><p class="mt-1.5 text-sm leading-6 text-slate-500" data-i18n="account_desc">Vous êtes connecté à l'espace de gestion de la plateforme.</p><div class="mt-auto pt-5"><span class="inline-flex items-center gap-2 rounded-full bg-brand-50 px-3 py-1.5 text-xs font-bold text-brand-700"><span class="h-2 w-2 rounded-full bg-brand-500"></span><span data-i18n="account_active">Compte administrateur actif</span></span></div></div>
                 </div>
             </section>
 
             <aside class="order-first space-y-5 xl:order-none">
                 <section class="panel p-5">
-                    <div class="flex items-center justify-between gap-3"><h3 class="text-base font-extrabold text-forest-900" data-i18n="pending_title">À traiter</h3><span class="icon-tile !h-8 !w-8 !rounded-lg"><i data-lucide="bell" class="h-4 w-4"></i></span></div>
+                    <div class="flex items-center justify-between gap-3"><h3 class="text-base font-extrabold text-slate-900" data-i18n="pending_title">À traiter</h3><span class="icon-tile !h-8 !w-8 !rounded-lg"><i data-lucide="bell" class="h-4 w-4"></i></span></div>
                     <div class="relative mx-auto mt-4 h-40 w-40">
                         <svg class="h-40 w-40 -rotate-90" viewBox="0 0 100 100" fill="none" aria-hidden="true">
-                            <circle cx="50" cy="50" r="42" fill="none" stroke="#d9ebe4" stroke-width="11"/>
+                            <circle cx="50" cy="50" r="42" fill="none" stroke="#ffe0e0" stroke-width="11"/>
                             @if($notificationCount > 0)
-                                <circle cx="50" cy="50" r="42" fill="none" stroke="#154c3a" stroke-width="11" stroke-dasharray="{{ number_format($registrationsLength, 2, '.', '') }} {{ number_format($donutCircumference, 2, '.', '') }}" stroke-dashoffset="0"/>
-                                <circle cx="50" cy="50" r="42" fill="none" stroke="#4f9a80" stroke-width="11" stroke-dasharray="{{ number_format($requestsLength, 2, '.', '') }} {{ number_format($donutCircumference, 2, '.', '') }}" stroke-dashoffset="-{{ number_format($registrationsLength, 2, '.', '') }}"/>
-                                <circle cx="50" cy="50" r="42" fill="none" stroke="#f59e0b" stroke-width="11" stroke-dasharray="{{ number_format($certificatesLength, 2, '.', '') }} {{ number_format($donutCircumference, 2, '.', '') }}" stroke-dashoffset="-{{ number_format($registrationsLength + $requestsLength, 2, '.', '') }}"/>
+                                <circle cx="50" cy="50" r="42" fill="none" stroke="#7f1212" stroke-width="11" stroke-dasharray="{{ number_format($registrationsLength, 2, '.', '') }} {{ number_format($donutCircumference, 2, '.', '') }}" stroke-dashoffset="0"/>
+                                <circle cx="50" cy="50" r="42" fill="none" stroke="#d62828" stroke-width="11" stroke-dasharray="{{ number_format($requestsLength, 2, '.', '') }} {{ number_format($donutCircumference, 2, '.', '') }}" stroke-dashoffset="-{{ number_format($registrationsLength, 2, '.', '') }}"/>
+                                <circle cx="50" cy="50" r="42" fill="none" stroke="#f59a9a" stroke-width="11" stroke-dasharray="{{ number_format($certificatesLength, 2, '.', '') }} {{ number_format($donutCircumference, 2, '.', '') }}" stroke-dashoffset="-{{ number_format($registrationsLength + $requestsLength, 2, '.', '') }}"/>
                             @endif
                         </svg>
-                        <div class="absolute inset-0 flex flex-col items-center justify-center text-center"><p class="text-3xl font-extrabold leading-none text-forest-900 tabular-nums">{{ $notificationCount }}</p><p class="mt-1 max-w-[90px] text-[11px] leading-tight text-slate-500" data-i18n="stat_total">Total à traiter</p></div>
+                        <div class="absolute inset-0 flex flex-col items-center justify-center text-center"><p class="text-3xl font-extrabold leading-none text-slate-900 tabular-nums">{{ $notificationCount }}</p><p class="mt-1 max-w-[90px] text-[11px] leading-tight text-slate-500" data-i18n="stat_total">Total à traiter</p></div>
                     </div>
-                    @if($notificationCount === 0)<p class="mt-3 flex items-center justify-center gap-1.5 text-center text-xs font-semibold text-forest-600"><i data-lucide="check-check" class="h-4 w-4"></i><span data-i18n="notifications_clear">Tout est à jour</span></p>@endif
+                    @if($notificationCount === 0)<p class="mt-3 flex items-center justify-center gap-1.5 text-center text-xs font-semibold text-brand-600"><i data-lucide="check-check" class="h-4 w-4"></i><span data-i18n="notifications_clear">Tout est à jour</span></p>@endif
 
                     <div class="mt-4 space-y-1.5">
-                        <a href="{{ route('admin.registrations.index') }}" class="group flex items-center gap-3 rounded-xl bg-page px-3 py-2.5 transition hover:bg-forest-50"><span class="h-3 w-3 shrink-0 rounded-full bg-forest-700"></span><span class="min-w-0 flex-1 truncate text-[13px] font-semibold text-slate-700" data-i18n="notification_registrations">Inscriptions en attente</span><span class="text-sm font-extrabold text-forest-900 tabular-nums">{{ $pendingRegistrations }}</span><i data-lucide="chevron-right" class="arrow-icon h-4 w-4 shrink-0 text-slate-300"></i></a>
-                        <a href="{{ route('admin.formation-requests.index') }}" class="group flex items-center gap-3 rounded-xl bg-page px-3 py-2.5 transition hover:bg-forest-50"><span class="h-3 w-3 shrink-0 rounded-full bg-forest-400"></span><span class="min-w-0 flex-1 truncate text-[13px] font-semibold text-slate-700" data-i18n="notification_requests">Demandes de formation</span><span class="text-sm font-extrabold text-forest-900 tabular-nums">{{ $pendingFormationRequests }}</span><i data-lucide="chevron-right" class="arrow-icon h-4 w-4 shrink-0 text-slate-300"></i></a>
-                        <a href="{{ route('admin.certificates.index') }}" class="group flex items-center gap-3 rounded-xl bg-page px-3 py-2.5 transition hover:bg-forest-50"><span class="h-3 w-3 shrink-0 rounded-full bg-amber-500"></span><span class="min-w-0 flex-1 truncate text-[13px] font-semibold text-slate-700" data-i18n="notification_certificates">Demandes de certificats</span><span class="text-sm font-extrabold text-forest-900 tabular-nums">{{ $pendingCertificates }}</span><i data-lucide="chevron-right" class="arrow-icon h-4 w-4 shrink-0 text-slate-300"></i></a>
+                        <a href="{{ route('admin.registrations.index') }}" class="group flex items-center gap-3 rounded-xl bg-page px-3 py-2.5 transition hover:bg-brand-50"><span class="h-3 w-3 shrink-0 rounded-full bg-brand-800"></span><span class="min-w-0 flex-1 truncate text-[13px] font-semibold text-slate-700" data-i18n="notification_registrations">Inscriptions en attente</span><span class="text-sm font-extrabold text-slate-900 tabular-nums">{{ $pendingRegistrations }}</span><i data-lucide="chevron-right" class="arrow-icon h-4 w-4 shrink-0 text-slate-300"></i></a>
+                        <a href="{{ route('admin.formation-requests.index') }}" class="group flex items-center gap-3 rounded-xl bg-page px-3 py-2.5 transition hover:bg-brand-50"><span class="h-3 w-3 shrink-0 rounded-full bg-brand-500"></span><span class="min-w-0 flex-1 truncate text-[13px] font-semibold text-slate-700" data-i18n="notification_requests">Demandes de formation</span><span class="text-sm font-extrabold text-slate-900 tabular-nums">{{ $pendingFormationRequests }}</span><i data-lucide="chevron-right" class="arrow-icon h-4 w-4 shrink-0 text-slate-300"></i></a>
+                        <a href="{{ route('admin.certificates.index') }}" class="group flex items-center gap-3 rounded-xl bg-page px-3 py-2.5 transition hover:bg-brand-50"><span class="h-3 w-3 shrink-0 rounded-full bg-brand-300"></span><span class="min-w-0 flex-1 truncate text-[13px] font-semibold text-slate-700" data-i18n="notification_certificates">Demandes de certificats</span><span class="text-sm font-extrabold text-slate-900 tabular-nums">{{ $pendingCertificates }}</span><i data-lucide="chevron-right" class="arrow-icon h-4 w-4 shrink-0 text-slate-300"></i></a>
                     </div>
                 </section>
 
@@ -302,9 +302,9 @@
     </main>
 
     <footer class="mx-auto max-w-[1400px] px-4 pb-6 sm:px-6 lg:px-8">
-        <div class="flex flex-col items-center justify-between gap-2 border-t border-forest-100 pt-5 sm:flex-row">
-            <div class="flex items-center gap-2"><span class="flex h-6 w-6 items-center justify-center rounded-md bg-forest-100 text-forest-700"><i data-lucide="graduation-cap" class="h-3.5 w-3.5"></i></span><span class="text-sm font-extrabold text-slate-700">Étude<span class="text-forest-500">EnLigne</span></span></div>
-            <p class="text-center text-xs text-slate-400">© {{ date('Y') }} ÉtudeEnLigne. <span data-i18n="footer_text">Tous droits réservés.</span></p>
+        <div class="flex flex-col items-center justify-between gap-2 border-t border-brand-100 pt-5 sm:flex-row">
+            <div class="flex items-center gap-2"><span class="flex h-6 w-6 items-center justify-center rounded-md bg-brand-100 text-brand-700"><i data-lucide="graduation-cap" class="h-3.5 w-3.5"></i></span><span class="text-sm font-extrabold text-slate-700">Cad <span class="text-brand-500">Academy</span></span></div>
+            <p class="text-center text-xs text-slate-400">© {{ date('Y') }} Cad Academy. <span data-i18n="footer_text">Tous droits réservés.</span></p>
             <p class="text-xs text-slate-400" data-i18n="footer_admin">Espace Administration</p>
         </div>
     </footer>

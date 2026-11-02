@@ -163,34 +163,36 @@
 
                     <!-- EMAIL -->
 
-                    <div class="mb-5">
+<!-- WHATSAPP PHONE -->
 
-                        <label
-                            for="email"
-                            class="block text-sm font-medium text-gray-700 mb-2">
+<div class="mb-5">
 
-                            البريد الإلكتروني
-                            <span class="text-gray-400">|</span>
-                            Adresse email
+    <label
+        for="whatsapp_phone"
+        class="block text-sm font-medium text-gray-700 mb-2">
 
-                        </label>
+        رقم واتساب
+        <span class="text-gray-400">|</span>
+        Numéro WhatsApp
 
+    </label>
 
-                        <input
-                            type="email"
-                            id="email"
-                            name="email"
-                            value="{{ old('email') }}"
-                            placeholder="exemple@gmail.com"
-                            required
-                            autocomplete="email"
-                            dir="ltr"
-                            class="w-full px-4 py-3 border border-gray-300 rounded-xl
-                                   focus:outline-none focus:ring-2 focus:ring-green-500
-                                   focus:border-green-500 transition"
-                        >
+    <input
+        type="text"
+        id="whatsapp_phone"
+        name="whatsapp_phone"
+        value="{{ old('whatsapp_phone') }}"
+        placeholder="+212 6 XX XX XX XX"
+        required
+        autocomplete="tel"
+        dir="ltr"
+        class="w-full px-4 py-3 border border-gray-300 rounded-xl
+               focus:outline-none focus:ring-2 focus:ring-green-500
+               focus:border-green-500 transition"
+    >
 
-                    </div>
+</div>
+
 
 
                     <!-- CODE -->

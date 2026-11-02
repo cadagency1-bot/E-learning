@@ -201,6 +201,19 @@ Route::middleware(['auth', 'admin'])
         Route::patch('/certificates/{certificate}/activate', [
             AdminCertificateController::class, 'activate'
         ])->name('certificates.activate');
+
+
+        // Dossier étudiant : photo et CIN
+Route::get(
+    '/registrations/{user}/document/{type}',
+    [\App\Http\Controllers\Admin\RegistrationController::class, 'document']
+)->name('registrations.document');
+
+// Télécharger le CV de l'étudiant
+Route::get(
+    '/registrations/{user}/cv',
+    [\App\Http\Controllers\Admin\RegistrationController::class, 'cv']
+)->name('registrations.cv');
     });
 
 
@@ -246,6 +259,13 @@ Route::middleware('auth')->group(function () {
     // Photo de profil
     Route::post('/profile/photo', [ProfileController::class, 'updatePhoto'])->name('profile.photo.update');
     Route::delete('/profile/photo', [ProfileController::class, 'destroyPhoto'])->name('profile.photo.destroy');
+
+    // CV étudiant
+Route::post('/profile/cv', [ProfileController::class, 'uploadCv'])
+    ->name('profile.cv.upload');
+
+Route::get('/profile/cv/download', [ProfileController::class, 'downloadCv'])
+    ->name('profile.cv.download');
 });
 
 

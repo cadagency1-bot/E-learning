@@ -159,4 +159,73 @@ class ProfileController extends Controller
 
         return redirect('/');
     }
+
+
+
+    
+/**
+ * Ajouter ou remplacer le CV PDF de l'étudiant.
+ */
+public function uploadCv(Request $request): RedirectResponse
+{
+    $request->validate([
+        'cv' => [
+            'required',
+            'file',
+            'mimes:pdf',
+            'max:5120',
+        ],
+    ], [
+        'cv.required' => 'Veuillez sélectionner votre CV.',
+        'cv.mimes' => 'Le CV doit être au format PDF.',
+        'cv.max' => 'Le CV ne doit pas dépasser 5 Mo.',
+    ]);
+
+    $user = $request->user();
+
+    // Enregistrer le nouveau CV dans le stockage privé.
+    $path = $request->file('cv')->store('student-cvs', 'local');
+
+    if (!$path) {
+        return back()->withErrors([
+            'cv' => 'Erreur lors de l’enregistrement du CV.',
+        ]);
+    }
+
+    // Garder l'ancien CV jusqu'à la sauvegarde du nouveau.
+    $oldPath = $user->cv_path;
+
+    $user->cv_path = $path;
+    $user->cv_uploaded_at = now();
+    $user->save();
+
+    // Supprimer l'ancien CV après la sauvegarde.
+    if ($oldPath && $oldPath !== $path) {
+        Storage::disk('local')->delete($oldPath);
+    }
+
+    return back()->with('profile_message', 'Votre CV a été enregistré avec succès.');
+}
+
+/**
+ * Télécharger le CV personnel de l'étudiant.
+ */
+public function downloadCv(Request $request)
+{
+    $user = $request->user();
+
+    abort_unless($user->cv_path, 404);
+
+    abort_unless(
+        Storage::disk('local')->exists($user->cv_path),
+        404
+    );
+
+    return Storage::disk('local')->download(
+        $user->cv_path,
+        'CV-etudiant-' . $user->id . '.pdf',
+        ['Content-Type' => 'application/pdf']
+    );
+}
+
 }

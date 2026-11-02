@@ -30,11 +30,11 @@
             theme: {
                 extend: {
                     colors: {
-                        primary: '#061510',
-                        ink: '#04120d',
-                        forest: '#0a2e22',
-                        mint: '#34d399',
-                        paper: '#f3f6f1'
+                        primary: '#111827',
+                        ink: '#111827',
+                        forest: '#1F2937',
+                        mint: '#EF4444', /* nom conservé : rouge d'accent */
+                        paper: '#F3F4F6'
                     },
                     fontFamily: {
                         sans: ['Plus Jakarta Sans', 'IBM Plex Sans Arabic', 'sans-serif'],
@@ -48,56 +48,56 @@
     <style>
         /* ====== Thèmes (variables) ====== */
         :root {
-            --ee-page: #f3f6f1;
-            --ee-hero: #e4f3ea;
-            --ee-grid: rgba(5, 150, 105, .14);
-            --ee-strong: #04120d;
-            --ee-text: #1b2b24;
-            --ee-muted: #3d5148;
-            --ee-accent: #047857;
-            --ee-card: #ffffff;
-            --ee-border: rgba(4, 18, 13, .13);
-            --ee-hover: rgba(4, 18, 13, .07);
-            --ee-chip: rgba(255, 255, 255, .75);
-            --ee-nav: rgba(255, 255, 255, .88);
-            --ee-active: rgba(5, 150, 105, .13);
-            --ee-tile: #d1fae5;
-            --ee-tile-fg: #047857;
-            --ee-band: #0a2e22;
-            --ee-contact-bg: #34d399;
-            --ee-contact-text: #04120d;
-            --ee-contact-sub: rgba(4, 18, 13, .85);
-            --ee-contact-ar: #0a2e22;
-            --ee-contact-tile-bg: #04120d;
-            --ee-contact-tile-fg: #34d399;
-            --ee-contact-btn-bg: #04120d;
-            --ee-contact-btn-fg: #ffffff;
+            --ee-page: #F3F4F6;
+            --ee-hero: #F9FAFB;
+            --ee-grid: rgba(220, 38, 38, .08);
+            --ee-strong: #111827;
+            --ee-text: #1F2937;
+            --ee-muted: #4B5563;
+            --ee-accent: #DC2626;
+            --ee-card: #FFFFFF;
+            --ee-border: rgba(17, 24, 39, .12);
+            --ee-hover: rgba(17, 24, 39, .06);
+            --ee-chip: rgba(255, 255, 255, .85);
+            --ee-nav: rgba(255, 255, 255, .92);
+            --ee-active: rgba(220, 38, 38, .10);
+            --ee-tile: #FEE2E2;
+            --ee-tile-fg: #DC2626;
+            --ee-band: #1F2937;
+            --ee-contact-bg: #DC2626;
+            --ee-contact-text: #FFFFFF;
+            --ee-contact-sub: rgba(255, 255, 255, .92);
+            --ee-contact-ar: #FEE2E2;
+            --ee-contact-tile-bg: #FFFFFF;
+            --ee-contact-tile-fg: #DC2626;
+            --ee-contact-btn-bg: #FFFFFF;
+            --ee-contact-btn-fg: #DC2626;
         }
         html.dark {
-            --ee-page: #06130e;
-            --ee-hero: #04120d;
-            --ee-grid: rgba(52, 211, 153, .07);
-            --ee-strong: #ffffff;
-            --ee-text: #e6f2ec;
-            --ee-muted: #b6cdc2;
-            --ee-accent: #6ee7b7;
-            --ee-card: #0d231b;
+            --ee-page: #0F1115;
+            --ee-hero: #0B0D10;
+            --ee-grid: rgba(248, 113, 113, .07);
+            --ee-strong: #FFFFFF;
+            --ee-text: #F3F4F6;
+            --ee-muted: #D1D5DB;
+            --ee-accent: #F87171;
+            --ee-card: #1A1D23;
             --ee-border: rgba(255, 255, 255, .13);
             --ee-hover: rgba(255, 255, 255, .08);
             --ee-chip: rgba(255, 255, 255, .08);
-            --ee-nav: rgba(4, 18, 13, .85);
-            --ee-active: rgba(255, 255, 255, .1);
-            --ee-tile: rgba(52, 211, 153, .16);
-            --ee-tile-fg: #6ee7b7;
-            --ee-band: #0c3527;
-            --ee-contact-bg: #0f3a2b;
-            --ee-contact-text: #ffffff;
-            --ee-contact-sub: #d3e8de;
-            --ee-contact-ar: #a7f3d0;
-            --ee-contact-tile-bg: #34d399;
-            --ee-contact-tile-fg: #04120d;
-            --ee-contact-btn-bg: #34d399;
-            --ee-contact-btn-fg: #04120d;
+            --ee-nav: rgba(15, 17, 21, .88);
+            --ee-active: rgba(255, 255, 255, .10);
+            --ee-tile: rgba(248, 113, 113, .16);
+            --ee-tile-fg: #FCA5A5;
+            --ee-band: #1F2937;
+            --ee-contact-bg: #DC2626;
+            --ee-contact-text: #FFFFFF;
+            --ee-contact-sub: #FEE2E2;
+            --ee-contact-ar: #FECACA;
+            --ee-contact-tile-bg: #FFFFFF;
+            --ee-contact-tile-fg: #DC2626;
+            --ee-contact-btn-bg: #FFFFFF;
+            --ee-contact-btn-fg: #DC2626;
         }
 
         /* ====== Base ====== */
@@ -129,7 +129,7 @@
         .ee-muted { color: var(--ee-muted); }
         .ee-accent { color: var(--ee-accent); }
         .ee-surface { background: var(--ee-card); border: 1px solid var(--ee-border); color: var(--ee-text); transition: background-color .3s ease, border-color .3s ease; }
-        .ee-nav { background: var(--ee-nav); border: 1px solid var(--ee-border); box-shadow: 0 10px 30px rgba(4, 18, 13, .12); }
+        .ee-nav { background: var(--ee-nav); border: 1px solid var(--ee-border); box-shadow: 0 10px 30px rgba(17, 24, 39, .12); }
         .ee-navlink { color: var(--ee-muted); }
         .ee-navlink:hover { background: var(--ee-hover); color: var(--ee-strong); }
         .ee-navlink.is-active { background: var(--ee-active); color: var(--ee-accent); }
@@ -146,7 +146,7 @@
         .ee-contact-ar { color: var(--ee-contact-ar); }
         .ee-contact-tile { background: var(--ee-contact-tile-bg); color: var(--ee-contact-tile-fg); }
         .ee-contact-btn { background: var(--ee-contact-btn-bg); color: var(--ee-contact-btn-fg); }
-        .ee-contact-btn:hover { filter: brightness(1.12); }
+        .ee-contact-btn:hover { filter: brightness(.95); }
 
         /* Bouton thème : lune en mode clair, soleil en mode sombre */
         .ee-ico-sun { display: none; }
@@ -155,17 +155,17 @@
 
         /* ====== Cartes de formation ====== */
         .ee-tile { transition: transform .25s ease, box-shadow .25s ease; }
-        .ee-tile:hover { transform: translateY(-4px); box-shadow: 0 22px 44px rgba(4, 18, 13, .28); }
+        .ee-tile:hover { transform: translateY(-4px); box-shadow: 0 22px 44px rgba(17, 24, 39, .28); }
         .ee-tile img.ee-bg { transition: transform .6s ease; }
         .ee-tile:hover img.ee-bg { transform: scale(1.06); }
 
         .ee-card-btn { cursor: pointer; }
-        .ee-card-btn:focus-visible { outline: 3px solid #34d399; outline-offset: 6px; border-radius: 12px; }
+        .ee-card-btn:focus-visible { outline: 3px solid #EF4444; outline-offset: 6px; border-radius: 12px; }
         .ee-chev { transition: transform .35s ease, background-color .25s ease, color .25s ease; }
-        .ee-card-btn[aria-expanded="true"] .ee-chev { transform: rotate(180deg); background: #34d399; color: #04120d; }
+        .ee-card-btn[aria-expanded="true"] .ee-chev { transform: rotate(180deg); background: #DC2626; color: #FFFFFF; }
         .ee-tile:hover .ee-chev { background: rgba(255, 255, 255, .28); }
         .ee-card-btn[aria-expanded="true"] .ee-chev,
-        .ee-tile:hover .ee-card-btn[aria-expanded="true"] .ee-chev { background: #34d399; }
+        .ee-tile:hover .ee-card-btn[aria-expanded="true"] .ee-chev { background: #EF4444; }
         .ee-hint-open { display: none; }
         .ee-card-btn[aria-expanded="true"] .ee-hint-closed { display: none; }
         .ee-card-btn[aria-expanded="true"] .ee-hint-open { display: inline; }
@@ -195,14 +195,14 @@
         /* ====== Parcours (compatible RTL) ====== */
         .ee-path::before {
             content: ""; position: absolute; inset-inline-start: 1.25rem; top: 1rem; bottom: 1rem; width: 2px;
-            background: linear-gradient(#34d399, rgba(52, 211, 153, .15));
+            background: linear-gradient(#EF4444, rgba(239, 68, 68, .15));
         }
         @media (min-width: 1024px) {
             .ee-path::before {
                 inset-inline-start: 1.25rem; inset-inline-end: 1.25rem; top: 1.25rem; bottom: auto; width: auto; height: 2px;
-                background: linear-gradient(90deg, #34d399, rgba(52, 211, 153, .15));
+                background: linear-gradient(90deg, #EF4444, rgba(239, 68, 68, .15));
             }
-            html[dir="rtl"] .ee-path::before { background: linear-gradient(270deg, #34d399, rgba(52, 211, 153, .15)); }
+            html[dir="rtl"] .ee-path::before { background: linear-gradient(270deg, #EF4444, rgba(239, 68, 68, .15)); }
         }
 
         /* ====== Langue : une seule langue affichée à la fois ====== */
@@ -213,8 +213,8 @@
         html[dir="rtl"] .ee-hero-ar { font-size: clamp(2.4rem, 7vw, 4.4rem); line-height: 1.25; font-weight: 800; color: var(--ee-accent); }
         html[dir="rtl"] body { line-height: 1.85; }
 
-        a:focus-visible, button:focus-visible { outline: 3px solid #34d399; outline-offset: 2px; border-radius: 12px; }
-        html:not(.dark) a:focus-visible, html:not(.dark) button:focus-visible { outline-color: #047857; }
+        a:focus-visible, button:focus-visible { outline: 3px solid #EF4444; outline-offset: 2px; border-radius: 12px; }
+        html:not(.dark) a:focus-visible, html:not(.dark) button:focus-visible { outline-color: #DC2626; }
 
         @media (prefers-reduced-motion: reduce) {
             html { scroll-behavior: auto; }
@@ -248,14 +248,14 @@
             <div class="h-14 sm:h-16 ps-3 pe-2.5 flex items-center justify-between gap-3">
 
                 <a href="{{ route('home') }}" class="flex items-center gap-2.5 shrink-0">
-                    <div class="w-10 h-10 flex-shrink-0 rounded-xl bg-white flex items-center justify-center ring-1 ring-black/5">
+                    <div class="w-11 h-11 sm:w-12 sm:h-12 flex-shrink-0 rounded-xl bg-white flex items-center justify-center ring-1 ring-red-600/20 shadow-sm">
                         <img
                             src="{{ asset('images/logo-centre.png') }}"
                             alt="Logo CAD Academy"
-                            class="w-8 h-8 object-contain"
+                            class="w-9 h-9 sm:w-10 sm:h-10 object-contain"
                             onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
                         >
-                        <span class="hidden items-center justify-center text-emerald-600">
+                        <span class="hidden items-center justify-center text-red-600">
                             <i data-lucide="graduation-cap" class="w-6 h-6"></i>
                         </span>
                     </div>
@@ -291,7 +291,7 @@
 
                     @auth
                         <a href="{{ route('dashboard') }}"
-                           class="inline-flex items-center gap-2 h-10 sm:h-11 px-3 sm:px-4 rounded-xl bg-mint hover:bg-emerald-300 text-ink font-bold text-[0.9375rem] transition">
+                           class="inline-flex items-center gap-2 h-10 sm:h-11 px-3 sm:px-4 rounded-xl bg-red-600 hover:bg-red-700 text-white font-bold text-[0.9375rem] transition">
                             <i data-lucide="layout-dashboard" class="w-4 h-4"></i>
                             <span class="hidden sm:inline"><span class="ee-fr">Mon espace</span><span class="ee-ar">فضائي</span></span>
                             <span class="sr-only sm:hidden"><span class="ee-fr">Mon espace</span><span class="ee-ar">فضائي</span></span>
@@ -302,7 +302,7 @@
                             <span class="ee-fr">Connexion</span><span class="ee-ar">تسجيل الدخول</span>
                         </a>
                         <a href="{{ route('register') }}"
-                           class="hidden sm:inline-flex items-center gap-2 h-11 px-4 rounded-xl bg-mint hover:bg-emerald-300 text-ink font-bold text-[0.9375rem] transition">
+                           class="hidden sm:inline-flex items-center gap-2 h-11 px-4 rounded-xl bg-red-600 hover:bg-red-700 text-white font-bold text-[0.9375rem] transition">
                             <i data-lucide="user-plus" class="w-4 h-4"></i>
                             <span class="ee-fr">Inscription</span><span class="ee-ar">التسجيل</span>
                         </a>
@@ -323,7 +323,7 @@
                 <a href="#contact" class="ee-navlink px-3 py-3 rounded-lg"><span class="ee-fr">Contact</span><span class="ee-ar">اتصل بنا</span></a>
                 @guest
                     <a href="{{ route('login') }}" class="ee-navlink md:hidden px-3 py-3 rounded-lg"><span class="ee-fr">Connexion</span><span class="ee-ar">تسجيل الدخول</span></a>
-                    <a href="{{ route('register') }}" class="sm:hidden px-3 py-3 rounded-lg bg-mint text-ink text-center"><span class="ee-fr">Inscription</span><span class="ee-ar">التسجيل</span></a>
+                    <a href="{{ route('register') }}" class="sm:hidden px-3 py-3 rounded-lg bg-red-600 text-white text-center"><span class="ee-fr">Inscription</span><span class="ee-ar">التسجيل</span></a>
                 @endguest
             </nav>
         </div>
@@ -334,7 +334,7 @@
 
     <div class="ee-hero relative overflow-hidden -mt-[68px] sm:-mt-[76px]">
         <div class="ee-grid-bg absolute inset-0 pointer-events-none"></div>
-        <div class="absolute -top-40 -end-40 w-[34rem] h-[34rem] rounded-full bg-emerald-500/20 blur-3xl pointer-events-none"></div>
+        <div class="absolute -top-40 -end-40 w-[34rem] h-[34rem] rounded-full bg-red-500/20 blur-3xl pointer-events-none"></div>
 
         <main>
         <section class="relative max-w-6xl mx-auto px-5 sm:px-6 pt-28 sm:pt-32 pb-14 sm:pb-20">
@@ -342,7 +342,7 @@
 
                 <div class="lg:col-span-7">
                     <span class="ee-chip ee-rise inline-flex items-center gap-2 ps-2 pe-4 py-1.5 rounded-full text-[0.9375rem] font-semibold">
-                        <span class="w-7 h-7 rounded-full bg-mint text-ink flex items-center justify-center">
+                        <span class="w-7 h-7 rounded-full bg-red-600 text-white flex items-center justify-center">
                             <i data-lucide="sparkles" class="w-4 h-4"></i>
                         </span>
                         <span class="ee-fr">Plateforme d'apprentissage en ligne</span><span class="ee-ar">منصة للتعلم عن بعد</span>
@@ -368,7 +368,7 @@
 
                     <div class="ee-rise ee-rise-3 flex flex-wrap gap-3 mt-8">
                         <a href="#formations"
-                           class="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-mint hover:bg-emerald-300 text-ink text-base font-extrabold shadow-lg shadow-emerald-500/25 transition">
+                           class="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-red-600 hover:bg-red-700 text-white text-base font-extrabold shadow-lg shadow-red-500/25 transition">
                             <span class="ee-fr">Découvrir les formations</span><span class="ee-ar">اكتشف التكوينات</span>
                             <i data-lucide="arrow-right" class="w-5 h-5"></i>
                         </a>
@@ -464,7 +464,7 @@
                         'arabic' => 'التصميم والبرمجة',
                         'description' => 'Découvrez la création de sites web, la programmation et les outils numériques.',
                         'description_ar' => 'اكتشف تصميم المواقع والبرمجة والأدوات الرقمية.',
-                        'image' => 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=900&q=80',
+                        'image' => 'https://images.unsplash.com/photo-1461749280684-dccba630e2f6?auto=format&fit=crop&w=1200&q=85',
                         'icon' => 'code-2',
                         'duration' => 'À confirmer selon le programme',
                         'duration_ar' => 'تحدد حسب البرنامج',
@@ -475,7 +475,7 @@
                         'arabic' => 'المعلوميات المكتبية',
                         'description' => 'Apprenez à utiliser les outils bureautiques et à organiser vos documents.',
                         'description_ar' => 'تعلم استعمال برامج المكتب وتنظيم الوثائق.',
-                        'image' => 'https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=900&q=80',
+                        'image' => 'https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?auto=format&fit=crop&w=1200&q=85',
                         'icon' => 'monitor',
                         'duration' => 'À confirmer selon le programme',
                         'duration_ar' => 'تحدد حسب البرنامج',
@@ -486,7 +486,7 @@
                         'arabic' => 'المساعدة الطبية والإدارية',
                         'description' => 'Découvrez les bases de l’accompagnement, de l’accueil et de l’organisation administrative.',
                         'description_ar' => 'تعرف على أساسيات المساعدة والاستقبال والتنظيم الإداري.',
-                        'image' => 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=900&q=80',
+                        'image' => 'https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&w=1200&q=85',
                         'icon' => 'heart-pulse',
                         'duration' => 'À confirmer selon le programme',
                         'duration_ar' => 'تحدد حسب البرنامج',
@@ -497,7 +497,7 @@
                         'arabic' => 'الفندقة والمطاعم',
                         'description' => 'Initiez-vous aux métiers de l’accueil, du service et de la restauration.',
                         'description_ar' => 'تعرف على مهن الاستقبال والخدمات والمطاعم.',
-                        'image' => 'https://images.unsplash.com/photo-1551218808-94e220e084d2?auto=format&fit=crop&w=900&q=80',
+                        'image' => 'https://images.unsplash.com/photo-1577219491135-ce391730fb2c?auto=format&fit=crop&w=1200&q=85',
                         'icon' => 'utensils',
                         'duration' => 'À confirmer selon le programme',
                         'duration_ar' => 'تحدد حسب البرنامج',
@@ -508,7 +508,7 @@
                         'arabic' => 'السكرتارية',
                         'description' => 'Développez vos compétences en communication, classement et gestion des dossiers.',
                         'description_ar' => 'طور مهارات التواصل وترتيب الملفات والتدبير الإداري.',
-                        'image' => 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=900&q=80',
+                        'image' => 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=1200&q=85',
                         'icon' => 'clipboard-list',
                         'duration' => 'À confirmer selon le programme',
                         'duration_ar' => 'تحدد حسب البرنامج',
@@ -519,7 +519,7 @@
                         'arabic' => 'التجارة',
                         'description' => 'Découvrez la vente, la relation client et les bases de la gestion commerciale.',
                         'description_ar' => 'اكتشف البيع والتعامل مع الزبناء وأساسيات التجارة.',
-                        'image' => 'https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&w=900&q=80',
+                        'image' => 'https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?auto=format&fit=crop&w=1200&q=85',
                         'icon' => 'shopping-bag',
                         'duration' => 'À confirmer selon le programme',
                         'duration_ar' => 'تحدد حسب البرنامج',
@@ -530,7 +530,7 @@
                         'arabic' => 'المهن والحرف',
                         'description' => 'Explorez les métiers pratiques : construction, menuiserie, mécanique et artisanat.',
                         'description_ar' => 'اكتشف المهن التطبيقية مثل البناء والنجارة والميكانيك والحرف.',
-                        'image' => 'https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&w=900&q=80',
+                        'image' => 'https://images.unsplash.com/photo-1504148455328-c376907d081c?auto=format&fit=crop&w=1200&q=85',
                         'icon' => 'hammer',
                         'duration' => 'À confirmer selon le programme',
                         'duration_ar' => 'تحدد حسب البرنامج',
@@ -557,12 +557,12 @@
                             onerror="this.style.display='none';"
                         >
 
-                        <div class="absolute inset-0 bg-gradient-to-t from-ink via-ink/85 to-ink/25"></div>
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
 
                         <div class="relative h-full flex flex-col p-5 {{ $loop->first ? 'lg:p-8' : 'sm:p-6' }}">
 
                             <div class="flex items-start justify-between gap-3">
-                                <span class="w-12 h-12 shrink-0 rounded-xl bg-mint text-ink flex items-center justify-center">
+                                <span class="w-12 h-12 shrink-0 rounded-xl bg-red-600 text-white flex items-center justify-center">
                                     <i data-lucide="{{ $category['icon'] }}" class="w-6 h-6"></i>
                                 </span>
                                 <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-black/45 backdrop-blur text-sm font-semibold leading-5 text-start">
@@ -595,16 +595,16 @@
                                 <div id="ee-panel-{{ $loop->iteration }}" class="ee-panel">
                                     <div class="ee-panel-inner">
                                         <div class="pt-4">
-                                            <p class="ee-fr text-base sm:text-[1.0625rem] text-emerald-50 leading-7">
+                                            <p class="ee-fr text-base sm:text-[1.0625rem] text-gray-100 leading-7">
                                                 {{ $category['description'] }}
                                             </p>
 
-                                            <p dir="rtl" class="ee-ar text-base sm:text-[1.0625rem] text-emerald-50 leading-8">
+                                            <p dir="rtl" class="ee-ar text-base sm:text-[1.0625rem] text-gray-100 leading-8">
                                                 {{ $category['description_ar'] }}
                                             </p>
 
                                             <a href="#contact"
-                                               class="mt-4 inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white/15 hover:bg-mint hover:text-ink backdrop-blur text-[0.9375rem] font-bold transition">
+                                               class="mt-4 inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white/15 hover:bg-red-600 hover:text-white backdrop-blur text-[0.9375rem] font-bold transition">
                                                 <span class="ee-fr">Demander des informations</span><span class="ee-ar">طلب معلومات</span>
                                                 <i data-lucide="arrow-right" class="w-4 h-4"></i>
                                             </a>
@@ -635,7 +635,7 @@
     <section id="about" class="pb-14 sm:pb-20">
         <div class="max-w-6xl mx-auto px-5 sm:px-6">
             <div class="ee-band rounded-[2rem] text-white p-7 sm:p-10 lg:p-12 relative overflow-hidden">
-                <div class="absolute -bottom-32 -start-24 w-80 h-80 rounded-full bg-emerald-400/15 blur-3xl pointer-events-none"></div>
+                <div class="absolute -bottom-32 -start-24 w-80 h-80 rounded-full bg-red-400/15 blur-3xl pointer-events-none"></div>
 
                 <div class="relative grid lg:grid-cols-12 gap-8 items-end">
                     <div class="lg:col-span-6">
@@ -648,10 +648,10 @@
                         </h2>
                     </div>
                     <div class="lg:col-span-6">
-                        <p class="ee-fr text-emerald-50 text-base sm:text-[1.0625rem] leading-7">
+                        <p class="ee-fr text-gray-100 text-base sm:text-[1.0625rem] leading-7">
                             CAD Academy facilite l’accès aux formations et aux ressources pédagogiques pour accompagner votre apprentissage.
                         </p>
-                        <p dir="rtl" class="ee-ar text-emerald-50 text-base sm:text-[1.0625rem] leading-8">
+                        <p dir="rtl" class="ee-ar text-gray-100 text-base sm:text-[1.0625rem] leading-8">
                             تسهّل منصة CAD Academy الوصول إلى التكوينات والموارد التعليمية لمساعدتك على التعلم وتطوير مهاراتك.
                         </p>
                     </div>
@@ -661,35 +661,35 @@
                 <div class="ee-path relative grid lg:grid-cols-4 gap-6 lg:gap-5 mt-10 ps-12 lg:ps-0">
 
                     <div class="relative lg:pt-12">
-                        <span class="absolute -start-12 top-0 lg:start-0 w-10 h-10 rounded-full bg-mint text-ink flex items-center justify-center font-head font-extrabold">1</span>
+                        <span class="absolute -start-12 top-0 lg:start-0 w-10 h-10 rounded-full bg-red-600 text-white flex items-center justify-center font-head font-extrabold">1</span>
                         <i data-lucide="book-open" class="w-6 h-6 text-mint"></i>
                         <h3 class="font-head font-bold text-xl mt-2"><span class="ee-fr">Formations</span><span class="ee-ar">التكوينات</span></h3>
-                        <p class="ee-fr text-emerald-50/90 mt-1 text-base leading-7">Découvrez différents domaines d’apprentissage.</p>
-                        <p dir="rtl" class="ee-ar text-emerald-50/90 mt-1 text-base leading-8">اكتشف مجالات تعلم مختلفة.</p>
+                        <p class="ee-fr text-gray-100/90 mt-1 text-base leading-7">Découvrez différents domaines d’apprentissage.</p>
+                        <p dir="rtl" class="ee-ar text-gray-100/90 mt-1 text-base leading-8">اكتشف مجالات تعلم مختلفة.</p>
                     </div>
 
                     <div class="relative lg:pt-12">
-                        <span class="absolute -start-12 top-0 lg:start-0 w-10 h-10 rounded-full bg-mint text-ink flex items-center justify-center font-head font-extrabold">2</span>
+                        <span class="absolute -start-12 top-0 lg:start-0 w-10 h-10 rounded-full bg-red-600 text-white flex items-center justify-center font-head font-extrabold">2</span>
                         <i data-lucide="file-text" class="w-6 h-6 text-mint"></i>
                         <h3 class="font-head font-bold text-xl mt-2"><span class="ee-fr">Cours</span><span class="ee-ar">الدروس</span></h3>
-                        <p class="ee-fr text-emerald-50/90 mt-1 text-base leading-7">Consultez les ressources disponibles.</p>
-                        <p dir="rtl" class="ee-ar text-emerald-50/90 mt-1 text-base leading-8">اطلع على الموارد المتاحة.</p>
+                        <p class="ee-fr text-gray-100/90 mt-1 text-base leading-7">Consultez les ressources disponibles.</p>
+                        <p dir="rtl" class="ee-ar text-gray-100/90 mt-1 text-base leading-8">اطلع على الموارد المتاحة.</p>
                     </div>
 
                     <div class="relative lg:pt-12">
-                        <span class="absolute -start-12 top-0 lg:start-0 w-10 h-10 rounded-full bg-mint text-ink flex items-center justify-center font-head font-extrabold">3</span>
+                        <span class="absolute -start-12 top-0 lg:start-0 w-10 h-10 rounded-full bg-red-600 text-white flex items-center justify-center font-head font-extrabold">3</span>
                         <i data-lucide="clipboard-check" class="w-6 h-6 text-mint"></i>
                         <h3 class="font-head font-bold text-xl mt-2"><span class="ee-fr">Quiz</span><span class="ee-ar">الاختبارات</span></h3>
-                        <p class="ee-fr text-emerald-50/90 mt-1 text-base leading-7">Testez vos connaissances.</p>
-                        <p dir="rtl" class="ee-ar text-emerald-50/90 mt-1 text-base leading-8">اختبر معرفتك.</p>
+                        <p class="ee-fr text-gray-100/90 mt-1 text-base leading-7">Testez vos connaissances.</p>
+                        <p dir="rtl" class="ee-ar text-gray-100/90 mt-1 text-base leading-8">اختبر معرفتك.</p>
                     </div>
 
                     <div class="relative lg:pt-12">
-                        <span class="absolute -start-12 top-0 lg:start-0 w-10 h-10 rounded-full bg-mint text-ink flex items-center justify-center font-head font-extrabold">4</span>
+                        <span class="absolute -start-12 top-0 lg:start-0 w-10 h-10 rounded-full bg-red-600 text-white flex items-center justify-center font-head font-extrabold">4</span>
                         <i data-lucide="target" class="w-6 h-6 text-mint"></i>
                         <h3 class="font-head font-bold text-xl mt-2"><span class="ee-fr">Progression</span><span class="ee-ar">التقدّم</span></h3>
-                        <p class="ee-fr text-emerald-50/90 mt-1 text-base leading-7">Avancez progressivement dans votre parcours.</p>
-                        <p dir="rtl" class="ee-ar text-emerald-50/90 mt-1 text-base leading-8">تقدم تدريجياً في مسارك.</p>
+                        <p class="ee-fr text-gray-100/90 mt-1 text-base leading-7">Avancez progressivement dans votre parcours.</p>
+                        <p dir="rtl" class="ee-ar text-gray-100/90 mt-1 text-base leading-8">تقدم تدريجياً في مسارك.</p>
                     </div>
 
                 </div>
@@ -780,18 +780,18 @@
                     <p class="font-head text-2xl font-extrabold">
                         CAD <span class="text-mint">Academy</span>
                     </p>
-                    <p class="ee-fr text-base text-emerald-50/85 mt-1.5">Plateforme d’étude et de formation en ligne.</p>
-                    <p dir="rtl" class="ee-ar text-base text-emerald-50/85 mt-1 text-center md:text-start">منصة للدراسة والتكوين عبر الإنترنت.</p>
+                    <p class="ee-fr text-base text-gray-100/85 mt-1.5">Plateforme d’étude et de formation en ligne.</p>
+                    <p dir="rtl" class="ee-ar text-base text-gray-100/85 mt-1 text-center md:text-start">منصة للدراسة والتكوين عبر الإنترنت.</p>
                 </div>
 
-                <nav class="flex flex-wrap justify-center gap-x-6 gap-y-2 text-base text-emerald-50/90 font-semibold" aria-label="Liens du pied de page">
+                <nav class="flex flex-wrap justify-center gap-x-6 gap-y-2 text-base text-gray-100/90 font-semibold" aria-label="Liens du pied de page">
                     <a href="#formations" class="hover:text-mint"><span class="ee-fr">Formations</span><span class="ee-ar">التكوينات</span></a>
                     <a href="#about" class="hover:text-mint"><span class="ee-fr">À propos</span><span class="ee-ar">من نحن</span></a>
                     <a href="#quiz" class="hover:text-mint"><span class="ee-fr">Quiz</span><span class="ee-ar">الاختبارات</span></a>
                     <a href="#contact" class="hover:text-mint"><span class="ee-fr">Contact</span><span class="ee-ar">اتصل بنا</span></a>
                 </nav>
 
-                <div class="text-[0.9375rem] text-emerald-50/75 text-center md:text-end">
+                <div class="text-[0.9375rem] text-gray-100/75 text-center md:text-end">
                     <span class="ee-fr">© {{ date('Y') }} CAD Academy — Tous droits réservés.</span><span class="ee-ar">© {{ date('Y') }} CAD Academy — جميع الحقوق محفوظة.</span>
                 </div>
 
