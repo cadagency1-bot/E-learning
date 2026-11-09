@@ -6,7 +6,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>تأكيد التسجيل - Confirmation d'inscription | ÉtudeEnLigne</title>
+    <title>Confirmation d'inscription | CAD Academy</title>
 
     <script src="https://cdn.tailwindcss.com"></script>
 
@@ -25,27 +25,26 @@
 
     <!-- ================= NAVBAR ================= -->
 
-    <nav class="bg-white shadow-sm">
+    <nav class="bg-white shadow-sm border-b border-gray-100">
 
         <div class="max-w-7xl mx-auto px-6 py-4">
 
             <div class="flex items-center justify-between">
 
-                <!-- Logo -->
+                <!-- LOGO CAD ACADEMY -->
 
                 <a href="{{ route('home') }}"
-                   class="text-2xl font-bold text-green-600"
+                   class="text-2xl font-extrabold tracking-wide"
                    dir="ltr">
 
-                    Étude<span class="text-gray-800">EnLigne</span>
+                    <span class="text-black">CAD</span><span class="text-[#D71920]"> ACADEMY</span>
 
                 </a>
 
-
-                <!-- Connexion -->
+                <!-- CONNEXION -->
 
                 <a href="{{ route('login') }}"
-                   class="text-gray-600 hover:text-green-600 transition">
+                   class="text-gray-600 hover:text-[#D71920] transition font-medium">
 
                     تسجيل الدخول
                     <span class="text-gray-300 mx-1">|</span>
@@ -69,14 +68,14 @@
 
             <!-- ================= CARD ================= -->
 
-            <div class="bg-white rounded-2xl shadow-lg p-8">
+            <div class="bg-white rounded-2xl shadow-lg border border-gray-100 p-8">
 
 
-                <!-- Icon -->
+                <!-- ICON -->
 
                 <div class="flex justify-center mb-5">
 
-                    <div class="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center">
+                    <div class="w-16 h-16 rounded-full bg-red-50 flex items-center justify-center">
 
                         <span class="text-3xl">
                             📱
@@ -91,13 +90,13 @@
 
                 <div class="text-center mb-8">
 
-                    <h1 class="text-2xl font-bold text-gray-800 mb-3">
+                    <h1 class="text-2xl font-bold text-[#D71920] mb-3">
 
                         تأكيد التسجيل
 
                     </h1>
 
-                    <h2 class="text-xl font-semibold text-gray-700 mb-4">
+                    <h2 class="text-xl font-semibold text-gray-800 mb-4">
 
                         Confirmer votre inscription
 
@@ -161,37 +160,36 @@
                     @csrf
 
 
-                    <!-- EMAIL -->
+                    <!-- WHATSAPP PHONE -->
 
-<!-- WHATSAPP PHONE -->
+                    <div class="mb-5">
 
-<div class="mb-5">
+                        <label
+                            for="whatsapp_phone"
+                            class="block text-sm font-medium text-gray-700 mb-2">
 
-    <label
-        for="whatsapp_phone"
-        class="block text-sm font-medium text-gray-700 mb-2">
+                            رقم واتساب
+                            <span class="text-gray-400">|</span>
+                            Numéro WhatsApp
 
-        رقم واتساب
-        <span class="text-gray-400">|</span>
-        Numéro WhatsApp
+                        </label>
 
-    </label>
 
-    <input
-        type="text"
-        id="whatsapp_phone"
-        name="whatsapp_phone"
-        value="{{ old('whatsapp_phone') }}"
-        placeholder="+212 6 XX XX XX XX"
-        required
-        autocomplete="tel"
-        dir="ltr"
-        class="w-full px-4 py-3 border border-gray-300 rounded-xl
-               focus:outline-none focus:ring-2 focus:ring-green-500
-               focus:border-green-500 transition"
-    >
+                        <input
+                            type="text"
+                            id="whatsapp_phone"
+                            name="whatsapp_phone"
+                            value="{{ old('whatsapp_phone') }}"
+                            placeholder="+212 6 XX XX XX XX"
+                            required
+                            autocomplete="tel"
+                            dir="ltr"
+                            class="w-full px-4 py-3 border border-gray-300 rounded-xl
+                                   focus:outline-none focus:ring-2 focus:ring-[#D71920]
+                                   focus:border-[#D71920] transition"
+                        >
 
-</div>
+                    </div>
 
 
 
@@ -224,8 +222,8 @@
                             style="text-transform: uppercase;"
                             class="w-full px-4 py-3 border border-gray-300 rounded-xl
                                    text-center text-xl font-bold tracking-[0.4em]
-                                   focus:outline-none focus:ring-2 focus:ring-green-500
-                                   focus:border-green-500 transition"
+                                   focus:outline-none focus:ring-2 focus:ring-[#D71920]
+                                   focus:border-[#D71920] transition"
                         >
 
 
@@ -247,13 +245,13 @@
 
                     <button
                         type="submit"
-                        class="w-full bg-green-600 hover:bg-green-700
+                        class="w-full bg-[#D71920] hover:bg-[#B5121B]
                                text-white font-semibold py-3 px-4
                                rounded-xl transition duration-200
-                               shadow-sm">
+                               shadow-sm hover:shadow-md">
 
                         ✓ تأكيد التسجيل
-                        <span class="mx-1">|</span>
+                        <span class="mx-1 text-red-200">|</span>
                         Confirmer mon inscription
 
                     </button>
@@ -295,7 +293,7 @@
 
                     <a
                         href="{{ route('login') }}"
-                        class="text-green-600 font-semibold hover:text-green-700">
+                        class="text-[#D71920] font-semibold hover:text-[#B5121B] transition">
 
                         تسجيل الدخول
                         <span class="text-gray-300 mx-1">|</span>
@@ -314,7 +312,7 @@
 
                 <a
                     href="{{ route('home') }}"
-                    class="text-sm text-gray-500 hover:text-green-600 transition">
+                    class="text-sm text-gray-500 hover:text-[#D71920] transition">
 
                     ← العودة إلى الصفحة الرئيسية
                     <span class="mx-1">|</span>
