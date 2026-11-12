@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="fr" dir="ltr">
 
 <head>
@@ -343,6 +343,29 @@
         .input-error { margin-top: 6px; font-size: 12.5px; font-weight: 600; color: var(--danger); line-height: 1.45; }
 
         .helper { margin-top: 6px; font-size: 12px; color: var(--text-muted); line-height: 1.5; }
+
+        .forgot-password {
+            display: flex;
+            justify-content: flex-end;
+            margin: -8px 0 18px;
+        }
+
+        .forgot-password a {
+            color: var(--red-700);
+            font-size: 13px;
+            font-weight: 700;
+            text-decoration: none;
+            transition: color .2s ease, text-decoration-color .2s ease;
+        }
+
+        .forgot-password a:hover {
+            color: var(--red-900);
+            text-decoration: underline;
+            text-underline-offset: 3px;
+        }
+
+        body.lang-ar .forgot-password { justify-content: flex-start; }
+        body.lang-ar .forgot-password a { font-family: 'Noto Sans Arabic', var(--font); }
 
         .remember { display: flex; align-items: center; gap: 10px; margin: 4px 0 22px; }
         .remember input { width: 18px; height: 18px; accent-color: var(--accent); cursor: pointer; flex-shrink: 0; }
@@ -704,6 +727,15 @@
         </div>
     @endif
 </div>
+
+                    <!-- MOT DE PASSE OUBLIÉ -->
+                    <div class="forgot-password">
+                        <a href="{{ url('/mot-de-passe-oublie') }}">
+                            <span class="fr">Mot de passe oublié ?</span>
+                            <span class="ar" dir="rtl" lang="ar">نسيت كلمة المرور؟</span>
+                        </a>
+                    </div>
+
                     <!-- SE SOUVENIR DE MOI -->
                     <div class="remember">
                         <input id="remember" type="checkbox" name="remember">
