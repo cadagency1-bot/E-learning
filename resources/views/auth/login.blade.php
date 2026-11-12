@@ -730,7 +730,7 @@
 
                     <!-- MOT DE PASSE OUBLIÉ -->
                     <div class="forgot-password">
-                        <a href="{{ url('/mot-de-passe-oublie') }}">
+                        <a href="{{ route('password.request') }}">
                             <span class="fr">Mot de passe oublié ?</span>
                             <span class="ar" dir="rtl" lang="ar">نسيت كلمة المرور؟</span>
                         </a>
