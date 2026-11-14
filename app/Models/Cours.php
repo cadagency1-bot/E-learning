@@ -12,16 +12,17 @@ class Cours extends Model
     protected $table = 'cours';
 
     protected $fillable = [
-    'formation_id',
-    'title',
-    'description',
-    'content',
-    'file_path',
-    'video_path',
-    'video2_path',
-    'video_url',
-    'order',
-];
+        'formation_id',
+        'title',
+        'description',
+        'content',
+        'file_path',
+        'video_path',
+        'video2_path',
+        'video_url',
+        'video2_url',
+        'order',
+    ];
 
     public function formation()
     {

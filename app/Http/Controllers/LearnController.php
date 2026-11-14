@@ -36,8 +36,14 @@ class LearnController extends Controller
                     'type'      => $type,
                 ]);
 
-                $has1 = !empty($c->video_path) && $disk->exists($c->video_path);
-                $has2 = !empty($c->video2_path) && $disk->exists($c->video2_path);
+                // Liens vidéo (YouTube / Vimeo / lien direct) saisis par l'admin
+                $url1 = trim((string) ($c->video_url ?? ''));
+                $url2 = trim((string) ($c->video2_url ?? ''));
+
+                // Une vidéo existe s'il y a un lien OU un fichier uploadé
+                $has1 = $url1 !== '' || (!empty($c->video_path) && $disk->exists($c->video_path));
+                $has2 = $url2 !== '' || (!empty($c->video2_path) && $disk->exists($c->video2_path));
+
                 $hasPdf = !empty($c->file_path) && $disk->exists($c->file_path);
                 $content = trim((string) ($c->content ?? ''));
 
@@ -57,8 +63,9 @@ class LearnController extends Controller
                     'has_v2'      => $has2,
                     'has_pdf'     => $hasPdf,
                     'has_text'    => $content !== '',
-                    'v1_url'      => $has1 ? $media('video') : null,
-                    'v2_url'      => $has2 ? $media('video2') : null,
+                    // Le lien a la priorité ; sinon on utilise le fichier uploadé
+                    'v1_url'      => $url1 !== '' ? $url1 : ($has1 ? $media('video') : null),
+                    'v2_url'      => $url2 !== '' ? $url2 : ($has2 ? $media('video2') : null),
                     'pdf_view'    => $hasPdf ? $media('file') : null,
                     'pdf_dl'      => $hasPdf ? $media('file') . '?download=1' : null,
                     'pdf_name'    => $hasPdf ? basename($c->file_path) : null,

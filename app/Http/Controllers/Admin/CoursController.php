@@ -51,7 +51,8 @@ class CoursController extends Controller
             'video' => 'nullable|file|mimes:mp4,mov,webm,m4v|max:102400',
             'video2' => 'nullable|file|mimes:mp4,mov,webm,m4v|max:102400',
 
-            'video_url' => 'nullable|url|max:2048',
+            'video_url'  => 'nullable|url|max:2048',
+'video2_url' => 'nullable|url|max:2048',
             'order' => 'nullable|integer|min:0',
         ]);
 
@@ -88,7 +89,8 @@ class CoursController extends Controller
             'file_path' => $filePath,
             'video_path' => $videoPath,
             'video2_path' => $video2Path,
-            'video_url' => $validated['video_url'] ?? null,
+                        'video_url'  => $validated['video_url'] ?? null,
+            'video2_url' => $validated['video2_url'] ?? null,
             'order' => $validated['order'] ?? 0,
         ]);
 
@@ -137,7 +139,8 @@ public function show(Cours $cour): RedirectResponse
             'video' => 'nullable|file|mimes:mp4,mov,webm,m4v|max:102400',
             'video2' => 'nullable|file|mimes:mp4,mov,webm,m4v|max:102400',
 
-            'video_url' => 'nullable|url|max:2048',
+            'video_url'  => 'nullable|url|max:2048',
+'video2_url' => 'nullable|url|max:2048',
             'order' => 'nullable|integer|min:0',
         ]);
 

@@ -10,245 +10,271 @@
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://unpkg.com/lucide@0.462.0/dist/umd/lucide.min.js"></script>
 
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
 
 <style>
 :root{
-  --r:#d71920;
-  --rd:#a80f15;
-  --soft:#fff1f1;
-  --soft2:#ffe3e4;
-  --line:#f3d6d8;
-  --ink:#3a2a2c;
-  --head:#1f1415;
-  --muted:#7a6a6c;
-  --bg:#fbf7f7;
+  --r:#E11D2E;
+  --rd:#B3121F;
+  --r50:#FEF2F3;
+  --r100:#FDE3E5;
+  --r200:#FAC5C9;
+  --ink:#334155;
+  --head:#0B1220;
+  --muted:#64748B;
+  --line:#E2E8F0;
+  --bg:#F8FAFC;
+  --ok:#059669;
+  --ok-bg:#ECFDF5;
+  --dark:#0B1220;
 }
 
 *{box-sizing:border-box}
-html{scroll-behavior:smooth;scroll-padding-top:90px}
+html{scroll-behavior:smooth;scroll-padding-top:88px}
 
 body{
   margin:0;color:var(--ink);background:var(--bg);
-  font-family:'Plus Jakarta Sans','IBM Plex Sans Arabic',sans-serif;
+  font-family:'Inter','IBM Plex Sans Arabic',sans-serif;
   -webkit-font-smoothing:antialiased;line-height:1.6;
 }
-html[dir=rtl] body{font-family:'IBM Plex Sans Arabic','Plus Jakarta Sans',sans-serif;line-height:1.85}
+html[dir=rtl] body{font-family:'IBM Plex Sans Arabic','Inter',sans-serif;line-height:1.85}
 html[dir=rtl] .flip{transform:scaleX(-1)}
 
-:focus-visible{outline:3px solid var(--r);outline-offset:2px;border-radius:10px}
+:focus-visible{outline:3px solid rgba(225,29,46,.4);outline-offset:2px;border-radius:8px}
 @media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important;scroll-behavior:auto!important}}
 
-.card{background:#fff;border:1px solid var(--line);border-radius:22px;box-shadow:0 18px 40px -26px rgba(168,15,21,.35)}
-.sh{font-size:16px;font-weight:800;color:var(--head)}
+.card{background:#fff;border:1px solid var(--line);border-radius:14px}
+.sh{font-size:16px;font-weight:700;color:var(--head)}
 .muted{color:var(--muted)}
 .th{color:var(--head)}
 .t-red{color:var(--r)}
 .t-err{color:var(--rd)}
 
-/* ===== Barre du haut ===== */
-.topbar{background:rgba(255,255,255,.96);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:40}
-.tb-in{max-width:1500px;margin:0 auto;height:70px;padding-inline:clamp(14px,2.5vw,32px);display:flex;align-items:center;justify-content:space-between;gap:14px}
+/* ===== Logo : CAD noir + ACADEMY rouge, gras ===== */
+.brand-name{font-weight:800;font-size:20px;letter-spacing:.04em;line-height:1;white-space:nowrap;text-transform:uppercase;display:inline-flex;gap:6px}
+.b-cad{color:var(--head)}
+.b-acad{color:var(--r)}
 
-.back{display:inline-flex;align-items:center;justify-content:center;width:42px;height:42px;border-radius:14px;border:1px solid var(--line);background:#fff;color:var(--r);flex-shrink:0;transition:.15s}
-.back:hover{background:var(--r);color:#fff;border-color:var(--r)}
-
-.brand{display:flex;align-items:center;gap:10px;min-width:0}
+/* ===== Header ===== */
+.topbar{background:#fff;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:40}
+.tb-in{max-width:1440px;margin:0 auto;height:66px;padding-inline:clamp(14px,2.5vw,32px);display:flex;align-items:center;justify-content:space-between;gap:14px}
+.brand{display:flex;align-items:center;gap:11px;min-width:0}
 .brand img{width:34px;height:34px;object-fit:contain;flex-shrink:0}
-.brand-name{font-weight:800;font-size:17px;letter-spacing:.14em;color:var(--r);line-height:1;white-space:nowrap;text-transform:uppercase}
-.brand-sep{width:1px;height:28px;background:var(--line);flex-shrink:0}
-.brand-course{font-size:13px;font-weight:700;color:var(--head);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:34vw}
+.tb-r{display:flex;align-items:center;gap:14px;flex-shrink:0}
 
-.lt{display:flex;padding:3px;border-radius:999px;background:var(--soft);border:1px solid var(--line)}
-.lb{padding:5px 13px;border-radius:999px;font-size:12px;font-weight:800;color:var(--muted);cursor:pointer;transition:.15s}
-.lb.on{background:var(--r);color:#fff}
+.lt{display:flex;padding:3px;border-radius:10px;background:#F1F5F9;border:1px solid var(--line)}
+.lb{padding:5px 12px;border-radius:7px;font-size:12px;font-weight:700;color:var(--muted);cursor:pointer;transition:.15s}
+.lb.on{background:#fff;color:var(--head);box-shadow:0 1px 3px rgba(15,23,42,.12)}
 
-.avatar{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;color:#fff;background:linear-gradient(135deg,var(--r),var(--rd));overflow:hidden;text-decoration:none;box-shadow:0 8px 16px -8px rgba(215,25,32,.7)}
+.avatar{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;color:#fff;background:var(--head);overflow:hidden;text-decoration:none}
 
-.pbar{height:7px;border-radius:99px;background:var(--soft2);overflow:hidden}
-.pbar>div{height:100%;background:linear-gradient(90deg,var(--r),#ff4d55);border-radius:inherit;transition:width .4s ease}
+/* Anneau de progression */
+.ring{position:relative;width:44px;height:44px;flex-shrink:0}
+.ring svg{width:44px;height:44px;transform:rotate(-90deg)}
+.rg-bg{fill:none;stroke:#E8EDF3;stroke-width:4}
+.rg{fill:none;stroke:var(--r);stroke-width:4;stroke-linecap:round;stroke-dasharray:100.53;stroke-dashoffset:100.53;transition:stroke-dashoffset .6s ease}
+.ring b{position:absolute;inset:0;display:grid;place-items:center;font-size:10.5px;font-weight:800;color:var(--head)}
+.ring-wrap{display:flex;align-items:center;gap:10px}
+.ring-wrap small{display:block;font-size:11px;color:var(--muted);line-height:1.2}
+.ring-wrap strong{display:block;font-size:12.5px;color:var(--head);line-height:1.3}
+
+.pbar{height:6px;border-radius:99px;background:#E8EDF3;overflow:hidden}
+.pbar>div{height:100%;background:var(--r);border-radius:inherit;transition:width .5s ease}
 
 /* ===== Disposition ===== */
-.page{max-width:1500px;margin:0 auto;padding:22px clamp(14px,2.5vw,32px) 48px}
+.page{max-width:1440px;margin:0 auto;padding:22px clamp(14px,2.5vw,32px) 60px}
+.crumbs{display:flex;align-items:center;flex-wrap:wrap;gap:8px;font-size:12.5px;color:var(--muted);margin-bottom:16px}
+.crumbs a{color:var(--muted);text-decoration:none;font-weight:500}
+.crumbs a:hover{color:var(--r)}
+.crumbs .cur{color:var(--head);font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:40vw}
+
 .lgrid{display:grid;gap:24px;grid-template-columns:minmax(0,1fr)}
-@media(min-width:1100px){.lgrid{grid-template-columns:minmax(0,1fr) 400px;align-items:start}}
-.gc{min-width:0;display:grid;gap:22px}
+@media(min-width:1100px){.lgrid{grid-template-columns:minmax(0,1fr) 380px;align-items:start}}
+.gc{min-width:0;display:grid;gap:20px}
 
-/* ===== Playlist ===== */
+/* ===== Playlist (timeline) ===== */
 .playlist{display:flex;flex-direction:column;overflow:hidden}
-@media(min-width:1100px){.playlist{position:sticky;top:92px;max-height:calc(100vh - 112px)}}
+@media(min-width:1100px){.playlist{position:sticky;top:88px;max-height:calc(100vh - 108px)}}
 
-.ph{padding:20px 20px 14px;background:linear-gradient(135deg,var(--r) 0%,var(--rd) 100%);color:#fff}
-.ph .sh{color:#fff;display:flex;align-items:center;gap:8px}
-.ph .count{font-size:12px;font-weight:800;background:rgba(255,255,255,.2);padding:3px 11px;border-radius:999px}
-.ph .pbar{background:rgba(255,255,255,.28)}
-.ph .pbar>div{background:#fff}
+.ph{padding:18px 20px 16px;border-bottom:1px solid var(--line)}
+.ph .sh{display:flex;align-items:center;gap:8px}
+.ph .count{font-size:12px;font-weight:700;color:var(--muted)}
+.ph .count b{color:var(--r)}
 
 .psearch{position:relative;display:block;margin-top:14px}
-.psearch input{width:100%;padding:10px 14px 10px 40px;border-radius:12px;border:0;background:rgba(255,255,255,.95);font-size:13px;outline:none;color:var(--head)}
-html[dir=rtl] .psearch input{padding:10px 40px 10px 14px}
-.psearch i{position:absolute;inset-inline-start:13px;top:50%;transform:translateY(-50%);color:var(--r);pointer-events:none}
+.psearch input{width:100%;padding:10px 14px 10px 38px;border-radius:10px;border:1px solid var(--line);background:#F8FAFC;font-size:13px;outline:none;color:var(--head);transition:.15s}
+.psearch input:focus{border-color:var(--r);background:#fff;box-shadow:0 0 0 3px rgba(225,29,46,.1)}
+html[dir=rtl] .psearch input{padding:10px 38px 10px 14px}
+.psearch i{position:absolute;inset-inline-start:12px;top:50%;transform:translateY(-50%);color:var(--muted);pointer-events:none}
 
-.pl{overflow-y:auto;max-height:60vh;padding:10px;flex:1}
+.pl{overflow-y:auto;max-height:60vh;padding:14px 12px;flex:1}
 @media(min-width:1100px){.pl{max-height:none}}
 .pl::-webkit-scrollbar{width:6px}
-.pl::-webkit-scrollbar-thumb{background:var(--soft2);border-radius:99px}
+.pl::-webkit-scrollbar-thumb{background:#CBD5E1;border-radius:99px}
 
-.li{position:relative;width:100%;text-align:start;display:flex;gap:12px;align-items:center;padding:11px 12px;margin-bottom:6px;border-radius:16px;border:1px solid transparent;background:#fff;cursor:pointer;transition:background .15s,border-color .15s,transform .15s}
-.li:hover{background:var(--soft);transform:translateX(2px)}
-html[dir=rtl] .li:hover{transform:translateX(-2px)}
-.li.active{background:var(--soft);border-color:var(--r)}
-.li.active::before{content:"";position:absolute;inset-inline-start:-1px;top:14px;bottom:14px;width:4px;border-radius:99px;background:var(--r)}
+.li{position:relative;width:100%;text-align:start;display:flex;gap:14px;align-items:flex-start;padding:10px 10px 14px;border-radius:12px;border:1px solid transparent;background:transparent;cursor:pointer;transition:background .15s}
+.li:hover{background:#F8FAFC}
+.li.active{background:var(--r50)}
+/* ligne de la timeline */
+.li:not(:last-child)::before{content:"";position:absolute;inset-inline-start:29px;top:44px;bottom:-6px;width:2px;background:var(--line)}
+.li.done:not(:last-child)::before{background:var(--ok)}
 
-.lc{width:38px;height:38px;border-radius:12px;background:var(--soft);color:var(--r);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:.15s}
-.li.active .lc{background:var(--r);color:#fff;box-shadow:0 8px 16px -8px rgba(215,25,32,.8)}
-.li.done .lc{background:var(--soft2)}
+.lc{position:relative;z-index:1;width:38px;height:38px;border-radius:50%;background:#fff;border:2px solid var(--line);color:var(--muted);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:13px;font-weight:700;transition:.15s}
+.lc .chk{display:none}
+.li.active .lc{border-color:var(--r);color:var(--r);background:#fff;box-shadow:0 0 0 4px rgba(225,29,46,.12)}
+.li.done .lc{background:var(--ok);border-color:var(--ok);color:#fff}
+.li.done .lc .num{display:none}
+.li.done .lc .chk{display:block}
 
-.li .st{margin-inline-start:auto;flex-shrink:0;color:#e5cfd0}
-.li.done .st,.li.active .st{color:var(--r)}
-.tchip{display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:600;color:var(--muted)}
+.li-t{display:block;font-size:13.5px;font-weight:600;line-height:1.4;color:var(--head);padding-top:2px}
+.li.active .li-t{color:var(--r)}
+.tchip{display:inline-flex;align-items:center;gap:4px;font-size:11.5px;font-weight:500;color:var(--muted)}
 
-.qlink{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:15px 20px;border-top:1px solid var(--line);font-size:13px;font-weight:800;color:var(--head);transition:.15s}
-.qlink:hover{background:var(--soft);color:var(--r)}
+.qlink{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:15px 20px;border-top:1px solid var(--line);font-size:13px;font-weight:700;color:var(--head);transition:.15s}
+.qlink:hover{background:var(--r50);color:var(--r)}
 
-/* ===== Lecteur vidéo ===== */
+/* ===== Lecteur ===== */
 .panel{display:none}
 .panel.show{display:grid;gap:20px}
 
-.stage{background:#140b0c;border-radius:24px;overflow:hidden;box-shadow:0 30px 60px -30px rgba(168,15,21,.6);border:1px solid #2a1517}
-.sbar{display:flex;flex-wrap:wrap;gap:8px;padding:12px 16px;background:#1d0e10;border-bottom:1px solid #2f1a1c}
-.seg-btn{display:inline-flex;align-items:center;gap:8px;padding:7px 16px;border-radius:999px;font-size:12px;font-weight:700;color:#ffd2d4;background:rgba(255,255,255,.07);cursor:pointer;transition:.15s}
-.seg-btn:hover{background:rgba(255,255,255,.16);color:#fff}
+.stage{background:var(--dark);border-radius:14px;overflow:hidden;box-shadow:0 20px 40px -24px rgba(11,18,32,.6)}
+.sbar{display:flex;flex-wrap:wrap;gap:6px;padding:10px 14px;background:#111A2C;border-bottom:1px solid #1E293B}
+.seg-btn{display:inline-flex;align-items:center;gap:8px;padding:7px 15px;border-radius:8px;font-size:12px;font-weight:600;color:#CBD5E1;background:transparent;cursor:pointer;transition:.15s}
+.seg-btn:hover{background:rgba(255,255,255,.08);color:#fff}
 .seg-btn.on{background:var(--r);color:#fff}
 
-.player video{display:block;width:100%;aspect-ratio:16/9;max-height:74vh;background:#000;object-fit:contain}
+.player video{display:block;width:100%;aspect-ratio:16/9;max-height:76vh;background:#000;object-fit:contain}
+.player iframe{display:block;width:100%;aspect-ratio:16/9;max-height:76vh;border:0;background:#000}
 
-.speedbar{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px;padding:10px 18px;background:#1d0e10;font-size:12px;font-weight:600;color:#c9a9ab}
-.sp{padding:3px 11px;border-radius:999px;color:#ffd2d4;cursor:pointer;transition:.15s}
+.speedbar{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px;padding:10px 16px;background:#111A2C;font-size:12px;font-weight:500;color:#94A3B8}
+.sp{padding:3px 11px;border-radius:7px;color:#CBD5E1;cursor:pointer;transition:.15s}
 .sp:hover{color:#fff}
 .sp.on{background:var(--r);color:#fff}
 
-.tstage{background:linear-gradient(135deg,var(--r),var(--rd));color:#fff;padding:54px 20px;text-align:center;border-radius:24px}
+.srcbar{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;padding:12px 16px;background:#111A2C;border-top:1px solid #1E293B}
+.src-l{display:flex;align-items:center;gap:10px;min-width:0;flex:1}
+.src-badge{display:inline-flex;align-items:center;gap:6px;flex-shrink:0;padding:4px 11px;border-radius:7px;background:rgba(225,29,46,.18);color:#FCA5AE;font-size:11.5px;font-weight:700}
+.src-url{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:12px;color:#94A3B8;direction:ltr;unicode-bidi:embed}
+.src-link{display:inline-flex;align-items:center;gap:8px;flex-shrink:0;padding:8px 15px;border-radius:9px;background:var(--r);color:#fff;font-size:12.5px;font-weight:600;text-decoration:none;transition:.15s}
+.src-link:hover{background:var(--rd)}
+
+.tstage{background:#fff;border:1.5px dashed var(--line);color:var(--muted);padding:56px 20px;text-align:center;border-radius:14px}
+.tstage i{color:var(--r)}
 
 /* ===== Boutons ===== */
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:11px 20px;border-radius:14px;font-size:13.5px;font-weight:700;cursor:pointer;border:1.5px solid transparent;font-family:inherit;text-decoration:none;transition:background .18s,color .18s,box-shadow .18s,transform .18s}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:11px 20px;border-radius:10px;font-size:13.5px;font-weight:600;cursor:pointer;border:1.5px solid transparent;font-family:inherit;text-decoration:none;transition:background .15s,color .15s,border-color .15s,box-shadow .15s}
 .btn:disabled{cursor:not-allowed;opacity:.45}
-.btn:not(:disabled):hover{transform:translateY(-1px)}
 
 .b-next,.b-glow,.b-req{background:var(--r);color:#fff;border-color:var(--r)}
-.b-next:not(:disabled):hover,.b-glow:not(:disabled):hover,.b-req:not(:disabled):hover{background:var(--rd);border-color:var(--rd);box-shadow:0 12px 22px -12px rgba(215,25,32,.8)}
+.b-next:not(:disabled):hover,.b-glow:not(:disabled):hover,.b-req:not(:disabled):hover{background:var(--rd);border-color:var(--rd)}
 
-.b-prev,.b-out{background:#fff;color:var(--r);border-color:var(--r)}
-.b-prev:hover,.b-out:hover{background:var(--soft)}
+.b-prev,.b-out{background:#fff;color:var(--head);border-color:var(--line)}
+.b-prev:hover,.b-out:hover{border-color:var(--head)}
 
 .mark{background:#fff;color:var(--head);border-color:var(--line)}
-.mark:not(:disabled):hover{border-color:var(--r);color:var(--r);background:var(--soft)}
-.mark.is-done{background:var(--r);color:#fff;border-color:var(--r)}
+.mark:not(:disabled):hover{border-color:var(--ok);color:var(--ok);background:var(--ok-bg)}
+.mark.is-done{background:var(--ok);color:#fff;border-color:var(--ok)}
 
-.hint{font-size:12.5px;color:var(--rd);background:var(--soft);border:1px dashed var(--r);border-radius:12px;padding:9px 13px;font-weight:600}
+.hint{font-size:12.5px;color:var(--rd);background:var(--r50);border:1px solid var(--r100);border-radius:10px;padding:9px 13px;font-weight:500}
 
 /* ===== Carte de leçon ===== */
-.lesson-pill{display:inline-flex;align-items:center;gap:6px;background:var(--r);color:#fff;font-size:11.5px;font-weight:800;padding:4px 12px;border-radius:999px}
-.dur-pill{display:inline-flex;align-items:center;gap:6px;background:var(--soft);color:var(--rd);font-size:11.5px;font-weight:700;padding:4px 12px;border-radius:999px;border:1px solid var(--line)}
+.lesson-head{display:flex;flex-wrap:wrap;align-items:flex-start;justify-content:space-between;gap:16px}
+.lesson-pill{display:inline-flex;align-items:center;gap:6px;background:var(--r50);color:var(--r);font-size:11.5px;font-weight:700;padding:4px 12px;border-radius:7px}
+.dur-pill{display:inline-flex;align-items:center;gap:6px;background:#F1F5F9;color:var(--muted);font-size:11.5px;font-weight:600;padding:4px 12px;border-radius:7px}
 
-.tabs{display:flex;flex-wrap:wrap;gap:8px;padding:5px;background:var(--soft);border-radius:16px;width:fit-content;max-width:100%}
-.tab{display:inline-flex;align-items:center;gap:8px;padding:9px 16px;font-size:13px;font-weight:700;color:var(--muted);border-radius:12px;background:transparent;cursor:pointer;transition:.15s}
-.tab:hover{color:var(--r)}
-.tab.on{background:var(--r);color:#fff;box-shadow:0 10px 18px -10px rgba(215,25,32,.9)}
+.tabs{display:flex;flex-wrap:wrap;gap:22px;border-bottom:1px solid var(--line);width:100%}
+.tab{display:inline-flex;align-items:center;gap:8px;padding:10px 2px;margin-bottom:-1px;font-size:13.5px;font-weight:600;color:var(--muted);border-bottom:2px solid transparent;background:transparent;cursor:pointer;transition:.15s}
+.tab:hover{color:var(--head)}
+.tab.on{color:var(--r);border-bottom-color:var(--r)}
 
-/* ===== Documents PDF ===== */
-.doc{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:14px;padding:16px 18px;border-radius:18px;border:1px solid var(--line);background:linear-gradient(135deg,#fff,var(--soft))}
-.doc-ico{width:48px;height:48px;border-radius:14px;background:var(--r);color:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+/* ===== PDF ===== */
+.doc{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:14px;padding:16px 18px;border-radius:12px;border:1px solid var(--line);background:#F8FAFC}
+.doc-ico{width:46px;height:46px;border-radius:12px;background:var(--r50);color:var(--r);display:flex;align-items:center;justify-content:center;flex-shrink:0}
 
-/* ===== Cours écrit (lecteur) ===== */
-.reader{border:1px solid var(--line);border-radius:20px;background:#fff;overflow:hidden;transition:border-color .2s,box-shadow .2s}
-.reader.open{border-color:var(--r);box-shadow:0 18px 36px -24px rgba(215,25,32,.55)}
-.reader-toggle{width:100%;display:flex;align-items:center;gap:14px;padding:16px 18px;background:linear-gradient(135deg,#fff,var(--soft));cursor:pointer;text-align:start;font-family:inherit;transition:background .15s}
-.reader-toggle:hover{background:var(--soft)}
-.reader.open .reader-toggle{background:var(--r);color:#fff}
-.rt-ico{width:46px;height:46px;border-radius:14px;background:var(--r);color:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 10px 18px -10px rgba(215,25,32,.9)}
-.reader.open .rt-ico{background:#fff;color:var(--r)}
+/* ===== Cours écrit ===== */
+.reader{border:1px solid var(--line);border-radius:12px;background:#fff;overflow:hidden;transition:border-color .2s}
+.reader.open{border-color:var(--r200)}
+.reader-toggle{width:100%;display:flex;align-items:center;gap:14px;padding:14px 16px;background:#F8FAFC;cursor:pointer;text-align:start;font-family:inherit;transition:background .15s}
+.reader-toggle:hover{background:var(--r50)}
+.reader.open .reader-toggle{background:var(--r50)}
+.rt-ico{width:42px;height:42px;border-radius:11px;background:var(--r);color:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0}
 .rt-txt{flex:1;min-width:0;display:flex;flex-direction:column}
-.rt-txt b{font-size:15px;font-weight:800;color:var(--head);line-height:1.3}
+.rt-txt b{font-size:14.5px;font-weight:700;color:var(--head);line-height:1.3}
 .rt-txt small{font-size:12px;color:var(--muted);font-weight:500}
-.reader.open .rt-txt b,.reader.open .rt-txt small{color:#fff}
-.rt-chev{width:36px;height:36px;border-radius:50%;background:#fff;color:var(--r);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:transform .25s}
-.reader.open .rt-chev{transform:rotate(180deg);border-color:#fff}
+.rt-chev{width:32px;height:32px;border-radius:50%;background:#fff;color:var(--r);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:transform .25s}
+.reader.open .rt-chev{transform:rotate(180deg)}
 .reader-body{padding:26px clamp(18px,4vw,44px) 34px;border-top:1px solid var(--line)}
 
-.btn-sm{padding:7px 14px;font-size:12.5px;border-radius:11px}
+.btn-sm{padding:7px 14px;font-size:12.5px;border-radius:9px}
 
-.prose-lite{font-size:15.5px;line-height:1.95;color:var(--ink);overflow-wrap:anywhere}
-.prose-lite h1,.prose-lite h2,.prose-lite h3{color:var(--head);font-weight:800;line-height:1.3;margin:1.7em 0 .6em;padding-inline-start:14px;border-inline-start:5px solid var(--r)}
+.prose-lite{font-size:15.5px;line-height:1.9;color:var(--ink);overflow-wrap:anywhere}
+.prose-lite h1,.prose-lite h2,.prose-lite h3{color:var(--head);font-weight:700;line-height:1.3;margin:1.7em 0 .6em;padding-inline-start:14px;border-inline-start:4px solid var(--r)}
 .prose-lite h1{font-size:1.5em}
 .prose-lite h2{font-size:1.28em}
-.prose-lite h3{font-size:1.1em;border-inline-start-color:#ff7a80}
+.prose-lite h3{font-size:1.1em;border-inline-start-color:#F87181}
 .prose-lite>:first-child{margin-top:0}
 .prose-lite p{margin:.85em 0}
-.prose-lite strong,.prose-lite b{color:var(--head);font-weight:800}
+.prose-lite strong,.prose-lite b{color:var(--head);font-weight:700}
 .prose-lite ul,.prose-lite ol{margin:.9em 0;padding-inline-start:1.6em}
 .prose-lite ul{list-style:disc}
 .prose-lite ol{list-style:decimal}
 .prose-lite li{margin:.35em 0}
-.prose-lite li::marker{color:var(--r);font-weight:800}
-.prose-lite blockquote{margin:1.2em 0;padding:.9em 1.2em;border-inline-start:5px solid var(--r);background:var(--soft);border-radius:12px;color:var(--rd);font-weight:600}
-.prose-lite code{background:var(--soft);color:var(--rd);padding:2px 7px;border-radius:7px;font-size:.9em;direction:ltr;unicode-bidi:embed}
-.prose-lite pre{background:#1d0e10;color:#ffe3e4;padding:16px 18px;border-radius:14px;overflow-x:auto;direction:ltr;text-align:left;border-top:4px solid var(--r)}
+.prose-lite li::marker{color:var(--r);font-weight:700}
+.prose-lite blockquote{margin:1.2em 0;padding:.9em 1.2em;border-inline-start:4px solid var(--r);background:var(--r50);border-radius:10px;color:var(--rd);font-weight:500}
+.prose-lite code{background:#F1F5F9;color:var(--rd);padding:2px 7px;border-radius:6px;font-size:.9em;direction:ltr;unicode-bidi:embed}
+.prose-lite pre{background:var(--dark);color:#E2E8F0;padding:16px 18px;border-radius:12px;overflow-x:auto;direction:ltr;text-align:left;border-top:3px solid var(--r)}
 .prose-lite pre code{background:transparent;padding:0;color:inherit}
 .prose-lite a{color:var(--r);text-decoration:underline;font-weight:600}
-.prose-lite img{max-width:100%;height:auto;border-radius:14px}
+.prose-lite img{max-width:100%;height:auto;border-radius:12px}
 .prose-lite table{width:100%;border-collapse:collapse;margin:1em 0;font-size:.95em}
-.prose-lite th{background:var(--r);color:#fff;padding:9px 12px;text-align:start}
+.prose-lite th{background:var(--head);color:#fff;padding:9px 12px;text-align:start}
 .prose-lite td{padding:9px 12px;border-bottom:1px solid var(--line)}
 
 /* ===== Quiz ===== */
-.quiz-box{border:1px solid var(--line);border-radius:20px;padding:16px 18px;background:#fff;display:flex;flex-wrap:wrap;align-items:center;gap:14px;transition:.2s}
-.quiz-box:hover{border-color:var(--r);box-shadow:0 16px 30px -20px rgba(215,25,32,.6)}
-.quiz-icon{width:46px;height:46px;border-radius:14px;background:var(--r);color:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.qs{display:inline-flex;align-items:center;gap:6px;padding:3px 11px;border-radius:999px;font-size:11.5px;font-weight:700}
-.qs-ok{background:var(--r);color:#fff}
-.qs-ko{background:#fff;color:var(--r);border:1px dashed var(--r)}
-.qs-no{background:#f4eeee;color:var(--muted)}
-.qcount{font-size:12px;font-weight:700;color:var(--rd);background:var(--soft);padding:3px 12px;border-radius:999px}
+.quiz-box{border:1px solid var(--line);border-radius:12px;padding:16px 18px;background:#fff;display:flex;flex-wrap:wrap;align-items:center;gap:14px;transition:.2s}
+.quiz-box:hover{border-color:var(--r200)}
+.quiz-icon{width:44px;height:44px;border-radius:11px;background:var(--r50);color:var(--r);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.qs{display:inline-flex;align-items:center;gap:6px;padding:3px 10px;border-radius:7px;font-size:11.5px;font-weight:600}
+.qs-ok{background:var(--ok-bg);color:var(--ok)}
+.qs-ko{background:var(--r50);color:var(--r)}
+.qs-no{background:#F1F5F9;color:var(--muted)}
+.qcount{font-size:12px;font-weight:600;color:var(--muted);background:#F1F5F9;padding:3px 11px;border-radius:7px}
 
 /* ===== Certificat ===== */
-.ico-r{background:var(--soft);color:var(--r)}
-.inp{width:100%;max-width:440px;padding:11px 16px;margin-bottom:12px;border-radius:14px;border:1px solid var(--line);background:#fff;font-family:inherit;font-size:14px;transition:.15s}
-.inp:focus{outline:none;border-color:var(--r);box-shadow:0 0 0 4px rgba(215,25,32,.12)}
+.ico-r{background:var(--r50);color:var(--r)}
+.inp{width:100%;max-width:440px;padding:11px 15px;margin-bottom:12px;border-radius:10px;border:1px solid var(--line);background:#fff;font-family:inherit;font-size:14px;transition:.15s}
+.inp:focus{outline:none;border-color:var(--r);box-shadow:0 0 0 3px rgba(225,29,46,.12)}
 
 /* ===== Toast ===== */
-.toast{position:fixed;left:50%;bottom:24px;z-index:95;max-width:min(90vw,440px);padding:13px 24px;border-radius:999px;background:var(--head);color:#fff;font-size:13px;font-weight:600;opacity:0;pointer-events:none;transform:translateX(-50%) translateY(14px);transition:.25s ease;border-inline-start:4px solid var(--r)}
+.toast{position:fixed;left:50%;bottom:24px;z-index:95;max-width:min(90vw,440px);padding:12px 22px;border-radius:12px;background:var(--head);color:#fff;font-size:13px;font-weight:500;opacity:0;pointer-events:none;transform:translateX(-50%) translateY(14px);transition:.25s ease;border-inline-start:4px solid var(--r)}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 
 @media(max-width:640px){
-  .brand-sep,.brand-course{display:none}
-  .brand-name{font-size:15px}
+  .brand-name{font-size:16px}
+  .src-url{display:none}
+  .ring-wrap small,.ring-wrap strong{display:none}
 }
 </style>
 </head>
 
 <body>
 
-{{-- ===== Barre du haut : retour, logo, progression, langue, profil ===== --}}
+{{-- ===== Header ===== --}}
 <header class="topbar">
  <div class="tb-in">
 
-  <div class="flex items-center gap-3 min-w-0">
-   <a href="{{ route('dashboard') }}" class="back" aria-label="Retour"><i data-lucide="arrow-left" class="w-5 h-5 flip"></i></a>
+  <a href="{{ route('dashboard') }}" class="brand" style="text-decoration:none" aria-label="CAD ACADEMY">
+   <img src="{{ asset('images/logo-centre.png') }}" alt="" onerror="this.style.display='none'">
+   <span class="brand-name"><span class="b-cad">CAD</span><span class="b-acad">ACADEMY</span></span>
+  </a>
 
-   <div class="brand">
-    <img src="{{ asset('images/logo-centre.png') }}" alt="" onerror="this.style.display='none'">
-    <span class="brand-name">CAD ACADEMY</span>
-    <span class="brand-sep"></span>
-    <h1 class="brand-course m-0">{{ $formation->name }}</h1>
-   </div>
-  </div>
-
-  <div class="flex items-center gap-3 sm:gap-4 shrink-0">
-
-   <div class="hidden sm:block w-40">
-    <div class="flex justify-between text-[11px] font-bold muted mb-1"><span data-i18n="progress">Progression</span><span class="t-red"><span id="top-pct">0</span>%</span></div>
-    <div class="pbar"><div id="top-fill" style="width:0%"></div></div>
+  <div class="tb-r">
+   <div class="ring-wrap">
+    <div class="ring">
+     <svg viewBox="0 0 40 40" aria-hidden="true"><circle class="rg-bg" cx="20" cy="20" r="16"/><circle id="ring" class="rg" cx="20" cy="20" r="16"/></svg>
+     <b><span id="top-pct">0</span>%</b>
+    </div>
+    <div class="hidden md:block"><small data-i18n="progress">Progression</small><strong><span id="top-done">0</span> / {{ $lessonCount }} <span data-i18n="stat_lessons">leçons</span></strong></div>
    </div>
 
    <div class="lt">
@@ -271,11 +297,17 @@ html[dir=rtl] .li:hover{transform:translateX(-2px)}
 
 <main class="page">
 
+ <nav class="crumbs" aria-label="Fil d'Ariane">
+  <a href="{{ route('dashboard') }}" data-i18n="crumb_home">Mes formations</a>
+  <i data-lucide="chevron-right" class="w-3.5 h-3.5 flip"></i>
+  <span class="cur">{{ $formation->name }}</span>
+ </nav>
+
 @if($lessonCount===0)
 
  <div class="max-w-3xl mx-auto py-16"><div class="card p-10 text-center">
   <div class="w-14 h-14 mx-auto rounded-2xl flex items-center justify-center mb-4 ico-r"><i data-lucide="video-off" class="w-7 h-7"></i></div>
-  <h2 class="text-lg font-extrabold th" data-i18n="no_lesson">Aucune leçon disponible</h2>
+  <h2 class="text-lg font-bold th" data-i18n="no_lesson">Aucune leçon disponible</h2>
   <p class="text-sm muted mt-2" data-i18n="no_lesson_sub">Les vidéos seront affichées ici dès qu'elles seront ajoutées.</p>
  </div></div>
 
@@ -291,8 +323,8 @@ html[dir=rtl] .li:hover{transform:translateX(-2px)}
     $first = $l['has_v1'] ? 'c' : 'p';
     $hasVideo = $l['has_v1'] || $l['has_v2'];
     $tabs = [];
-    if($l['content_html']) $tabs[]='content';
     if($l['description']!=='') $tabs[]='desc';
+    if($l['content_html']) $tabs[]='content';
     if($l['has_pdf']) $tabs[]='files';
    @endphp
 
@@ -309,17 +341,46 @@ html[dir=rtl] .li:hover{transform:translateX(-2px)}
 
      @foreach([['c',$l['has_v1'],$l['v1_url']],['p',$l['has_v2'],$l['v2_url']]] as $vp)
       @if($vp[1])
+      @php
+       // YouTube / Vimeo => iframe ; sinon <video> (fichier uploadé ou lien direct .mp4)
+       $src = (string) $vp[2];
+       $embed = null;
+       $provider = null;
+       $openUrl = null;
+       if (preg_match('~(?:youtube\.com/watch\?(?:[^"\s]*&)?v=|youtu\.be/|youtube\.com/embed/|youtube\.com/shorts/|youtube-nocookie\.com/embed/)([\w-]{11})~i', $src, $m)) {
+           $embed = 'https://www.youtube.com/embed/'.$m[1].'?rel=0&modestbranding=1';
+           $provider = 'youtube';
+           $openUrl = 'https://www.youtube.com/watch?v='.$m[1];
+       } elseif (preg_match('~vimeo\.com/(?:video/|channels/[^/]+/|groups/[^/]+/videos/)?(\d+)~i', $src, $m)) {
+           $embed = 'https://player.vimeo.com/video/'.$m[1];
+           $provider = 'vimeo';
+           $openUrl = 'https://vimeo.com/'.$m[1];
+       }
+      @endphp
       <div class="vpane {{ $first===$vp[0]?'':'hidden' }}" data-v="{{ $vp[0] }}">
        <div class="player">
-        <video controls playsinline preload="metadata" controlsList="nodownload" src="{{ $vp[2] }}"></video>
-        <div class="speedbar">
-         <span class="inline-flex items-center gap-2"><i data-lucide="gauge" class="w-4 h-4"></i><span data-i18n="speed">Vitesse</span></span>
-         <div class="flex gap-1">
-          @foreach([0.75,1,1.25,1.5,2] as $s)
-           <button type="button" class="sp {{ $s==1?'on':'' }}" data-speed="{{ $s }}">{{ $s }}x</button>
-          @endforeach
+        @if($embed)
+         <iframe src="{{ $embed }}" title="{{ $l['title'] }}" loading="lazy" allowfullscreen
+                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen"
+                 referrerpolicy="strict-origin-when-cross-origin"></iframe>
+         <div class="srcbar">
+          <div class="src-l">
+           <span class="src-badge"><i data-lucide="{{ $provider==='youtube' ? 'youtube' : 'play-circle' }}" class="w-3.5 h-3.5"></i><span data-i18n="{{ $provider==='youtube' ? 'src_youtube' : 'src_vimeo' }}">{{ $provider==='youtube' ? 'YouTube' : 'Vimeo' }}</span></span>
+           <span class="src-url" title="{{ $openUrl }}">{{ $openUrl }}</span>
+          </div>
+          <a href="{{ $openUrl }}" target="_blank" rel="noopener noreferrer" class="src-link"><i data-lucide="external-link" class="w-4 h-4"></i><span data-i18n="open_src">Ouvrir le lien</span></a>
          </div>
-        </div>
+        @else
+         <video controls playsinline preload="metadata" controlsList="nodownload" src="{{ $src }}"></video>
+         <div class="speedbar">
+          <span class="inline-flex items-center gap-2"><i data-lucide="gauge" class="w-4 h-4"></i><span data-i18n="speed">Vitesse</span></span>
+          <div class="flex gap-1">
+           @foreach([0.75,1,1.25,1.5,2] as $s)
+            <button type="button" class="sp {{ $s==1?'on':'' }}" data-speed="{{ $s }}">{{ $s }}x</button>
+           @endforeach
+          </div>
+         </div>
+        @endif
        </div>
       </div>
       @endif
@@ -328,20 +389,27 @@ html[dir=rtl] .li:hover{transform:translateX(-2px)}
     @else
     <div class="tstage">
      <i data-lucide="video-off" class="w-9 h-9 mx-auto"></i>
-     <p class="font-bold mt-3" data-i18n="no_video">Pas de vidéo pour cette leçon.</p>
+     <p class="font-semibold mt-3" data-i18n="no_video">Pas de vidéo pour cette leçon.</p>
     </div>
     @endif
 
     <div class="card p-5 sm:p-7">
 
-     <div class="flex flex-wrap items-center gap-2">
-      <span class="lesson-pill"><i data-lucide="play-circle" class="w-3.5 h-3.5"></i><span><span data-i18n="lesson">Leçon</span> {{ $l['index']+1 }} / {{ $lessonCount }}</span></span>
-      @if(!empty($l['duration']))
-       <span class="dur-pill"><i data-lucide="clock" class="w-3.5 h-3.5"></i>{{ $l['duration'] }}</span>
-      @endif
+     <div class="lesson-head">
+      <div class="min-w-0" style="flex:1 1 320px">
+       <div class="flex flex-wrap items-center gap-2">
+        <span class="lesson-pill"><i data-lucide="play-circle" class="w-3.5 h-3.5"></i><span><span data-i18n="lesson">Leçon</span> {{ $l['index']+1 }} / {{ $lessonCount }}</span></span>
+        @if(!empty($l['duration']))
+         <span class="dur-pill"><i data-lucide="clock" class="w-3.5 h-3.5"></i>{{ $l['duration'] }}</span>
+        @endif
+       </div>
+       <h2 class="text-xl sm:text-2xl font-bold th mt-3 leading-tight" dir="auto">{{ $l['title'] }}</h2>
+      </div>
+
+      <button type="button" class="btn mark" data-index="{{ $l['index'] }}"><i data-lucide="check-circle-2" class="w-4 h-4"></i><span class="done-label" data-i18n="mark">Marquer comme terminée</span></button>
      </div>
 
-     <h2 class="text-xl sm:text-2xl font-extrabold th mt-3 leading-tight" dir="auto">{{ $l['title'] }}</h2>
+     <p class="hint mark-hint hidden mt-4" data-i18n="watch_hint">Regardez la vidéo jusqu'à la fin pour pouvoir terminer cette leçon.</p>
 
      @if(count($tabs))
      <div class="mt-6">
@@ -378,7 +446,7 @@ html[dir=rtl] .li:hover{transform:translateX(-2px)}
          <div class="doc">
           <div class="flex items-center gap-3 min-w-0">
            <div class="doc-ico"><i data-lucide="file-text" class="w-6 h-6"></i></div>
-           <div class="min-w-0"><p class="font-bold text-sm th truncate" dir="auto">{{ $l['pdf_name'] }}</p><p class="text-xs muted">PDF</p></div>
+           <div class="min-w-0"><p class="font-semibold text-sm th truncate" dir="auto">{{ $l['pdf_name'] }}</p><p class="text-xs muted">PDF</p></div>
           </div>
           <div class="flex flex-wrap gap-2">
            <a href="{{ $l['pdf_view'] }}" target="_blank" rel="noopener noreferrer" class="btn b-out"><i data-lucide="eye" class="w-4 h-4"></i><span data-i18n="consult">Consulter</span></a>
@@ -392,13 +460,9 @@ html[dir=rtl] .li:hover{transform:translateX(-2px)}
      </div>
      @endif
 
-     <div class="mt-7 pt-5 border-t" style="border-color:var(--line)">
-      <p class="hint mark-hint hidden mb-3" data-i18n="watch_hint">Regardez la vidéo jusqu'à la fin pour pouvoir terminer cette leçon.</p>
-      <div class="flex flex-wrap items-center justify-between gap-3">
-       <button type="button" class="btn b-prev nav-prev"><i data-lucide="arrow-left" class="w-4 h-4 flip"></i><span data-i18n="prev">Précédente</span></button>
-       <button type="button" class="btn mark order-last sm:order-none w-full sm:w-auto" data-index="{{ $l['index'] }}"><i data-lucide="check-circle-2" class="w-4 h-4"></i><span class="done-label" data-i18n="mark">Marquer comme terminée</span></button>
-       <button type="button" class="btn b-next nav-next"><span data-i18n="next">Suivante</span><i data-lucide="arrow-right" class="w-4 h-4 flip"></i></button>
-      </div>
+     <div class="mt-7 pt-5 border-t flex flex-wrap items-center justify-between gap-3" style="border-color:var(--line)">
+      <button type="button" class="btn b-prev nav-prev"><i data-lucide="arrow-left" class="w-4 h-4 flip"></i><span data-i18n="prev">Précédente</span></button>
+      <button type="button" class="btn b-next nav-next"><span data-i18n="next">Suivante</span><i data-lucide="arrow-right" class="w-4 h-4 flip"></i></button>
      </div>
 
     </div>
@@ -415,7 +479,7 @@ html[dir=rtl] .li:hover{transform:translateX(-2px)}
      <div class="quiz-icon"><i data-lucide="help-circle" class="w-6 h-6"></i></div>
      <div class="min-w-0 flex-1">
       <div class="flex flex-wrap items-center gap-2">
-       <h3 class="font-bold text-sm sm:text-base th" dir="auto">{{ $q['title'] }}</h3>
+       <h3 class="font-semibold text-sm sm:text-base th" dir="auto">{{ $q['title'] }}</h3>
        <span class="qcount">{{ $q['questions'] }} <span data-i18n="questions_label">questions</span></span>
 
        @if($q['questions']===0)
@@ -446,7 +510,7 @@ html[dir=rtl] .li:hover{transform:translateX(-2px)}
    {{-- ===== Demande de certificat ===== --}}
    <section id="certificat" class="card p-5 sm:p-7 scroll-mt-24">
     <div class="flex items-start gap-4">
-     <div class="w-12 h-12 rounded-2xl flex items-center justify-center shrink-0 ico-r">
+     <div class="w-12 h-12 rounded-xl flex items-center justify-center shrink-0 ico-r">
       <i data-lucide="award" class="w-6 h-6"></i>
      </div>
      <div class="min-w-0 flex-1">
@@ -478,7 +542,7 @@ html[dir=rtl] .li:hover{transform:translateX(-2px)}
        @if($certRoute)
         <form id="cert-request-form" action="{{ $certRoute }}" method="POST" class="mt-4">
          @csrf
-         <label for="request-cert-name" class="block text-xs font-bold mb-2 th" data-i18n="cert_fullname">Nom complet</label>
+         <label for="request-cert-name" class="block text-xs font-semibold mb-2 th" data-i18n="cert_fullname">Nom complet</label>
          <input type="text" id="request-cert-name" name="name_on_certificate"
                 value="{{ old('name_on_certificate', $studentName) }}"
                 minlength="2" maxlength="150" required class="inp">
@@ -500,13 +564,13 @@ html[dir=rtl] .li:hover{transform:translateX(-2px)}
 
   </div>
 
-  {{-- ===== Playlist ===== --}}
+  {{-- ===== Playlist (timeline) ===== --}}
   <aside class="card playlist" id="liste-lecons" aria-label="Playlist">
 
    <div class="ph">
     <div class="flex items-center justify-between gap-3">
-     <h2 class="sh"><i data-lucide="list-video" class="w-5 h-5"></i><span data-i18n="playlist">Playlist</span></h2>
-     <span class="count"><span id="done-count">0</span> / {{ $lessonCount }}</span>
+     <h2 class="sh"><i data-lucide="list-video" class="w-5 h-5 t-red"></i><span data-i18n="playlist">Contenu du cours</span></h2>
+     <span class="count"><b id="done-count">0</b> / {{ $lessonCount }}</span>
     </div>
 
     <div class="pbar mt-3"><div id="progress-fill" style="width:0%"></div></div>
@@ -522,17 +586,16 @@ html[dir=rtl] .li:hover{transform:translateX(-2px)}
    <div class="pl">
     @foreach($lessons as $l)
     <button type="button" class="li {{ $l['index']===0?'active':'' }}" data-go="{{ $l['index'] }}" data-title="{{ $l['title'] }}">
-     <span class="lc"><i data-lucide="{{ $l['has_v1']||$l['has_v2'] ? 'play' : ($l['has_pdf'] && !$l['has_text'] ? 'file-text' : 'book-open') }}" class="w-4 h-4"></i></span>
+     <span class="lc"><span class="num">{{ $l['index']+1 }}</span><i data-lucide="check" class="chk w-4 h-4"></i></span>
      <span class="min-w-0 flex-1">
-      <span class="block text-[13px] font-bold leading-snug th" dir="auto">{{ $l['index']+1 }}. {{ $l['title'] }}</span>
-      <span class="flex flex-wrap items-center gap-x-3 mt-0.5">
-       @if($l['has_v1']&&$l['has_v2'])<span class="tchip"><i data-lucide="video" class="w-3 h-3"></i>2</span>@endif
-       @if($l['has_text'])<span class="tchip"><i data-lucide="align-left" class="w-3 h-3"></i><span data-i18n="chip_text">Cours écrit</span></span>@endif
-       @if($l['has_pdf'])<span class="tchip"><i data-lucide="file-text" class="w-3 h-3"></i>PDF</span>@endif
-       @if(!empty($l['duration']))<span class="tchip"><i data-lucide="clock" class="w-3 h-3"></i>{{ $l['duration'] }}</span>@endif
+      <span class="li-t" dir="auto">{{ $l['title'] }}</span>
+      <span class="flex flex-wrap items-center gap-x-3 gap-y-1 mt-1">
+       @if($l['has_v1']||$l['has_v2'])<span class="tchip"><i data-lucide="play-circle" class="w-3.5 h-3.5"></i>{{ ($l['has_v1']&&$l['has_v2']) ? '2 ' : '' }}<span data-i18n="chip_video">Vidéo</span></span>@endif
+       @if($l['has_text'])<span class="tchip"><i data-lucide="align-left" class="w-3.5 h-3.5"></i><span data-i18n="chip_text">Cours écrit</span></span>@endif
+       @if($l['has_pdf'])<span class="tchip"><i data-lucide="file-text" class="w-3.5 h-3.5"></i>PDF</span>@endif
+       @if(!empty($l['duration']))<span class="tchip"><i data-lucide="clock" class="w-3.5 h-3.5"></i>{{ $l['duration'] }}</span>@endif
       </span>
      </span>
-     <span class="st"><i data-lucide="circle-check" class="w-5 h-5"></i></span>
     </button>
     @endforeach
    </div>
@@ -560,12 +623,14 @@ const SERVER_DONE=@json($completedIds);
 const QUIZ_IDS=@json($quizIds),PASSED_QUIZ_IDS=@json($passedIds);
 const PROGRESS_URL=@json($progressUrl);
 const CSRF_TOKEN=@json(csrf_token());
+const RING_C=100.53;
 
 const I18N={
 fr:{
- progress:'Progression',no_lesson:'Aucune leçon disponible',no_lesson_sub:"Les vidéos seront affichées ici dès qu'elles seront ajoutées.",
- playlist:'Playlist',search_ph:'Rechercher une leçon...',chip_text:'Cours écrit',cert_side:'Certificat',
+ progress:'Progression',crumb_home:'Mes formations',stat_lessons:'leçons',no_lesson:'Aucune leçon disponible',no_lesson_sub:"Les vidéos seront affichées ici dès qu'elles seront ajoutées.",
+ playlist:'Contenu du cours',search_ph:'Rechercher une leçon...',chip_text:'Cours écrit',chip_video:'Vidéo',cert_side:'Certificat',
  video_course:'Cours',video_practice:'Pratique',speed:'Vitesse',no_video:'Pas de vidéo pour cette leçon.',
+ src_youtube:'YouTube',src_vimeo:'Vimeo',open_src:'Ouvrir le lien',
  lesson:'Leçon',tab_desc:'Description',tab_content:'Cours écrit',tab_files:'Documents',consult:'Consulter',download:'Télécharger',
  written_course:'Cours écrit',show_course:'Afficher le cours',hide_course:'Masquer le cours',course_sub:'Lisez le cours écrit de cette leçon',
  watch_hint:"Regardez la vidéo jusqu'à la fin pour pouvoir terminer cette leçon.",prev:'Précédente',next:'Suivante',mark:'Marquer comme terminée',marked:'Terminée ✓',
@@ -577,9 +642,10 @@ fr:{
  missing_lessons:'Il reste {n} leçon(s) à terminer.',missing_quizzes:'Il reste {n} quiz à réussir.',form_incomplete:'Terminez toutes les leçons et les quiz, puis saisissez votre nom complet.',name_required:'Saisissez votre nom complet (2 caractères minimum).',sending:'Envoi de votre demande...',progress_error:"Impossible d'enregistrer la progression. Réessayez.",progress_noroute:'La route « lesson-progress.update » est introuvable : progression non enregistrée.'
 },
 ar:{
- progress:'التقدم',no_lesson:'لا توجد دروس متاحة',no_lesson_sub:'ستظهر الفيديوهات هنا بمجرد إضافتها.',
- playlist:'قائمة الدروس',search_ph:'ابحث عن درس...',chip_text:'درس مكتوب',cert_side:'الشهادة',
+ progress:'التقدم',crumb_home:'تكويناتي',stat_lessons:'دروس',no_lesson:'لا توجد دروس متاحة',no_lesson_sub:'ستظهر الفيديوهات هنا بمجرد إضافتها.',
+ playlist:'محتوى الدورة',search_ph:'ابحث عن درس...',chip_text:'درس مكتوب',chip_video:'فيديو',cert_side:'الشهادة',
  video_course:'الدرس',video_practice:'تطبيق',speed:'السرعة',no_video:'لا يوجد فيديو لهذا الدرس.',
+ src_youtube:'YouTube',src_vimeo:'Vimeo',open_src:'فتح الرابط',
  lesson:'الدرس',tab_desc:'الوصف',tab_content:'الدرس المكتوب',tab_files:'المستندات',consult:'اطّلاع',download:'تحميل',
  written_course:'الدرس المكتوب',show_course:'إظهار الدرس',hide_course:'إخفاء الدرس',course_sub:'اقرأ الدرس المكتوب لهذه الحصة',
  watch_hint:'شاهد الفيديو حتى النهاية لتتمكن من إنهاء هذا الدرس.',prev:'السابق',next:'التالي',mark:'تحديد الدرس كمكتمل',marked:'مكتمل ✓',
@@ -629,7 +695,8 @@ function validateCertForm(){
  }
  return ok;
 }
-// Une leçon avec vidéo ne peut être terminée qu'après avoir regardé la vidéo (contrôle côté navigateur).
+// Une leçon avec une vidéo fichier ne peut être terminée qu'après l'avoir regardée.
+// Les vidéos YouTube / Vimeo (iframe) ne sont pas contrôlées : le bouton reste actif.
 function lessonReady(i){
  if(done.includes(i))return true;
  const p=document.querySelector('.panel[data-panel="'+i+'"]');if(!p)return true;
@@ -646,9 +713,10 @@ function refreshMark(){
 function refreshDone(){
  const t=I18N[lang],n=done.length,pct=TOTAL?Math.round(n/TOTAL*100):0;
  if($('done-count'))$('done-count').textContent=n;
+ if($('top-done'))$('top-done').textContent=n;
  if($('progress-fill'))$('progress-fill').style.width=pct+'%';
  if($('top-pct'))$('top-pct').textContent=pct;
- if($('top-fill'))$('top-fill').style.width=pct+'%';
+ if($('ring'))$('ring').style.strokeDashoffset=String(RING_C*(1-pct/100));
  document.querySelectorAll('.mark').forEach(b=>{
   const d=done.includes(Number(b.dataset.index)),lab=b.querySelector('.done-label');
   b.classList.toggle('is-done',d);b.setAttribute('aria-pressed',d?'true':'false');
@@ -708,10 +776,19 @@ function setLang(l){
  $('lang-fr').classList.toggle('on',l==='fr');$('lang-ar').classList.toggle('on',l==='ar');
  refreshDone();
 }
+
+// Arrête la lecture des vidéos YouTube / Vimeo (iframe) en rechargeant leur source
+function stopEmbeds(scope){
+ (scope||document).querySelectorAll('iframe').forEach(f=>{
+  const s=f.getAttribute('src');if(s){f.setAttribute('src',s);}
+ });
+}
+
 function go(i,scroll){
  if(i<0||i>=TOTAL)return;
  closeReaders();
  document.querySelectorAll('video').forEach(v=>v.pause());
+ if(i!==current)stopEmbeds(document.querySelector('.panel[data-panel="'+current+'"]'));
  current=i;save('-current',i);
  document.querySelectorAll('.panel').forEach(p=>p.classList.toggle('show',Number(p.dataset.panel)===i));
  const items=document.querySelectorAll('.li[data-go]');
@@ -721,7 +798,7 @@ function go(i,scroll){
  if(scroll)window.scrollTo({top:0,behavior:'smooth'});
 }
 
-/* ---------- Lecteur plein écran du cours écrit ---------- */
+/* ---------- Lecteur du cours écrit ---------- */
 function setReaderLabel(r,open){
  const lab=r.querySelector('.read-label');if(!lab)return;
  lab.dataset.i18n=open?'hide_course':'show_course';
@@ -765,6 +842,7 @@ document.addEventListener('DOMContentLoaded',()=>{
   const segs=p.querySelectorAll('.seg-btn');
   segs.forEach(s=>s.addEventListener('click',()=>{
    p.querySelectorAll('video').forEach(v=>v.pause());
+   stopEmbeds(p);
    segs.forEach(x=>x.classList.remove('on'));s.classList.add('on');
    p.querySelectorAll('.vpane').forEach(x=>x.classList.toggle('hidden',x.dataset.v!==s.dataset.v));
   }));

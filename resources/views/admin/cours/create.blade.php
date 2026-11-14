@@ -112,6 +112,11 @@
 
         .pdf-icon { background:var(--red-100); color:var(--red-700); }
 
+        /* ---------- Lien vidéo (URL) ---------- */
+        .url-box { margin-top:14px; padding:16px; background:#fff; border:1px solid var(--border); border-radius:12px; }
+        .url-box label { display:flex; align-items:center; gap:8px; color:var(--ink); font-size:12px; font-weight:800; margin-bottom:9px; }
+        .url-box .url-hint { font-size:11px; color:#9A9A9A; margin:8px 0 0; line-height:1.7; }
+
         .info-note {
             display:flex; gap:12px; padding:15px; background:var(--red-50); border:1px solid var(--red-100);
             border-inline-start:4px solid var(--red); border-radius:12px; color:var(--ink); font-size:12px; line-height:1.8;
@@ -311,6 +316,8 @@
                     <p class="field-hint" data-i18n="videosHint">Ajoutez une ou plusieurs vidéos. Chaque vidéo dispose de son propre aperçu.</p>
 
                     <div id="video-list" class="video-list">
+
+                        {{-- ===== Vidéo 1 ===== --}}
                         <div class="video-item">
                             <div class="video-item-header">
                                 <span class="video-item-title" data-i18n="videoOne">Vidéo 1</span>
@@ -329,8 +336,20 @@
                             </div>
                             <video class="video-preview hidden" controls playsinline></video>
                             @error('video') <p class="text-sm mt-2" style="color:var(--red-700)">{{ $message }}</p> @enderror
+
+                            <div class="url-box">
+                                <label for="video_url">
+                                    <i data-lucide="link" width="15"></i>
+                                    <span data-i18n="videoUrl">Ou lien de la vidéo (YouTube, Vimeo, MP4...)</span>
+                                </label>
+                                <input id="video_url" type="url" name="video_url" value="{{ old('video_url') }}"
+                                       class="control" placeholder="https://www.youtube.com/watch?v=...">
+                                <p class="url-hint" data-i18n="videoUrlHint">Collez le lien complet de la vidéo, pas seulement youtube.com.</p>
+                                @error('video_url') <p class="text-sm mt-2" style="color:var(--red-700)">{{ $message }}</p> @enderror
+                            </div>
                         </div>
 
+                        {{-- ===== Vidéo 2 ===== --}}
                         <div class="video-item">
                             <div class="video-item-header">
                                 <span class="video-item-title" data-i18n="videoTwo">Vidéo 2 (facultative)</span>
@@ -353,6 +372,17 @@
                             </div>
                             <video class="video-preview hidden" controls playsinline></video>
                             @error('video2') <p class="text-sm mt-2" style="color:var(--red-700)">{{ $message }}</p> @enderror
+
+                            <div class="url-box">
+                                <label for="video2_url">
+                                    <i data-lucide="link" width="15"></i>
+                                    <span data-i18n="videoUrl">Ou lien de la vidéo (YouTube, Vimeo, MP4...)</span>
+                                </label>
+                                <input id="video2_url" type="url" name="video2_url" value="{{ old('video2_url') }}"
+                                       class="control" placeholder="https://www.youtube.com/watch?v=...">
+                                <p class="url-hint" data-i18n="videoUrlHint">Collez le lien complet de la vidéo, pas seulement youtube.com.</p>
+                                @error('video2_url') <p class="text-sm mt-2" style="color:var(--red-700)">{{ $message }}</p> @enderror
+                            </div>
                         </div>
                     </div>
 
@@ -460,6 +490,8 @@ const translations = {
         videoLimit:"Limite indicative : 100 MB",
         chooseVideo:"Choisir une vidéo",
         noVideo:"Aucune vidéo sélectionnée",
+        videoUrl:"Ou lien de la vidéo (YouTube, Vimeo, MP4...)",
+        videoUrlHint:"Collez le lien complet de la vidéo, pas seulement youtube.com.",
         removeVideo:"Supprimer",
         addAnotherVideo:"Ajouter une autre vidéo",
         backendNote:"Les vidéos supplémentaires nécessitent leur prise en charge dans Laravel.",
@@ -515,6 +547,8 @@ const translations = {
         videoLimit:"الحجم الإرشادي الأقصى: 100 ميغابايت",
         chooseVideo:"اختيار فيديو",
         noVideo:"لم يتم اختيار أي فيديو",
+        videoUrl:"أو رابط الفيديو (YouTube أو Vimeo أو MP4...)",
+        videoUrlHint:"الصقي الرابط الكامل للفيديو، وليس youtube.com فقط.",
         removeVideo:"حذف",
         addAnotherVideo:"إضافة فيديو آخر",
         backendNote:"يجب تعديل Laravel حتى يتم حفظ الفيديوهات الإضافية.",
